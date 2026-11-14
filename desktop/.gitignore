@@ -1,0 +1,54 @@
+# Unity — generated folders (never commit)
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/Assets/StreamingAssets/aa.meta
+/Assets/StreamingAssets/aa/*
+
+# IDE / OS
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+.DS_Store
+Thumbs.db
+sysinfo.txt
+crashlytics-build.properties
+
+# Build outputs
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.zip
+
+# Large source files: raw DEMs, GeoTIFFs, .blend — see source/README.md for how to re-download
+/source/*
+!/source/README.md
+
+# Local tool output
+/tools/__pycache__/
+/tools/out/
+*.pyc
+
+# Python virtualenv for the tools (recreate with: python3 -m venv tools/.venv && tools/.venv/bin/pip install numpy pillow rasterio)
+/tools/.venv/
