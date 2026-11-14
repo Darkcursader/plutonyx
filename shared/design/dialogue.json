@@ -1,0 +1,114 @@
+{
+  "_comment": "System lines: tutorial, PIP hints, dawn notes, Earth messages, storm results, reveal. Keys are referenced by events.json and by the engines. Tokens in braces are filled at runtime (see events.json _comment, plus {peakRate} {peakTime} {peakRatio} {cmeSpeed} {cmeTime} {date} {kp} {window}). Reading level: grade 3-5. Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "schemaVersion": 1,
+  "intro": [
+    { "who": "narrator", "say": "Mars. Jezero Crater. Three and a half billion years ago, this was a lake." },
+    { "who": "narrator", "say": "Four people live on its shore now. In ten sols, their ship goes home." },
+    { "who": "narrator", "say": "You are their Commander." }
+  ],
+  "tutorial": [
+    { "id": "t1", "who": "pip", "say": "Good morning, Commander. Sol 1 of 10. A sol is one day on Mars. It is 40 minutes longer than a day on Earth." },
+    { "id": "t2", "who": "pip", "say": "The night was cold and the battery is tired. Today's sunlight gives us a few power cells. Four machines want them." },
+    { "id": "t3", "who": "kofi", "say": "Air Maker, Greenhouse, Storm Shield, Rover. We can't feed them all. Tap the plus and minus buttons to share out the power." },
+    { "id": "t4", "who": "pip", "say": "Watch the arrows. Each one shows what will go up and what will go down tonight." },
+    { "id": "t5", "who": "ana", "say": "There is no perfect answer. There is only what you choose to protect." },
+    { "id": "t6", "who": "pip", "say": "When you are ready, press Confirm. I will show you what happened in the morning." }
+  ],
+  "hints": {
+    "alloc.lowAir": "PIP: air is low. Give the Air Maker at least Normal today.",
+    "alloc.lowPower": "PIP: the battery is nearly empty. Turn something down or tonight will be cold.",
+    "alloc.plantsWilting": "PIP: the plants are wilting. One more dark sol could end the garden.",
+    "alloc.stormWatch": "PIP: a storm may be coming. Shield charge takes several sols to build.",
+    "alloc.balanced": "PIP's plan: keep the air steady first, then split what is left.",
+    "alloc.overspend": "Not enough power for that. Turn something else down first.",
+    "storm.needShield": "PIP: the shield needs {need} percent for this storm. It has {shield}.",
+    "general.askEarth": "PIP: Earth is {delayMin} light-minutes away. Any answer arrives after you have to choose."
+  },
+  "dawn": {
+    "clear": "Clear sky. The panels are drinking sunlight.",
+    "haze": "Hazy sky. The panels get a little less sunlight today.",
+    "dust": "Dust storm. The sky is brown and the panels are starving.",
+    "deepDust": "The dust is thick as night. Almost no sunlight reaches the panels.",
+    "dustEnds": "The dust is settling. You can see the crater rim again.",
+    "panelsDusty": "A layer of dust is still on the panels. They make a little less power.",
+    "flare1": "The Sun is active today: a class {flareMax} flare in NASA's record.",
+    "flare2": "Strong solar flare today: class {flareMax}. X is the strongest kind.",
+    "flare3": "Huge solar flare today: class {flareMax}. One of the biggest of this solar cycle.",
+    "radio1": "Solar static on the radio. Messages from Earth may be noisy.",
+    "radio2": "Earth is having its own storm today. Mission Control is hard to reach.",
+    "earthAurora": "Tonight people on Earth are seeing auroras. The same Sun is busy for both planets. Earth's storm index hit {kp} out of 9.",
+    "cloudArrives": "The solar cloud that NASA's model predicted has reached Mars. On the ground, the radiation counter reads {doseToday} micrograys for the day. A calm day is about {calmDose}.",
+    "cloudDip": "Odd. Since the solar clouds started passing, the radiation counter has gone down a little. Scientists have a name for that dip. Open the Science Log to learn why.",
+    "stormContinues": "The storm is not over. Radiation is still {ratio} times a calm day. Shield charge still matters tonight.",
+    "stormOver": "The radiation counter is back to normal. The storm has passed.",
+    "dilAway": "Dil is in the field. Her bunk is empty and her tea mug is on the console.",
+    "dilHome": "The rover rolled into the garage before dawn. Dil is home, and the core is in the cold box.",
+    "plantsLow": "The plants are drooping. Ana is quiet this morning.",
+    "plantsDead": "The greenhouse is dark. Nothing in it is alive.",
+    "sunspot": "PIP: my Sun camera shows a very large group of sunspots coming around the edge of the Sun. From here I can see it. Earth cannot."
+  },
+  "because": {
+    "lowAirTired": "Because the air was thin for two sols, the crew is tired and slow.",
+    "coldNight": "Because the battery ran flat, the heaters shut off in the night. Frost on the inside of the windows.",
+    "noHarvestHungry": "Because the garden never gave a harvest, the food shelves are getting empty.",
+    "gardenDark": "Because the greenhouse went dark, the plants lost leaves.",
+    "gardenDied": "Because the greenhouse stayed dark too long, the garden died.",
+    "shieldHeld": "Because the shield was charged, the storm stayed outside.",
+    "shieldThin": "Because the shield was only partly charged, some of the storm got through.",
+    "shieldEmpty": "Because the shield was almost empty, the storm came straight through the walls.",
+    "waterWallHelped": "Because the walls were full of water, less radiation reached the crew.",
+    "waterLowAfterWall": "Because the water went into the walls, the taps are running slow.",
+    "roverCharged": "Because the rover was well charged, Dil made it home.",
+    "roverFlat": "Because the rover was low on charge, Dil was stuck at the cliff. Getting her back cost power and sleep."
+  },
+  "earth": {
+    "earth.forecast": [
+      { "who": "sam", "say": "Lakeshore, Mission Control. About that forecast. A solar cloud reaching Mars often changes very little on the ground. The thing to fear is a very fast eruption: its particles can arrive in under an hour." },
+      { "who": "sam", "say": "If you see one start, do not wait for us. We are with you." }
+    ],
+    "earth.spots": [
+      { "who": "sam", "say": "Lakeshore, we have your photos. Nobody here is sitting down. If you can bring that core home safely, bring it. If you can't, bring yourselves." }
+    ],
+    "earth.storm": [
+      { "who": "sam", "say": "Lakeshore, we just got your storm call. By now it is over for you, one way or another. We could not see that side of the Sun from here. You could." },
+      { "who": "sam", "say": "Whatever you chose, you chose it with better eyes than ours. We are with you." }
+    ],
+    "earth.generic": [
+      { "who": "sam", "say": "Lakeshore, Mission Control. We got your question. By the time you hear this, you have already decided. Tell us how it went. We are with you." }
+    ]
+  },
+  "storm": {
+    "peak": "Radiation peak: {peakRate} micrograys per hour at {peakTime} UTC. A calm hour is about {calmRate}.",
+    "protected": "Shelter protection: {protection} percent.",
+    "result.held": [ { "who": "kofi", "say": "Shield held. Every badge is green. I'd like to never do that again." } ],
+    "result.thin": [ { "who": "ana", "say": "Some of it got through. Nobody is hurt. But the badges are fuller than I like, and I am watching all of you." } ],
+    "result.failed": [ { "who": "ana", "say": "The shield ran dry halfway. Nobody is sick. But the rules are clear about what these badges mean." } ],
+    "dil.recalled.lost": [ { "who": "dil", "say": "I'm in. I'm fine. The core is still in the rock, and I can't go back for it. Don't talk to me yet." } ],
+    "dil.recalled.kept": [ { "who": "dil", "say": "I'm in. And look what was already sealed in the cold box. I drilled faster than I thought." } ],
+    "dil.cliff.ok": [ { "who": "dil", "say": "Sat under forty metres of rock with a core in my lap. Best seat on Mars. Coming home at first light." } ],
+    "dil.cliff.stranded": [ { "who": "dil", "say": "Good news: I have the core. Bad news: the rover won't start. I'm going to need a tow." } ],
+    "dil.trust.shelter": [ { "who": "dil", "say": "You said my call. I stayed. I had rock above me and the core in my hands. Thank you for trusting me." } ],
+    "dil.trust.run": [ { "who": "dil", "say": "You said my call. I looked at the sky and I ran. The core stayed. I think I'd run again." } ],
+    "dil.grounded": [ { "who": "ana", "say": "Dil, your badge is over the mission limit. You're not sick. But you're done with outside work. Doctor's orders, and the rulebook's." } ],
+    "dil.sentHome": [ { "who": "ana", "say": "Dil's badge is in the red. She feels fine. She rides home in the medical bay, and Earth checks her over. No arguments." } ]
+  },
+  "reveal": {
+    "title": "It really happened.",
+    "lead": "Every solar storm in this mission was real. One sol in the game was one real day.",
+    "footer": "Space weather: NASA DONKI. Radiation on Mars: NASA's Curiosity rover (RAD), from NASA's RadLab. Dust, breakdowns and the crew are our story.",
+    "live": "This mission ran on live NASA space weather from {window}.",
+    "injected": "The Sun was calm in those days, so the storm on Sol 8 replayed the real storm of 20 May 2024 from NASA's archive."
+  },
+  "debrief": {
+    "title": "Mission debrief",
+    "tipTitle": "One tip for next time",
+    "tryAgain": "Fly again. The Sun stays the same, but dust and breakdowns will be different.",
+    "partial": "Not everything made it. Look at what did."
+  },
+  "discussion": [
+    { "afterSol": 3, "q": "Which machine did your team turn down first? What did it cost you later?" },
+    { "afterSol": 6, "q": "The forecast said a solar cloud was coming. Did you charge the shield? What did you give up to do it?" },
+    { "afterSol": 8, "q": "Earth could not help during the storm. Why not? How long did a message take to arrive?" },
+    { "afterSol": 10, "q": "If you were Dil, would you have stayed with the core or driven home? Is there a right answer?" }
+  ]
+}

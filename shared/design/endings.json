@@ -1,0 +1,207 @@
+{
+  "_comment": "Endings are checked in array order; the first whose 'when' is true wins (SCHEMA.md section 7). Derived values: gardenTier (0 dead, 1 alive, 2 thriving), crewFit, highRisk, decoded - defined in balance.json > endings. 'variants' add lines when their condition is true. Never claim life was found. Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "schemaVersion": 1,
+  "endings": [
+    {
+      "id": "evac",
+      "title": "Abort to Orbit",
+      "secret": false,
+      "when": { "flag": "evac" },
+      "oneLine": "The mission ended early. Everyone is safe.",
+      "shot": "pad_night_launch",
+      "grade": "predawn",
+      "postcard": "art/postcards/evac.png",
+      "music": "relief",
+      "epilogue": [
+        "At 03:12, PIP reads the flight rule out loud. Nobody argues.",
+        "Four people climb into the ascent ship in the dark. The outpost lights go out behind them, one by one.",
+        "From orbit, Jezero is a small pale circle. Dil presses her hand to the window. \"We'll be back,\" she says. \"I know where everything is now.\"",
+        "This is not a failure. This is the rule that brings crews home."
+      ],
+      "variants": [
+        { "when": { "flag": "seedsSaved" }, "text": "In Ana's pocket: one small envelope of seeds. Grown on Mars." },
+        { "when": { "flag": "helpedNeighbor" }, "text": "As they climb, a light blinks from the east. Isidis Camp, saying goodbye." }
+      ],
+      "science": {
+        "title": "Why real missions abort",
+        "text": "Space agencies write 'flight rules' long before launch: clear limits for air, power and crew health. When a limit is crossed, the crew goes to safety. Nobody has to decide in the scary moment whether things are bad enough. Ending a mission early to save a crew is the system working.",
+        "sources": ["nasa-flight-rules"]
+      },
+      "whatIf": "Watch the meter that hit zero. What could you have turned down two sols earlier to keep it alive?",
+      "lockedHint": "Let a core system fail."
+    },
+    {
+      "id": "secret",
+      "title": "Same Sun",
+      "secret": true,
+      "when": { "all": [ { "flag": "sampleSecured" }, { "v": "gardenTier", "gte": 2 }, { "v": "crewFit", "eq": 1 }, { "v": "decoded", "eq": 1 }, { "flag": "shieldFailed", "is": false } ] },
+      "oneLine": "You read the sky yourself. Everyone and everything came through.",
+      "shot": "earthrise_dish",
+      "grade": "goldblue",
+      "postcard": "art/postcards/secret.png",
+      "music": "awe",
+      "epilogue": [
+        "The whole message, at last: \"LAKESHORE. The sunspot group that lit our skies has turned out of our sight and into yours. We cannot see what it does next. You are our eyes now. Do not wait for us.\"",
+        "You did not wait.",
+        "On the night Earth sent those words, people there were standing in their gardens, looking up at red and green light across the whole sky. Ten sols later the same restless patch of the Sun turned toward Mars, and found a crew that was ready.",
+        "The ship lifts off with four people, a sealed core, and a tomato in Kofi's pocket.",
+        "Two worlds. One Sun. And tonight, on one of those worlds, a bright blue-white dot rises over the crater rim. Home."
+      ],
+      "variants": [
+        { "when": { "flag": "gardenLegacy" }, "text": "Behind them, a small magenta light stays on in the dust. The garden is still growing." },
+        { "when": { "flag": "helpedNeighbor" }, "text": "Isidis Camp sends three words on the open channel: \"Thank you, neighbours.\"" }
+      ],
+      "science": {
+        "title": "One Sun, two planets",
+        "text": "In May 2024 a huge group of sunspots fired flare after flare. Around 10-11 May it faced Earth, and people saw auroras far from the poles. The Sun spins about once every 27 days as seen from Earth, so that region turned away from Earth and toward Mars. On 20 May a new eruption sent particles to Mars, where three NASA spacecraft recorded it. Earth and Mars often face different sides of the Sun. To forecast space weather for a Mars crew, we will need eyes on the Sun from more than one place.",
+        "sources": ["donki", "jpl-may2024-storm", "radlab-msl"]
+      },
+      "whatIf": "You found it. Can you do it again on Commander?",
+      "lockedHint": "Bring everything home, and listen to all of the message."
+    },
+    {
+      "id": "full",
+      "title": "Homeward with Hope",
+      "secret": false,
+      "when": { "all": [ { "flag": "sampleSecured" }, { "v": "crewFit", "eq": 1 }, { "v": "highRisk", "eq": 0 }, { "v": "gardenTier", "gte": 1 } ] },
+      "oneLine": "Crew safe. The Leopard Core is on its way to Earth.",
+      "shot": "pad_sunset_launch",
+      "grade": "gold",
+      "postcard": "art/postcards/full.png",
+      "music": "hope",
+      "epilogue": [
+        "The window opens at sunset. On Mars, sunset is blue.",
+        "Dil carries the core to the ship herself, in both arms, like something sleeping.",
+        "Is there an answer inside it? Nobody on Mars can know. The spots could have been made by tiny living things, long ago, in the mud of a lake. Or by plain chemistry. That is for the labs on Earth, and the people who have waited their whole lives to open that tube.",
+        "The engines light. Lakeshore Outpost gets smaller, and smaller, and is a memory.",
+        "Four people came to ask a question. All four are coming home with it."
+      ],
+      "variants": [
+        { "when": { "flag": "deepCore" }, "text": "Dil drilled slow and deep. The core is perfect: every layer in place, like pages of a book." },
+        { "when": { "flag": "kofiMessage" }, "text": "Kofi watches his birthday video one more time on the way up." },
+        { "when": { "flag": "gardenLegacy" }, "text": "In the dust below, one magenta light stays on." }
+      ],
+      "science": {
+        "title": "Why the sample must come home",
+        "text": "In 2024 NASA's Perseverance rover drilled a core named Sapphire Canyon from a rock called Cheyava Falls, here in Jezero. Its 'leopard spots' hold minerals that microbes can make on Earth. They can also form without life. NASA calls it a 'potential biosignature': something that needs more data before anyone can decide. Instruments on Earth are far more powerful than anything a rover can carry.",
+        "sources": ["nasa-cheyava"]
+      },
+      "whatIf": "You brought everything home. There is one more ending, and the broken message is the key.",
+      "lockedHint": "Bring the crew, the core and a living garden home without reckless gambles."
+    },
+    {
+      "id": "gamble",
+      "title": "The Gamble",
+      "secret": false,
+      "when": { "flag": "sampleSecured" },
+      "oneLine": "The core is aboard. It was closer than anyone will admit.",
+      "shot": "rover_storm_return",
+      "grade": "amberteal",
+      "postcard": "art/postcards/gamble.png",
+      "music": "tense_resolve",
+      "epilogue": [
+        "The core is in the ship. Sealed, labelled, real.",
+        "Nobody talks much during the climb. Everyone is counting the things that could have gone the other way.",
+        "Mission Control will call it a success, and it is one. They will also ask for a full report, and that is fair.",
+        "Somewhere in that tube there may be an answer to the oldest question people have. It was bought with luck as much as skill. Next time, the luck may not come."
+      ],
+      "variants": [
+        { "when": { "flag": "dilGrounded" }, "text": "Dil's radiation badge went past the limit. She is fine. She rides home in the medical bay, and her days of driving on Mars are over." },
+        { "when": { "flag": "plantsDead" }, "text": "The greenhouse is dark. Ana packed the dry vines herself. \"Amu,\" she wrote on one bag. \"Syr,\" on the other." },
+        { "when": { "flag": "shieldFailed" }, "text": "The shield ran out before the storm did. Every badge on the crew is fuller than it should be." }
+      ],
+      "science": {
+        "title": "How close was it?",
+        "text": "On 20 May 2024, NASA's Curiosity rover measured the biggest radiation surge of its 12 years on Mars. NASA said a person standing beside it would have received about 8,100 micrograys, like 30 chest X-rays. Not deadly. But dose adds up over a lifetime, so crews follow one rule: keep it as low as you reasonably can. The lead scientist said it plainly after an earlier storm: you would definitely want to take shelter.",
+        "sources": ["jpl-may2024-storm", "jpl-sep2017-storm", "radlab-msl"]
+      },
+      "whatIf": "Count your gambles in the timeline. Which ones could you have avoided by charging the shield earlier?",
+      "lockedHint": "Bring the core home the risky way."
+    },
+    {
+      "id": "green",
+      "title": "The Green Outpost",
+      "secret": false,
+      "when": { "all": [ { "v": "gardenTier", "gte": 2 }, { "v": "crewFit", "eq": 1 } ] },
+      "oneLine": "No sample. But the outpost can feed itself.",
+      "shot": "greenhouse_night",
+      "grade": "greenmagenta",
+      "postcard": "art/postcards/green.png",
+      "music": "warm",
+      "epilogue": [
+        "The core stayed in the rock. Dil has made her peace with that. Mostly.",
+        "But walk into the greenhouse. Lettuce, kale, mizuna, and two tomato vines heavy with fruit, glowing under pink light on a planet where nothing has grown for billions of years. If anything ever did.",
+        "Mission Control reads the numbers twice. Then they change the plan: the next crew will not bring all their food. They will bring more seeds.",
+        "You did not answer whether there was life on Mars. You proved there can be."
+      ],
+      "variants": [
+        { "when": { "flag": "seedsSaved" }, "text": "Ana leaves a jar of seeds on the shelf, with a note: \"From the first garden. Plant these.\"" },
+        { "when": { "flag": "gardenLegacy" }, "text": "The lights stay on when the ship leaves. Somebody is coming." }
+      ],
+      "science": {
+        "title": "Why a garden changes everything",
+        "text": "Food is heavy, and a Mars trip is long. Astronauts already grow lettuce, kale and other plants on the International Space Station in a small garden called Veggie, under red and blue LEDs that make it glow magenta. Fresh plants give vitamins that break down in packed food, and crews say gardening is good for the mind too. The Canadian Space Agency asks students to design ways to grow food on the Moon for the same reason.",
+        "sources": ["nasa-veggie", "osdr-268", "csa-food"]
+      },
+      "whatIf": "The garden made it. Could the core have made it too if the rover had been charged sooner?",
+      "lockedHint": "Let the garden thrive, even if the core stays behind."
+    },
+    {
+      "id": "bittersweet",
+      "title": "Safe Hands, Empty Hands",
+      "secret": false,
+      "when": { "all": [ { "v": "crewFit", "eq": 1 }, { "v": "gardenTier", "gte": 1 } ] },
+      "oneLine": "Everyone is fine. The question stays on Mars.",
+      "shot": "delta_bluehour",
+      "grade": "bluehour",
+      "postcard": "art/postcards/bittersweet.png",
+      "music": "quiet",
+      "epilogue": [
+        "Four healthy people ride the ship home. That was the first rule, and you kept it.",
+        "The core is still out there, in a rock by a river that dried up three and a half billion years ago. It has waited a long time. It can wait for the next crew.",
+        "Dil does not look out of the window on the way up. Then, near orbit, she does.",
+        "\"It's still there,\" she says. \"That's the thing about rocks. They wait.\""
+      ],
+      "variants": [
+        { "when": { "flag": "dilRecalled" }, "text": "You called her back, and she came. She has not said thank you. She will, one day." },
+        { "when": { "flag": "kofiMessage" }, "text": "Kofi hums the birthday song the whole way up. Nobody stops him." }
+      ],
+      "science": {
+        "title": "Safety can cost discovery",
+        "text": "Every real mission trades science against safety. When a giant dust storm hit Mars in 2018, the team running NASA's Opportunity rover stopped all science to save power. Each time that happens, scientists lose data they wanted. Mission teams accept it, because a crew that comes home can go back, and a sample that stays on Mars is still on Mars.",
+        "sources": ["jpl-dust-2018", "nasa-cheyava"]
+      },
+      "whatIf": "You kept everyone safe. Now look at Sol 2 to Sol 6: where could the rover have had more power?",
+      "lockedHint": "Keep everyone safe and well, and come home without the core."
+    },
+    {
+      "id": "survival",
+      "title": "Hold the Line",
+      "secret": false,
+      "when": { "all": [] },
+      "oneLine": "You lost a lot. You did not lose anyone.",
+      "shot": "outpost_dust_dawn",
+      "grade": "dusty",
+      "postcard": "art/postcards/survival.png",
+      "music": "weary",
+      "epilogue": [
+        "It was a hard ten sols. The plan fell apart, and then the back-up plan did too.",
+        "But count the seats on the ship. Four. All of them full.",
+        "Kofi pats the wall of the outpost on his way out, the way you pat a tired horse. \"Good girl,\" he says. \"You held.\"",
+        "Mars keeps what it took. The crew keeps what matters most: each other, and everything they learned."
+      ],
+      "variants": [
+        { "when": { "flag": "plantsDead" }, "text": "Ana takes one handful of soil from the dark greenhouse and seals it in a bag. \"Next time,\" she tells it." },
+        { "when": { "flag": "dilGrounded" }, "text": "Dil's badge is over the limit. She is well, and she is going home in the medical bay. She waves from the stretcher like a queen." },
+        { "when": { "flag": "sentHome" }, "text": "The flight surgeon on Earth has already sent the check-up plan. Rules are rules, and these ones are kind." }
+      ],
+      "science": {
+        "title": "Why small problems grow on Mars",
+        "text": "On Mars everything is connected. Dust cuts solar power. Less power means less heat and less air. Thin air makes tired people. Tired people make mistakes. Engineers call this a 'cascade', and they fight it with margins: spare power, spare air, spare time. The earlier you spend a little to stop a problem, the less it costs.",
+        "sources": ["jpl-dust-2018", "nasa-water-98"]
+      },
+      "whatIf": "Open the timeline and find the first domino. One different choice there changes everything after it.",
+      "lockedHint": "Survive a mission where almost everything goes wrong."
+    }
+  ]
+}

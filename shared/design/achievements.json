@@ -1,0 +1,25 @@
+{
+  "_comment": "Badges. 'when' uses the SCHEMA.md condition language, evaluated at mission end unless 'live' is true (then checked every sol). Badges tied to real science carry source ids. No personal data is stored. Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "schemaVersion": 1,
+  "achievements": [
+    { "id": "first_light", "title": "First Light", "text": "Finish your first mission, any ending.", "icon": "sunrise", "when": { "all": [] } },
+    { "id": "storm_rider", "title": "Storm Rider", "text": "Bring the crew through a real severe solar storm without the shield failing.", "icon": "shield", "when": { "all": [ { "flag": "facedSevereStorm" }, { "flag": "shieldFailed", "is": false }, { "flag": "evac", "is": false } ] }, "sources": ["radlab-msl", "jpl-may2024-storm"] },
+    { "id": "x_class", "title": "X Marks the Sun", "text": "Fly a mission on a day with a real X-class flare.", "icon": "flare", "when": { "flag": "sawXFlare" }, "sources": ["donki"] },
+    { "id": "green_thumb", "title": "Green Thumb", "text": "Harvest food grown on Mars.", "icon": "sprout", "when": { "v": "harvests", "gte": 1 }, "sources": ["nasa-veggie"] },
+    { "id": "river_names", "title": "Amu and Syr", "text": "Finish with the garden thriving.", "icon": "tomato", "when": { "v": "gardenTier", "gte": 2 } },
+    { "id": "light_minutes", "title": "Light Minutes", "text": "Ask Earth a question and wait for the answer.", "icon": "signal", "when": { "v": "earthAsks", "gte": 1 }, "sources": ["nasa-comm-delay"] },
+    { "id": "our_eyes", "title": "Our Eyes Now", "text": "Decode the whole message from Earth.", "icon": "eye", "when": { "v": "decoded", "eq": 1 } },
+    { "id": "cliffhanger", "title": "Cliffhanger", "text": "Dil sat out a storm under a cliff and came home with the core.", "icon": "cliff", "when": { "all": [ { "flag": "dilShelteredAtCliff" }, { "flag": "sampleSecured" } ] }, "sources": ["jpl-may2024-storm"] },
+    { "id": "good_neighbor", "title": "Good Neighbour", "text": "Help Isidis Camp.", "icon": "hands", "when": { "flag": "helpedNeighbor" } },
+    { "id": "blue_hour", "title": "Blue Hour", "text": "Watch a blue Martian sunset with the crew.", "icon": "sunset", "when": { "flag": "sawSunset" }, "sources": ["nasa-sunset"] },
+    { "id": "eclipse_chaser", "title": "Eclipse Chaser", "text": "Watch Phobos cross the Sun.", "icon": "moon", "when": { "flag": "sawEclipse" }, "sources": ["nasa-phobos-eclipse"] },
+    { "id": "birthday", "title": "Many Happy Returns", "text": "Make sure Kofi's birthday message arrives.", "icon": "cake", "when": { "flag": "kofiMessage" } },
+    { "id": "chief_engineer", "title": "Chief Engineer", "text": "Finish with Air, Power and Shield all above 50.", "icon": "gauge", "when": { "all": [ { "v": "air", "gte": 50 }, { "v": "power", "gte": 50 }, { "v": "shield", "gte": 50 }, { "flag": "evac", "is": false } ] } },
+    { "id": "clean_badge", "title": "As Low As You Can", "text": "Finish with every radiation badge in the green.", "icon": "badge", "when": { "all": [ { "flag": "anyAmber", "is": false }, { "flag": "evac", "is": false } ] } },
+    { "id": "todays_sun", "title": "Today's Sun", "text": "Fly a mission on live NASA space weather.", "icon": "sun", "when": { "flag": "liveData" }, "sources": ["donki"] },
+    { "id": "historian", "title": "Historian", "text": "Fly a Replay History mission.", "icon": "book", "when": { "flag": "historyMission" }, "sources": ["donki", "radlab-msl"] },
+    { "id": "commander", "title": "Commander", "text": "Reach any ending except Abort to Orbit on Commander difficulty.", "icon": "star", "when": { "all": [ { "mode": "commander" }, { "flag": "evac", "is": false } ] } },
+    { "id": "no_gambles", "title": "By the Book", "text": "Bring the core home without taking a single gamble.", "icon": "book", "when": { "all": [ { "flag": "sampleSecured" }, { "v": "risk", "eq": 0 } ] } },
+    { "id": "collector", "title": "Every Road Home", "text": "See all seven endings.", "icon": "gallery", "when": { "v": "endingsSeen", "gte": 7 }, "meta": true }
+  ]
+}

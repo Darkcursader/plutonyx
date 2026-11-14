@@ -1,0 +1,2155 @@
+{
+ "meta": {
+  "id": "recent",
+  "label": "The 30 days before 2026-11-14",
+  "blurb": "A snapshot of the real Sun taken when this build was made. Used when live data cannot be reached.",
+  "start": "2026-10-15",
+  "end": "2026-11-14",
+  "sol1": "2026-10-31",
+  "mode": "archived",
+  "retrievedUtc": "2026-11-14T10:48:34Z",
+  "radSource": "estimated",
+  "peakDate": "2026-11-07",
+  "note": "Real NASA records, trimmed to the fields the game uses and summarised per UTC day. One game sol = one real day. See shared/science-log.md.",
+  "sources": [
+   {
+    "dataset": "DONKI FLR",
+    "provider": "NASA CCMC DONKI",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR?startDate=2026-10-15&endDate=2026-11-14",
+    "records": 13
+   },
+   {
+    "dataset": "DONKI CME",
+    "provider": "NASA CCMC DONKI",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI-API/get/CME?startDate=2026-10-15&endDate=2026-11-14",
+    "records": 86
+   },
+   {
+    "dataset": "DONKI SEP",
+    "provider": "NASA CCMC DONKI",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI-API/get/SEP?startDate=2026-10-15&endDate=2026-11-14",
+    "records": 0
+   },
+   {
+    "dataset": "DONKI GST",
+    "provider": "NASA CCMC DONKI",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI-API/get/GST?startDate=2026-10-15&endDate=2026-11-14",
+    "records": 1
+   },
+   {
+    "dataset": "DONKI IPS",
+    "provider": "NASA CCMC DONKI",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI-API/get/IPS?startDate=2026-10-15&endDate=2026-11-14",
+    "records": 2
+   },
+   {
+    "dataset": "DONKI WSAEnlilSimulations",
+    "provider": "NASA CCMC DONKI",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI-API/get/WSAEnlilSimulations?startDate=2026-10-11&endDate=2026-11-14",
+    "records": 61
+   },
+   {
+    "dataset": "RadLab MSL-RAD-Surface absorbed dose rate (µGy/h)",
+    "provider": "NASA OSDR RadLab",
+    "url": "https://visualization.osdr.nasa.gov/radlab/api/?instrument_id=MSL-RAD-Surface&timestamp%3E=2026-10-15T00:00&timestamp%3C2026-11-15T00:00&absorbed_dose_rate&format=csv",
+    "records": 0
+   }
+  ]
+ },
+ "calmDose": 115,
+ "days": [
+  {
+   "date": "2026-10-15",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 1,
+    "fastest": 428,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49125/-1",
+    "fastestLongitude": null,
+    "fastestHalfAngle": 36,
+    "fastestStart": "2026-10-15T20:24Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.5614,
+    "distanceMillionKm": 233.6,
+    "lightSeconds": 779,
+    "lightMinutes": 12.99,
+    "sunLightMinutesMars": 13.1,
+    "marsAheadOfEarthDeg": 70.7,
+    "earth": {
+     "x": 0.926,
+     "y": 0.3699
+    },
+    "mars": {
+     "x": -0.0676,
+     "y": 1.5738
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-16",
+   "flares": {
+    "count": 1,
+    "C": 0,
+    "M": 1,
+    "X": 0,
+    "max": "M1.3",
+    "maxPeakTime": "2026-10-16T15:42Z",
+    "maxRegion": 14551,
+    "maxLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49134/-1"
+   },
+   "cmes": {
+    "count": 8,
+    "fastest": 552,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49148/-1",
+    "fastestLongitude": null,
+    "fastestHalfAngle": 10,
+    "fastestStart": "2026-10-16T20:24Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.5539,
+    "distanceMillionKm": 232.5,
+    "lightSeconds": 775,
+    "lightMinutes": 12.92,
+    "sunLightMinutesMars": 13.11,
+    "marsAheadOfEarthDeg": 70.2,
+    "earth": {
+     "x": 0.9192,
+     "y": 0.3858
+    },
+    "mars": {
+     "x": -0.0811,
+     "y": 1.5743
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 1,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-17",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 3,
+    "fastest": 1048,
+    "fastestType": "O",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49150/-1",
+    "fastestLongitude": -99,
+    "fastestHalfAngle": 38,
+    "fastestStart": "2026-10-17T02:48Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.5463,
+    "distanceMillionKm": 231.3,
+    "lightSeconds": 772,
+    "lightMinutes": 12.86,
+    "sunLightMinutesMars": 13.12,
+    "marsAheadOfEarthDeg": 69.7,
+    "earth": {
+     "x": 0.9122,
+     "y": 0.4015
+    },
+    "mars": {
+     "x": -0.0945,
+     "y": 1.5747
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-18",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 2,
+    "fastest": 590,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49162/-1",
+    "fastestLongitude": null,
+    "fastestHalfAngle": 20,
+    "fastestStart": "2026-10-18T23:15Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.5387,
+    "distanceMillionKm": 230.2,
+    "lightSeconds": 768,
+    "lightMinutes": 12.8,
+    "sunLightMinutesMars": 13.13,
+    "marsAheadOfEarthDeg": 69.2,
+    "earth": {
+     "x": 0.9048,
+     "y": 0.4172
+    },
+    "mars": {
+     "x": -0.108,
+     "y": 1.575
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-19",
+   "flares": {
+    "count": 1,
+    "C": 0,
+    "M": 1,
+    "X": 0,
+    "max": "M1.6",
+    "maxPeakTime": "2026-10-19T09:03Z",
+    "maxRegion": 14551,
+    "maxLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49165/-1"
+   },
+   "cmes": {
+    "count": 2,
+    "fastest": 474,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49170/-1",
+    "fastestLongitude": 130,
+    "fastestHalfAngle": 14,
+    "fastestStart": "2026-10-19T19:15Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.5311,
+    "distanceMillionKm": 229,
+    "lightSeconds": 764,
+    "lightMinutes": 12.73,
+    "sunLightMinutesMars": 13.14,
+    "marsAheadOfEarthDeg": 68.7,
+    "earth": {
+     "x": 0.8972,
+     "y": 0.4327
+    },
+    "mars": {
+     "x": -0.1214,
+     "y": 1.5752
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 1,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-20",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 4,
+    "fastest": 920,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49183/-1",
+    "fastestLongitude": 149,
+    "fastestHalfAngle": 13,
+    "fastestStart": "2026-10-20T14:23Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": [
+     "2026-10-20T18:00Z"
+    ]
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.5234,
+    "distanceMillionKm": 227.9,
+    "lightSeconds": 760,
+    "lightMinutes": 12.67,
+    "sunLightMinutesMars": 13.15,
+    "marsAheadOfEarthDeg": 68.2,
+    "earth": {
+     "x": 0.8893,
+     "y": 0.448
+    },
+    "mars": {
+     "x": -0.1348,
+     "y": 1.5753
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-21",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 3,
+    "fastest": 973,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49197/-1",
+    "fastestLongitude": -164,
+    "fastestHalfAngle": 46,
+    "fastestStart": "2026-10-21T20:36Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.5157,
+    "distanceMillionKm": 226.7,
+    "lightSeconds": 756,
+    "lightMinutes": 12.61,
+    "sunLightMinutesMars": 13.16,
+    "marsAheadOfEarthDeg": 67.6,
+    "earth": {
+     "x": 0.8811,
+     "y": 0.4633
+    },
+    "mars": {
+     "x": -0.1482,
+     "y": 1.5752
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-22",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 2,
+    "fastest": 561,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49208/-1",
+    "fastestLongitude": null,
+    "fastestHalfAngle": 13,
+    "fastestStart": "2026-10-22T20:12Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.508,
+    "distanceMillionKm": 225.6,
+    "lightSeconds": 752,
+    "lightMinutes": 12.54,
+    "sunLightMinutesMars": 13.17,
+    "marsAheadOfEarthDeg": 67.1,
+    "earth": {
+     "x": 0.8727,
+     "y": 0.4783
+    },
+    "mars": {
+     "x": -0.1616,
+     "y": 1.575
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-23",
+   "flares": {
+    "count": 1,
+    "C": 1,
+    "M": 0,
+    "X": 0,
+    "max": "C1.3",
+    "maxPeakTime": "2026-10-23T03:55Z",
+    "maxRegion": 14557,
+    "maxLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49214/-1"
+   },
+   "cmes": {
+    "count": 3,
+    "fastest": 597,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49212/-1",
+    "fastestLongitude": 71,
+    "fastestHalfAngle": 26,
+    "fastestStart": "2026-10-23T04:18Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [
+    {
+     "issued": "2026-10-23T12:09Z",
+     "arrival": "2026-10-27T12:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-23T04:18Z",
+     "cmeSpeed": 597,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49216/-1"
+    }
+   ],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.5002,
+    "distanceMillionKm": 224.4,
+    "lightSeconds": 749,
+    "lightMinutes": 12.48,
+    "sunLightMinutesMars": 13.18,
+    "marsAheadOfEarthDeg": 66.6,
+    "earth": {
+     "x": 0.8641,
+     "y": 0.4933
+    },
+    "mars": {
+     "x": -0.175,
+     "y": 1.5747
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-24",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 6,
+    "fastest": 838,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49226/-1",
+    "fastestLongitude": 121,
+    "fastestHalfAngle": 10,
+    "fastestStart": "2026-10-24T20:36Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4923,
+    "distanceMillionKm": 223.3,
+    "lightSeconds": 745,
+    "lightMinutes": 12.41,
+    "sunLightMinutesMars": 13.19,
+    "marsAheadOfEarthDeg": 66.1,
+    "earth": {
+     "x": 0.8551,
+     "y": 0.5081
+    },
+    "mars": {
+     "x": -0.1884,
+     "y": 1.5743
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-25",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 4,
+    "fastest": 360,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49244/-1",
+    "fastestLongitude": null,
+    "fastestHalfAngle": 24,
+    "fastestStart": "2026-10-25T09:48Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [
+    {
+     "issued": "2026-10-25T21:45Z",
+     "arrival": "2026-11-01T01:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-25T19:24Z",
+     "cmeSpeed": 275,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49248/-1"
+    }
+   ],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": [
+     "2026-10-25T06:00Z"
+    ]
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4845,
+    "distanceMillionKm": 222.1,
+    "lightSeconds": 741,
+    "lightMinutes": 12.35,
+    "sunLightMinutesMars": 13.2,
+    "marsAheadOfEarthDeg": 65.6,
+    "earth": {
+     "x": 0.8459,
+     "y": 0.5227
+    },
+    "mars": {
+     "x": -0.2017,
+     "y": 1.5738
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-26",
+   "flares": {
+    "count": 2,
+    "C": 2,
+    "M": 0,
+    "X": 0,
+    "max": "C2.8",
+    "maxPeakTime": "2026-10-26T18:40Z",
+    "maxRegion": 14561,
+    "maxLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49278/-1"
+   },
+   "cmes": {
+    "count": 7,
+    "fastest": 873,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49254/-1",
+    "fastestLongitude": 43,
+    "fastestHalfAngle": 11,
+    "fastestStart": "2026-10-26T09:00Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [
+    {
+     "issued": "2026-10-26T12:37Z",
+     "arrival": "2026-10-30T18:00Z",
+     "glancing": true,
+     "cmeStart": "2026-10-26T09:48Z",
+     "cmeSpeed": 681,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49251/-1"
+    },
+    {
+     "issued": "2026-10-26T15:40Z",
+     "arrival": "2026-10-31T00:00Z",
+     "glancing": true,
+     "cmeStart": "2026-10-26T09:00Z",
+     "cmeSpeed": 873,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49257/-1"
+    },
+    {
+     "issued": "2026-10-26T20:04Z",
+     "arrival": "2026-11-01T02:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-26T02:12Z",
+     "cmeSpeed": 327,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49274/-1"
+    },
+    {
+     "issued": "2026-10-26T22:40Z",
+     "arrival": "2026-10-31T11:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-26T18:48Z",
+     "cmeSpeed": 616,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49279/-1"
+    }
+   ],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4766,
+    "distanceMillionKm": 220.9,
+    "lightSeconds": 737,
+    "lightMinutes": 12.28,
+    "sunLightMinutesMars": 13.21,
+    "marsAheadOfEarthDeg": 65.1,
+    "earth": {
+     "x": 0.8365,
+     "y": 0.5372
+    },
+    "mars": {
+     "x": -0.2151,
+     "y": 1.5731
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-27",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 2,
+    "fastest": 302,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49293/-1",
+    "fastestLongitude": null,
+    "fastestHalfAngle": 17,
+    "fastestStart": "2026-10-27T12:53Z"
+   },
+   "marsArrivals": [
+    {
+     "arrival": "2026-10-27T12:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-23T04:18Z",
+     "cmeSpeed": 597,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49216/-1"
+    }
+   ],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4686,
+    "distanceMillionKm": 219.7,
+    "lightSeconds": 733,
+    "lightMinutes": 12.21,
+    "sunLightMinutesMars": 13.22,
+    "marsAheadOfEarthDeg": 64.6,
+    "earth": {
+     "x": 0.8268,
+     "y": 0.5516
+    },
+    "mars": {
+     "x": -0.2284,
+     "y": 1.5724
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-28",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 2,
+    "fastest": 399,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49301/-1",
+    "fastestLongitude": -78,
+    "fastestHalfAngle": 15,
+    "fastestStart": "2026-10-28T00:00Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4607,
+    "distanceMillionKm": 218.5,
+    "lightSeconds": 729,
+    "lightMinutes": 12.15,
+    "sunLightMinutesMars": 13.23,
+    "marsAheadOfEarthDeg": 64,
+    "earth": {
+     "x": 0.8168,
+     "y": 0.5657
+    },
+    "mars": {
+     "x": -0.2417,
+     "y": 1.5715
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-29",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 1,
+    "fastest": 287,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49324/-1",
+    "fastestLongitude": 56,
+    "fastestHalfAngle": 30,
+    "fastestStart": "2026-10-29T10:36Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4526,
+    "distanceMillionKm": 217.3,
+    "lightSeconds": 725,
+    "lightMinutes": 12.08,
+    "sunLightMinutesMars": 13.24,
+    "marsAheadOfEarthDeg": 63.5,
+    "earth": {
+     "x": 0.8066,
+     "y": 0.5797
+    },
+    "mars": {
+     "x": -0.255,
+     "y": 1.5705
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-30",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 1,
+    "fastest": 218,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49341/-1",
+    "fastestLongitude": 130,
+    "fastestHalfAngle": 10,
+    "fastestStart": "2026-10-30T12:36Z"
+   },
+   "marsArrivals": [
+    {
+     "arrival": "2026-10-30T18:00Z",
+     "glancing": true,
+     "cmeStart": "2026-10-26T09:48Z",
+     "cmeSpeed": 681,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49251/-1"
+    }
+   ],
+   "marsForecasts": [
+    {
+     "issued": "2026-10-30T13:36Z",
+     "arrival": "2026-11-04T08:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-29T10:36Z",
+     "cmeSpeed": 287,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49326/-1"
+    }
+   ],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4446,
+    "distanceMillionKm": 216.1,
+    "lightSeconds": 721,
+    "lightMinutes": 12.01,
+    "sunLightMinutesMars": 13.25,
+    "marsAheadOfEarthDeg": 63,
+    "earth": {
+     "x": 0.7962,
+     "y": 0.5935
+    },
+    "mars": {
+     "x": -0.2683,
+     "y": 1.5694
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-10-31",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 1,
+    "fastest": 345,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49343/-1",
+    "fastestLongitude": 140,
+    "fastestHalfAngle": 24,
+    "fastestStart": "2026-10-31T05:00Z"
+   },
+   "marsArrivals": [
+    {
+     "arrival": "2026-10-31T00:00Z",
+     "glancing": true,
+     "cmeStart": "2026-10-26T09:00Z",
+     "cmeSpeed": 873,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49257/-1"
+    },
+    {
+     "arrival": "2026-10-31T11:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-26T18:48Z",
+     "cmeSpeed": 616,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49279/-1"
+    }
+   ],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": 6,
+    "gst": true,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4365,
+    "distanceMillionKm": 214.9,
+    "lightSeconds": 717,
+    "lightMinutes": 11.95,
+    "sunLightMinutesMars": 13.25,
+    "marsAheadOfEarthDeg": 62.5,
+    "earth": {
+     "x": 0.7855,
+     "y": 0.6072
+    },
+    "mars": {
+     "x": -0.2815,
+     "y": 1.5681
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 1
+   }
+  },
+  {
+   "date": "2026-11-01",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 3,
+    "fastest": 894,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49353/-1",
+    "fastestLongitude": -42,
+    "fastestHalfAngle": 14,
+    "fastestStart": "2026-11-01T00:00Z"
+   },
+   "marsArrivals": [
+    {
+     "arrival": "2026-11-01T01:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-25T19:24Z",
+     "cmeSpeed": 275,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49248/-1"
+    },
+    {
+     "arrival": "2026-11-01T02:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-26T02:12Z",
+     "cmeSpeed": 327,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49274/-1"
+    }
+   ],
+   "marsForecasts": [
+    {
+     "issued": "2026-11-01T21:43Z",
+     "arrival": "2026-11-07T06:00Z",
+     "glancing": true,
+     "cmeStart": "2026-11-01T19:00Z",
+     "cmeSpeed": 357,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49360/-1"
+    }
+   ],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4284,
+    "distanceMillionKm": 213.7,
+    "lightSeconds": 713,
+    "lightMinutes": 11.88,
+    "sunLightMinutesMars": 13.26,
+    "marsAheadOfEarthDeg": 62,
+    "earth": {
+     "x": 0.7746,
+     "y": 0.6206
+    },
+    "mars": {
+     "x": -0.2948,
+     "y": 1.5668
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-02",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 0,
+    "fastest": null,
+    "fastestType": null,
+    "fastestLink": null,
+    "fastestLongitude": null,
+    "fastestHalfAngle": null,
+    "fastestStart": null
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4202,
+    "distanceMillionKm": 212.5,
+    "lightSeconds": 709,
+    "lightMinutes": 11.81,
+    "sunLightMinutesMars": 13.27,
+    "marsAheadOfEarthDeg": 61.4,
+    "earth": {
+     "x": 0.7634,
+     "y": 0.6339
+    },
+    "mars": {
+     "x": -0.308,
+     "y": 1.5653
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-03",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 1,
+    "fastest": 347,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49370/-1",
+    "fastestLongitude": -95,
+    "fastestHalfAngle": 41,
+    "fastestStart": "2026-11-03T09:36Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4121,
+    "distanceMillionKm": 211.2,
+    "lightSeconds": 705,
+    "lightMinutes": 11.74,
+    "sunLightMinutesMars": 13.28,
+    "marsAheadOfEarthDeg": 60.9,
+    "earth": {
+     "x": 0.752,
+     "y": 0.647
+    },
+    "mars": {
+     "x": -0.3212,
+     "y": 1.5638
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-04",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 1,
+    "fastest": 497,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49382/-1",
+    "fastestLongitude": null,
+    "fastestHalfAngle": 14,
+    "fastestStart": "2026-11-04T02:48Z"
+   },
+   "marsArrivals": [
+    {
+     "arrival": "2026-11-04T08:00Z",
+     "glancing": false,
+     "cmeStart": "2026-10-29T10:36Z",
+     "cmeSpeed": 287,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49326/-1"
+    }
+   ],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.4039,
+    "distanceMillionKm": 210,
+    "lightSeconds": 701,
+    "lightMinutes": 11.68,
+    "sunLightMinutesMars": 13.29,
+    "marsAheadOfEarthDeg": 60.4,
+    "earth": {
+     "x": 0.7404,
+     "y": 0.6599
+    },
+    "mars": {
+     "x": -0.3343,
+     "y": 1.5621
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-05",
+   "flares": {
+    "count": 1,
+    "C": 0,
+    "M": 1,
+    "X": 0,
+    "max": "M3.5",
+    "maxPeakTime": "2026-11-05T18:33Z",
+    "maxRegion": 14566,
+    "maxLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49391/-1"
+   },
+   "cmes": {
+    "count": 4,
+    "fastest": 915,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49394/-1",
+    "fastestLongitude": -35,
+    "fastestHalfAngle": 13,
+    "fastestStart": "2026-11-05T20:00Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": [
+     "2026-11-05T05:00Z"
+    ]
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3956,
+    "distanceMillionKm": 208.8,
+    "lightSeconds": 696,
+    "lightMinutes": 11.61,
+    "sunLightMinutesMars": 13.3,
+    "marsAheadOfEarthDeg": 59.8,
+    "earth": {
+     "x": 0.7286,
+     "y": 0.6725
+    },
+    "mars": {
+     "x": -0.3475,
+     "y": 1.5603
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 1,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-06",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 5,
+    "fastest": 530,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49416/-1",
+    "fastestLongitude": -92,
+    "fastestHalfAngle": 20,
+    "fastestStart": "2026-11-06T13:15Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3873,
+    "distanceMillionKm": 207.5,
+    "lightSeconds": 692,
+    "lightMinutes": 11.54,
+    "sunLightMinutesMars": 13.31,
+    "marsAheadOfEarthDeg": 59.3,
+    "earth": {
+     "x": 0.7165,
+     "y": 0.685
+    },
+    "mars": {
+     "x": -0.3606,
+     "y": 1.5584
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-07",
+   "flares": {
+    "count": 3,
+    "C": 0,
+    "M": 3,
+    "X": 0,
+    "max": "M1.9",
+    "maxPeakTime": "2026-11-07T18:42Z",
+    "maxRegion": 14566,
+    "maxLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49448/-1"
+   },
+   "cmes": {
+    "count": 4,
+    "fastest": 507,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49434/-1",
+    "fastestLongitude": 168,
+    "fastestHalfAngle": 26,
+    "fastestStart": "2026-11-07T09:36Z"
+   },
+   "marsArrivals": [
+    {
+     "arrival": "2026-11-07T06:00Z",
+     "glancing": true,
+     "cmeStart": "2026-11-01T19:00Z",
+     "cmeSpeed": 357,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49360/-1"
+    }
+   ],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.379,
+    "distanceMillionKm": 206.3,
+    "lightSeconds": 688,
+    "lightMinutes": 11.47,
+    "sunLightMinutesMars": 13.32,
+    "marsAheadOfEarthDeg": 58.8,
+    "earth": {
+     "x": 0.7042,
+     "y": 0.6973
+    },
+    "mars": {
+     "x": -0.3737,
+     "y": 1.5564
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 1,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-08",
+   "flares": {
+    "count": 3,
+    "C": 0,
+    "M": 3,
+    "X": 0,
+    "max": "M1.7",
+    "maxPeakTime": "2026-11-08T07:46Z",
+    "maxRegion": 14566,
+    "maxLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49453/-1"
+   },
+   "cmes": {
+    "count": 2,
+    "fastest": 591,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49454/-1",
+    "fastestLongitude": 137,
+    "fastestHalfAngle": 22,
+    "fastestStart": "2026-11-08T00:48Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3707,
+    "distanceMillionKm": 205.1,
+    "lightSeconds": 684,
+    "lightMinutes": 11.4,
+    "sunLightMinutesMars": 13.32,
+    "marsAheadOfEarthDeg": 58.3,
+    "earth": {
+     "x": 0.6917,
+     "y": 0.7093
+    },
+    "mars": {
+     "x": -0.3868,
+     "y": 1.5542
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 1,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-09",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 3,
+    "fastest": 726,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49468/-1",
+    "fastestLongitude": 65,
+    "fastestHalfAngle": 10,
+    "fastestStart": "2026-11-09T18:15Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [
+    {
+     "issued": "2026-11-09T19:32Z",
+     "arrival": "2026-11-13T12:00Z",
+     "glancing": true,
+     "cmeStart": "2026-11-09T18:15Z",
+     "cmeSpeed": 726,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49472/-1"
+    }
+   ],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3623,
+    "distanceMillionKm": 203.8,
+    "lightSeconds": 680,
+    "lightMinutes": 11.33,
+    "sunLightMinutesMars": 13.33,
+    "marsAheadOfEarthDeg": 57.7,
+    "earth": {
+     "x": 0.679,
+     "y": 0.7212
+    },
+    "mars": {
+     "x": -0.3998,
+     "y": 1.552
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-10",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 3,
+    "fastest": 974,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49479/-1",
+    "fastestLongitude": 93,
+    "fastestHalfAngle": 11,
+    "fastestStart": "2026-11-10T05:30Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3539,
+    "distanceMillionKm": 202.5,
+    "lightSeconds": 676,
+    "lightMinutes": 11.26,
+    "sunLightMinutesMars": 13.34,
+    "marsAheadOfEarthDeg": 57.2,
+    "earth": {
+     "x": 0.6661,
+     "y": 0.7328
+    },
+    "mars": {
+     "x": -0.4128,
+     "y": 1.5496
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-11",
+   "flares": {
+    "count": 1,
+    "C": 0,
+    "M": 1,
+    "X": 0,
+    "max": "M1.7",
+    "maxPeakTime": "2026-11-11T21:21Z",
+    "maxRegion": 14566,
+    "maxLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49504/-1"
+   },
+   "cmes": {
+    "count": 1,
+    "fastest": 367,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49505/-1",
+    "fastestLongitude": 85,
+    "fastestHalfAngle": 29,
+    "fastestStart": "2026-11-11T23:24Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3455,
+    "distanceMillionKm": 201.3,
+    "lightSeconds": 671,
+    "lightMinutes": 11.19,
+    "sunLightMinutesMars": 13.35,
+    "marsAheadOfEarthDeg": 56.7,
+    "earth": {
+     "x": 0.653,
+     "y": 0.7442
+    },
+    "mars": {
+     "x": -0.4258,
+     "y": 1.5472
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 1,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-12",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 2,
+    "fastest": 327,
+    "fastestType": "S",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49508/-1",
+    "fastestLongitude": null,
+    "fastestHalfAngle": 15,
+    "fastestStart": "2026-11-12T01:53Z"
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3371,
+    "distanceMillionKm": 200,
+    "lightSeconds": 667,
+    "lightMinutes": 11.12,
+    "sunLightMinutesMars": 13.36,
+    "marsAheadOfEarthDeg": 56.1,
+    "earth": {
+     "x": 0.6397,
+     "y": 0.7554
+    },
+    "mars": {
+     "x": -0.4387,
+     "y": 1.5446
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-13",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 5,
+    "fastest": 525,
+    "fastestType": "C",
+    "fastestLink": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49529/-1",
+    "fastestLongitude": -46,
+    "fastestHalfAngle": 17,
+    "fastestStart": "2026-11-13T03:24Z"
+   },
+   "marsArrivals": [
+    {
+     "arrival": "2026-11-13T12:00Z",
+     "glancing": true,
+     "cmeStart": "2026-11-09T18:15Z",
+     "cmeSpeed": 726,
+     "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49472/-1"
+    }
+   ],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3286,
+    "distanceMillionKm": 198.8,
+    "lightSeconds": 663,
+    "lightMinutes": 11.05,
+    "sunLightMinutesMars": 13.37,
+    "marsAheadOfEarthDeg": 55.6,
+    "earth": {
+     "x": 0.6262,
+     "y": 0.7663
+    },
+    "mars": {
+     "x": -0.4516,
+     "y": 1.5419
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  },
+  {
+   "date": "2026-11-14",
+   "flares": {
+    "count": 0,
+    "C": 0,
+    "M": 0,
+    "X": 0,
+    "max": null,
+    "maxPeakTime": null,
+    "maxRegion": null,
+    "maxLink": null
+   },
+   "cmes": {
+    "count": 0,
+    "fastest": null,
+    "fastestType": null,
+    "fastestLink": null,
+    "fastestLongitude": null,
+    "fastestHalfAngle": null,
+    "fastestStart": null
+   },
+   "marsArrivals": [],
+   "marsForecasts": [],
+   "earth": {
+    "kpMax": null,
+    "gst": false,
+    "shockArrivals": []
+   },
+   "sep": [],
+   "rad": null,
+   "orbit": {
+    "distanceAu": 1.3201,
+    "distanceMillionKm": 197.5,
+    "lightSeconds": 659,
+    "lightMinutes": 10.98,
+    "sunLightMinutesMars": 13.38,
+    "marsAheadOfEarthDeg": 55,
+    "earth": {
+     "x": 0.6125,
+     "y": 0.777
+    },
+    "mars": {
+     "x": -0.4645,
+     "y": 1.5391
+    }
+   },
+   "game": {
+    "radSource": "estimated",
+    "doseOutside": 115,
+    "doseCalm": 115,
+    "doseStorm": 0,
+    "stormLevel": 0,
+    "flareLevel": 0,
+    "radioNoise": 0
+   }
+  }
+ ],
+ "notable": {
+  "flares": [
+   {
+    "id": "2026-11-05T18:21:00-FLR-001",
+    "begin": "2026-11-05T18:21Z",
+    "peak": "2026-11-05T18:33Z",
+    "end": "2026-11-05T18:41Z",
+    "cls": "M3.5",
+    "loc": "S08E35",
+    "region": 14566,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49391/-1"
+   },
+   {
+    "id": "2026-11-07T18:21:00-FLR-001",
+    "begin": "2026-11-07T18:21Z",
+    "peak": "2026-11-07T18:42Z",
+    "end": "2026-11-07T18:56Z",
+    "cls": "M1.9",
+    "loc": "S07E06",
+    "region": 14566,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49448/-1"
+   },
+   {
+    "id": "2026-11-08T07:33:00-FLR-001",
+    "begin": "2026-11-08T07:33Z",
+    "peak": "2026-11-08T07:46Z",
+    "end": "2026-11-08T07:54Z",
+    "cls": "M1.7",
+    "loc": "S07W03",
+    "region": 14566,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49453/-1"
+   },
+   {
+    "id": "2026-11-11T21:06:00-FLR-001",
+    "begin": "2026-11-11T21:06Z",
+    "peak": "2026-11-11T21:21Z",
+    "end": "2026-11-11T21:29Z",
+    "cls": "M1.7",
+    "loc": "S07W46",
+    "region": 14566,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49504/-1"
+   },
+   {
+    "id": "2026-10-19T08:54:00-FLR-001",
+    "begin": "2026-10-19T08:54Z",
+    "peak": "2026-10-19T09:03Z",
+    "end": "2026-10-19T09:16Z",
+    "cls": "M1.6",
+    "loc": "S15W48",
+    "region": 14551,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49165/-1"
+   },
+   {
+    "id": "2026-11-07T17:11:00-FLR-001",
+    "begin": "2026-11-07T17:11Z",
+    "peak": "2026-11-07T17:17Z",
+    "end": "2026-11-07T17:24Z",
+    "cls": "M1.4",
+    "loc": "S08E10",
+    "region": 14566,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49442/-1"
+   },
+   {
+    "id": "2026-10-16T15:38:00-FLR-001",
+    "begin": "2026-10-16T15:38Z",
+    "peak": "2026-10-16T15:42Z",
+    "end": "2026-10-16T15:45Z",
+    "cls": "M1.3",
+    "loc": "S16W15",
+    "region": 14551,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49134/-1"
+   },
+   {
+    "id": "2026-11-07T12:26:00-FLR-001",
+    "begin": "2026-11-07T12:26Z",
+    "peak": "2026-11-07T12:43Z",
+    "end": "2026-11-07T12:48Z",
+    "cls": "M1.2",
+    "loc": "S08E13",
+    "region": 14566,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49433/-1"
+   },
+   {
+    "id": "2026-11-08T15:29:00-FLR-001",
+    "begin": "2026-11-08T15:29Z",
+    "peak": "2026-11-08T15:37Z",
+    "end": "2026-11-08T15:49Z",
+    "cls": "M1.1",
+    "loc": "S07W01",
+    "region": 14566,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49456/-1"
+   },
+   {
+    "id": "2026-11-08T18:15:00-FLR-001",
+    "begin": "2026-11-08T18:15Z",
+    "peak": "2026-11-08T18:27Z",
+    "end": "2026-11-08T18:35Z",
+    "cls": "M1.1",
+    "loc": "S07W04",
+    "region": 14566,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/49461/-1"
+   }
+  ],
+  "cmes": [
+   {
+    "id": "2026-10-17T02:48:00-CME-001",
+    "start": "2026-10-17T02:48Z",
+    "loc": null,
+    "region": null,
+    "speed": 1048,
+    "type": "O",
+    "halfAngle": 38,
+    "lat": -4,
+    "lon": -99,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49150/-1"
+   },
+   {
+    "id": "2026-11-10T05:30:00-CME-001",
+    "start": "2026-11-10T05:30Z",
+    "loc": "S17W72",
+    "region": 14571,
+    "speed": 974,
+    "type": "C",
+    "halfAngle": 11,
+    "lat": 2,
+    "lon": 93,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49479/-1"
+   },
+   {
+    "id": "2026-10-21T20:36:00-CME-001",
+    "start": "2026-10-21T20:36Z",
+    "loc": null,
+    "region": null,
+    "speed": 973,
+    "type": "C",
+    "halfAngle": 46,
+    "lat": 21,
+    "lon": -164,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49197/-1"
+   },
+   {
+    "id": "2026-10-20T14:23:00-CME-001",
+    "start": "2026-10-20T14:23Z",
+    "loc": null,
+    "region": null,
+    "speed": 920,
+    "type": "C",
+    "halfAngle": 13,
+    "lat": 26,
+    "lon": 149,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49183/-1"
+   },
+   {
+    "id": "2026-11-05T20:00:00-CME-001",
+    "start": "2026-11-05T20:00Z",
+    "loc": "S08E35",
+    "region": 14566,
+    "speed": 915,
+    "type": "C",
+    "halfAngle": 13,
+    "lat": 4,
+    "lon": -35,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49394/-1"
+   },
+   {
+    "id": "2026-11-01T00:00:00-CME-001",
+    "start": "2026-11-01T00:00Z",
+    "loc": "S15E65",
+    "region": null,
+    "speed": 894,
+    "type": "C",
+    "halfAngle": 14,
+    "lat": -11,
+    "lon": -42,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49353/-1"
+   },
+   {
+    "id": "2026-10-26T09:00:00-CME-001",
+    "start": "2026-10-26T09:00Z",
+    "loc": "S09W72",
+    "region": 14561,
+    "speed": 873,
+    "type": "C",
+    "halfAngle": 11,
+    "lat": -7,
+    "lon": 43,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49254/-1"
+   },
+   {
+    "id": "2026-10-24T20:36:00-CME-001",
+    "start": "2026-10-24T20:36Z",
+    "loc": null,
+    "region": null,
+    "speed": 838,
+    "type": "C",
+    "halfAngle": 10,
+    "lat": -15,
+    "lon": 121,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/49226/-1"
+   }
+  ],
+  "sep": []
+ }
+}

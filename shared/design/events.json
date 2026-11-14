@@ -1,0 +1,1013 @@
+{
+  "_comment": "Story beats and the event deck. Schema: shared/design/SCHEMA.md. Text tokens in braces are filled by the engine: {sol} {shield} {need} {flareMax} {realDate} {delayMin} {fcSol} {fcSpeed} {fcKind} {doseToday} {calmDose} {ratio}. Reading level: grade 3-5. Every 'learn' text must be backed by the ids in 'sources' (shared/design/sources.json). Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "schemaVersion": 1,
+  "maxChoiceEventsPerSol": 2,
+  "events": [
+    {
+      "id": "broken_message",
+      "kind": "story",
+      "sol": 1,
+      "exclusive": true,
+      "title": "A message in pieces",
+      "scene": "dish",
+      "lines": [
+        { "who": "kofi", "say": "Message from Earth coming in. And it's a mess. The Sun is loud today, and the static ate most of it." },
+        { "who": "pip", "say": "I caught this much: \"LAKESHORE. The sun... has turned... into yours. We cannot... You are... Do not wait...\"" },
+        { "who": "dil", "say": "Do not wait for what?" }
+      ],
+      "realData": ["donki"],
+      "sources": ["donki", "nasa-comm-delay"],
+      "learn": "Radio from Earth took {delayMin} minutes to reach Mars today. Big solar flares can fill radio links with static. Today's biggest flare in NASA's record was class {flareMax}.",
+      "choices": [
+        {
+          "id": "ask_again",
+          "label": "Ask Earth to send it again",
+          "detail": "Costs 1 power cell for the dish. The answer comes tomorrow.",
+          "hint": "PIP: a question takes {delayMin} minutes to reach Earth, and the answer needs the same to come back.",
+          "askEarth": true,
+          "effects": [
+            { "after": 1, "do": [ { "v": "fragments", "add": 1 } ], "because": "Because you asked Earth to send the message again, one more piece came through." },
+            { "log": "Sol 1: you spent power to ask Earth to repeat the broken message.", "kind": "turn" }
+          ],
+          "result": [ { "who": "kofi", "say": "Question sent. It's crossing space right now. Don't hold your breath." } ]
+        },
+        {
+          "id": "kofi_cleans",
+          "label": "Let Kofi clean up the recording tonight",
+          "detail": "No power cost. Kofi loses sleep.",
+          "effects": [
+            { "v": "health", "add": -4 },
+            { "v": "fragments", "add": 1 },
+            { "say": "kofi", "text": "Got a few more words out of the noise. \"...turned out of our sight...\" My eyes hurt." }
+          ],
+          "result": [ { "who": "kofi", "say": "I'll sit with it. Save me some coffee." } ]
+        },
+        {
+          "id": "move_on",
+          "label": "Save it and get to work",
+          "detail": "Free. But the message stays broken.",
+          "effects": [ { "v": "morale", "add": -2 } ],
+          "result": [ { "who": "dil", "say": "It'll bug me all day. But fine. Rocks first." } ]
+        }
+      ]
+    },
+    {
+      "id": "dil_asks",
+      "kind": "story",
+      "sol": 2,
+      "title": "The old river valley",
+      "scene": "garage",
+      "lines": [
+        { "who": "dil", "say": "The old river valley is a few hours' drive. That's where the leopard-spot rocks are. I need the rover charged." },
+        { "who": "ana", "say": "And I need light for the seedlings. Amu and Syr just grew their first real leaves." }
+      ],
+      "sources": ["nasa-cheyava", "nasa-jezero"],
+      "learn": "In 2024 NASA's Perseverance rover found a rock here called Cheyava Falls. It has spots like a leopard's coat. Scientists call it a 'potential biosignature': a clue that needs much more study before anyone can say what made it.",
+      "choices": [
+        {
+          "id": "rover_first",
+          "label": "Charge the rover first",
+          "detail": "Science jumps ahead. The seedlings wait in dim light.",
+          "effects": [ { "v": "science", "add": 9 }, { "v": "power", "add": -10 }, { "v": "plants", "add": -4 }, { "v": "morale", "add": 1 } ],
+          "result": [ { "who": "dil", "say": "Yes! Sorry, Ana. I'll bring your tomatoes a nice rock." } ]
+        },
+        {
+          "id": "plants_first",
+          "label": "Seedlings first, rover tomorrow",
+          "detail": "The garden gets a head start. Dil loses a day.",
+          "effects": [ { "v": "plants", "add": 7 }, { "v": "power", "add": -10 }, { "v": "morale", "add": -1 } ],
+          "result": [ { "who": "ana", "say": "Thank you. Dil, they will remember this when you want a salad." } ]
+        },
+        {
+          "id": "split",
+          "label": "Split the power",
+          "detail": "A little for each. Nobody is happy, nobody is sad.",
+          "effects": [ { "v": "science", "add": 4 }, { "v": "plants", "add": 3 }, { "v": "power", "add": -10 } ],
+          "result": [ { "who": "kofi", "say": "Half a charge each. The fairest way to annoy everybody." } ]
+        }
+      ]
+    },
+    {
+      "id": "forecast",
+      "kind": "auto",
+      "when": { "all": [ { "sw": "hasForecast", "eq": 1 }, { "v": "forecastsShown", "lt": 3 }, { "sol": { "gte": 2, "lte": 7 } } ] },
+      "priority": 60,
+      "title": "Space weather report",
+      "scene": "sky",
+      "lines": [
+        { "who": "pip", "say": "Space weather report. NASA's computer model says a cloud from the Sun will reach Mars on Sol {fcSol}. It left the Sun at {fcSpeed} kilometres per second. The model calls it {fcKind}." },
+        { "who": "kofi", "say": "Models have been wrong before. Charging the shield for nothing costs real power." }
+      ],
+      "realData": ["donki"],
+      "sources": ["donki"],
+      "learn": "This forecast is real. It comes from WSA-ENLIL, a NASA model that tracks clouds of solar gas (called CMEs) across the solar system. A forecast is a best guess, not a promise.",
+      "choices": [
+        {
+          "id": "charge_now",
+          "label": "Start charging the shield",
+          "detail": "Costs 1 power cell now. Shield goes up.",
+          "effects": [ { "v": "shield", "add": 12 }, { "v": "power", "add": -10 }, { "v": "forecastsShown", "add": 1 } ],
+          "result": [ { "who": "kofi", "say": "Charging. If nothing comes, we wasted a cell. If something comes, you're a genius." } ]
+        },
+        {
+          "id": "wait",
+          "label": "Wait and watch the sky",
+          "detail": "Free today. You may regret it later.",
+          "effects": [ { "v": "forecastsShown", "add": 1 } ],
+          "result": [ { "who": "pip", "say": "Watching. I will tell you the moment my radiation counter moves." } ]
+        },
+        {
+          "id": "ask_earth",
+          "label": "Ask Earth how sure they are",
+          "detail": "Costs 1 power cell for the dish. The answer comes tomorrow.",
+          "askEarth": true,
+          "effects": [ { "msg": "earth.forecast", "after": 1 }, { "v": "forecastsShown", "add": 1 } ],
+          "result": [ { "who": "kofi", "say": "Sent. By the time they answer, the Sun may have changed its mind." } ]
+        }
+      ]
+    },
+    {
+      "id": "dust_front",
+      "kind": "story",
+      "when": { "flag": "dustStartsToday" },
+      "exclusive": false,
+      "priority": 90,
+      "title": "A wall of dust",
+      "scene": "solar",
+      "lines": [
+        { "who": "kofi", "say": "Look east. That brown wall is dust, and it's coming here. When it arrives, the solar panels go hungry." },
+        { "who": "ana", "say": "How long?" },
+        { "who": "kofi", "say": "Two sols. Maybe three. Mars doesn't tell." }
+      ],
+      "sources": ["jpl-dust-2018", "nasa-oppy-end"],
+      "learn": "Dust storms on Mars can block most sunlight. In 2018 a storm grew to cover a quarter of the planet. Scientists measured how thick the dust was with a number called tau. It reached 10.8, about twice as thick as the big storm of 2007, and the solar-powered Opportunity rover fell silent.",
+      "choices": [
+        {
+          "id": "cover_panels",
+          "label": "Send Kofi to tilt and cover the panels",
+          "detail": "Panels work a little better in the storm. Kofi comes back worn out.",
+          "effects": [
+            { "mod": "solar", "add": 10, "sols": 3, "id": "tiltedPanels" },
+            { "v": "health", "add": -6 },
+            { "v": "dose", "add": 20 },
+            { "flag": "panelsCovered", "set": true }
+          ],
+          "result": [ { "who": "kofi", "say": "Panels tilted. I have sand in places sand should not be." } ]
+        },
+        {
+          "id": "bank_power",
+          "label": "Everything to Low today. Fill the battery.",
+          "detail": "Battery up before the storm. Air and plants pay for it today.",
+          "effects": [ { "v": "power", "add": 15 }, { "v": "air", "add": -6 }, { "v": "plants", "add": -5 } ],
+          "result": [ { "who": "ana", "say": "The seedlings will sulk. But a full battery is a full battery." } ]
+        },
+        {
+          "id": "carry_on",
+          "label": "Carry on as planned",
+          "detail": "No cost today. The storm will find you as you are.",
+          "effects": [ { "v": "morale", "add": 1 } ],
+          "result": [ { "who": "dil", "say": "Bold. I like bold. Ask me again in two sols." } ]
+        }
+      ]
+    },
+    {
+      "id": "kofi_birthday",
+      "kind": "story",
+      "sol": 5,
+      "priority": 70,
+      "title": "A message from home",
+      "scene": "interior",
+      "lines": [
+        { "who": "ana", "say": "It's Kofi's birthday. His family sent a video. It's a big file, and the dish needs a lot of power to pull it down." },
+        { "who": "kofi", "say": "It can wait. It's only a birthday." },
+        { "who": "ana", "say": "He has been saying that since breakfast. He does not mean it." }
+      ],
+      "sources": ["nasa-comm-delay"],
+      "learn": "On Mars you can never have a live call: every word is at least {delayMin} minutes old when it arrives.",
+      "choices": [
+        {
+          "id": "full_video",
+          "label": "Download the whole video",
+          "detail": "Costs 2 power cells. The crew watches it together.",
+          "effects": [
+            { "v": "power", "add": -20 }, { "v": "morale", "add": 12 }, { "flag": "kofiMessage", "set": true },
+            { "if": { "v": "fragments", "lt": 3 }, "do": [ { "v": "fragments", "add": 1 }, { "say": "pip", "text": "While the dish was up, I caught another piece of the broken message: \"...we cannot see what it does next...\"" } ] }
+          ],
+          "result": [ { "who": "kofi", "say": "They baked a cake shaped like the rover. It's terrible. It's perfect." } ]
+        },
+        {
+          "id": "text_only",
+          "label": "Text only",
+          "detail": "Costs 1 power cell. Words, no faces.",
+          "effects": [ { "v": "power", "add": -10 }, { "v": "morale", "add": 5 }, { "flag": "kofiMessageText", "set": true } ],
+          "result": [ { "who": "kofi", "say": "\"Happy birthday. We look up every night.\" That's enough. That's plenty." } ]
+        },
+        {
+          "id": "not_today",
+          "label": "Not today. We need every cell.",
+          "detail": "Free. The message waits on the relay, and it may not keep.",
+          "effects": [
+            { "v": "morale", "add": -9 },
+            { "flag": "messageLost", "set": true },
+            { "after": 2, "do": [ { "v": "morale", "add": -4 } ], "because": "Because the birthday message was never downloaded, the relay deleted it to make room. Kofi says he is fine." },
+            { "log": "Sol 5: a message from home never arrived.", "kind": "loss" }
+          ],
+          "result": [ { "who": "kofi", "say": "Told you. Only a birthday." } ]
+        }
+      ]
+    },
+    {
+      "id": "dil_departs",
+      "kind": "auto",
+      "when": { "all": [ { "v": "science", "gte": 40 }, { "flag": "dilInField", "is": false }, { "flag": "dilReturned", "is": false }, { "flag": "sampleLost", "is": false } ] },
+      "priority": 100,
+      "note": true,
+      "title": "Dil drives out",
+      "scene": "delta",
+      "lines": [
+        { "who": "dil", "say": "Rover's packed. I'm heading up the old river valley. Keep the kettle warm." }
+      ],
+      "effects": [ { "flag": "dilInField", "set": true }, { "log": "Dil left for the river valley.", "kind": "turn" } ]
+    },
+    {
+      "id": "leopard_spots",
+      "kind": "auto",
+      "when": { "all": [ { "v": "science", "gte": 70 }, { "flag": "dilInField" }, { "flag": "spotsFound", "is": false } ] },
+      "priority": 80,
+      "title": "Leopard spots",
+      "scene": "delta",
+      "lines": [
+        { "who": "dil", "say": "Commander. It has spots. Tiny dark rings, like a leopard's coat. Just like the rock the old rover found." },
+        { "who": "dil", "say": "On Earth, spots like these often form where tiny living things once were. Often. Not always. I need this core." }
+      ],
+      "realData": ["nasa-cheyava"],
+      "sources": ["nasa-cheyava"],
+      "learn": "The real Cheyava Falls rock has minerals called vivianite and greigite in its spots. On Earth, microbes can make them. But they can also form with no life at all. Only labs on Earth can tell.",
+      "choices": [
+        {
+          "id": "deep_core",
+          "label": "Drill deep and slow",
+          "detail": "The best possible sample. Dil stays out longer.",
+          "effects": [ { "flag": "spotsFound", "set": true }, { "flag": "deepCore", "set": true }, { "mod": "scienceRate", "add": -3, "sols": 2, "id": "deepDrill" }, { "v": "morale", "add": 3 } ],
+          "result": [ { "who": "dil", "say": "Slow and careful. If the answer is in there, I'm not cracking it." } ]
+        },
+        {
+          "id": "fast_core",
+          "label": "Drill fast and come home",
+          "detail": "Science jumps ahead now. The core is rougher.",
+          "effects": [ { "flag": "spotsFound", "set": true }, { "v": "science", "add": 10 } ],
+          "result": [ { "who": "dil", "say": "Quick and dirty. Got it. Don't tell my old professor." } ]
+        },
+        {
+          "id": "photos_to_earth",
+          "label": "Send photos to Earth first",
+          "detail": "Costs 1 power cell. Earth sees it too.",
+          "askEarth": true,
+          "effects": [ { "flag": "spotsFound", "set": true }, { "v": "morale", "add": 4 }, { "msg": "earth.spots", "after": 1 } ],
+          "result": [ { "who": "dil", "say": "Sending. In a quarter of an hour, a room full of people on Earth will stop breathing." } ]
+        }
+      ]
+    },
+    {
+      "id": "harvest",
+      "kind": "auto",
+      "when": { "flag": "harvestToday" },
+      "priority": 75,
+      "title": "First harvest on Mars",
+      "scene": "greenhouse",
+      "lines": [
+        { "who": "ana", "say": "They're ready. Lettuce, mizuna, and four small red tomatoes. Grown on Mars. I might cry on the kale." }
+      ],
+      "sources": ["nasa-veggie", "osdr-268", "osdr-766"],
+      "learn": "Astronauts really grow and eat lettuce, kale and mizuna on the International Space Station, under LED lights that glow magenta-pink. Fresh food matters: vitamins in packed food break down over long missions.",
+      "choices": [
+        {
+          "id": "feast",
+          "label": "Feast tonight",
+          "detail": "The whole crew eats fresh. Big morale boost.",
+          "effects": [ { "v": "morale", "add": 9 }, { "v": "health", "add": 4 } ],
+          "result": [ { "who": "kofi", "say": "I have eaten in forty countries. This is the best salad of my life." } ]
+        },
+        {
+          "id": "save_seeds",
+          "label": "Eat half, save seeds from the rest",
+          "detail": "Smaller feast. If the garden ever dies, Ana can start again.",
+          "effects": [ { "v": "morale", "add": 4 }, { "v": "food", "add": -4 }, { "flag": "seedsSaved", "set": true } ],
+          "result": [ { "who": "ana", "say": "A gardener always saves seeds. Always." } ]
+        },
+        {
+          "id": "show_earth",
+          "label": "Send the harvest photo to Earth",
+          "detail": "Costs 1 power cell. Earth cheers, a few minutes late.",
+          "effects": [ { "v": "power", "add": -10 }, { "v": "morale", "add": 6 }, { "flag": "harvestShared", "set": true } ],
+          "result": [ { "who": "ana", "say": "Let them see. Tomatoes on Mars." } ]
+        }
+      ]
+    },
+    {
+      "id": "storm",
+      "kind": "crisis",
+      "when": { "all": [ { "sw": "stormLevel", "gte": 1 }, { "flag": "stormDone", "is": false } ] },
+      "exclusive": true,
+      "priority": 1000,
+      "title": "The storm",
+      "scene": "shelter",
+      "realData": ["radlab-msl", "donki"],
+      "sources": ["radlab-msl", "donki", "jpl-may2024-storm"],
+      "intro": [
+        { "who": "pip", "say": "Commander. My radiation counter is climbing fast. This is not in any forecast." },
+        { "who": "kofi", "say": "Shield is at {shield} percent. For a storm like this we want {need}." },
+        { "who": "pip", "say": "A question to Earth takes {delayMin} minutes to get there, and {delayMin} more for the answer. The worst of this will be here sooner." }
+      ],
+      "steps": [
+        {
+          "id": "shelter",
+          "title": "Power for the shelter",
+          "lines": [
+            { "who": "kofi", "say": "I can pull the greenhouse power into the shield. Right now. The plants go dark." },
+            { "who": "ana", "say": "If the lights go out tonight, Amu and Syr may not make it. Ten years, Commander. But it is your call." }
+          ],
+          "defaultChoice": "hold",
+          "choices": [
+            {
+              "id": "divert",
+              "label": "Divert the greenhouse to the shield",
+              "detail": "Shield +35 right now. The plants lose their light.",
+              "effects": [ { "v": "shield", "add": 35 }, { "v": "plants", "add": -25 }, { "v": "morale", "add": -6 }, { "flag": "gardenDiverted", "set": true }, { "log": "The storm: you gave the garden's power to the shield.", "kind": "turn" } ],
+              "result": [ { "who": "ana", "say": "Do it. I'll sit with them in the dark." } ]
+            },
+            {
+              "id": "water_wall",
+              "label": "Fill the water wall",
+              "detail": "Uses a lot of water. Water is a good shield. Plants keep their light.",
+              "needs": { "v": "water", "gte": 25 },
+              "needsText": "Not enough water",
+              "effects": [ { "v": "water", "add": -25 }, { "flag": "waterWall", "set": true }, { "log": "The storm: you pumped the water supply into the shelter walls.", "kind": "turn" } ],
+              "result": [ { "who": "kofi", "say": "Pumps on. We'll be thirsty next week, but the walls are full." } ]
+            },
+            {
+              "id": "both",
+              "label": "Do both",
+              "detail": "Strongest shelter. The garden and the water both pay.",
+              "needs": { "v": "water", "gte": 25 },
+              "needsText": "Not enough water",
+              "effects": [ { "v": "shield", "add": 35 }, { "v": "plants", "add": -25 }, { "v": "morale", "add": -6 }, { "flag": "gardenDiverted", "set": true }, { "v": "water", "add": -25 }, { "flag": "waterWall", "set": true }, { "log": "The storm: garden power and water both went to the shelter.", "kind": "turn" } ],
+              "result": [ { "who": "kofi", "say": "Everything we have. Walls full, shield climbing." } ]
+            },
+            {
+              "id": "hold",
+              "label": "Hold what we have",
+              "detail": "The garden stays lit. The shield stays where it is.",
+              "risk": 1,
+              "effects": [ { "log": "The storm: you kept the garden lit and trusted the shield you had.", "kind": "turn" } ],
+              "result": [ { "who": "ana", "say": "Thank you. Everyone into the shelter. Now." } ]
+            }
+          ]
+        },
+        {
+          "id": "dil",
+          "title": "Dil at the delta",
+          "when": { "flag": "dilInField" },
+          "lines": [
+            { "who": "dil", "say": "I see it too. My camera is full of white sparks. The core is half out of the rock." },
+            { "who": "dil", "say": "Twenty more minutes and it's sealed. Or I drop the drill and run. Tell me which." }
+          ],
+          "learn": "Those white sparks are real. During the May 2024 storm, the cameras on NASA's Curiosity rover filled with streaks and specks as charged particles hit them.",
+          "defaultChoice": "trust",
+          "choices": [
+            {
+              "id": "recall",
+              "label": "Come home now",
+              "detail": "Dil is safer. A half-drilled core cannot be saved.",
+              "effects": [ { "flag": "dilRecalled", "set": true } ],
+              "result": [ { "who": "dil", "say": "Copy. Leaving it. ...Leaving it. Driving." } ]
+            },
+            {
+              "id": "cliff",
+              "label": "Finish, then shelter under the cliff",
+              "detail": "Rock overhead blocks part of the storm. She needs enough rover charge to get home.",
+              "risk": 1,
+              "effects": [ { "flag": "dilCliff", "set": true } ],
+              "result": [ { "who": "dil", "say": "There's an overhang twenty metres away. I'll hug the rock. Tell Ana to save me a tomato." } ]
+            },
+            {
+              "id": "trust",
+              "label": "Your call, Dil. I trust you.",
+              "detail": "She is the one who can see the rock and the sky.",
+              "risk": 1,
+              "effects": [ { "flag": "dilTrusted", "set": true }, { "v": "morale", "add": 6 } ],
+              "result": [ { "who": "dil", "say": "...Thank you. Give me a second to think like a grown-up." } ]
+            }
+          ]
+        },
+        {
+          "id": "earth",
+          "title": "Call Earth?",
+          "lines": [
+            { "who": "pip", "say": "Mission Control does not know yet. From Earth, this part of the Sun is hidden. Shall I tell them?" }
+          ],
+          "defaultChoice": "no_time",
+          "choices": [
+            {
+              "id": "send",
+              "label": "Send the question anyway",
+              "detail": "Costs 1 power cell. The answer will be too late for tonight.",
+              "askEarth": true,
+              "effects": [ { "msg": "earth.storm", "after": 1 }, { "flag": "askedInStorm", "set": true } ],
+              "result": [ { "who": "pip", "say": "Sent. The answer is {delayMin} minutes away, twice. We will already know how this ends." } ]
+            },
+            {
+              "id": "no_time",
+              "label": "No time. We decide here.",
+              "detail": "Keep the cell. Tell them tomorrow.",
+              "effects": [],
+              "result": [ { "who": "kofi", "say": "Right. Our sky, our call." } ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "neighbor_call",
+      "kind": "story",
+      "when": { "all": [ { "flag": "stormDone" }, { "flag": "neighborAsked", "is": false }, { "sol": { "gte": 2, "lte": 9 } } ] },
+      "priority": 85,
+      "title": "A call from Isidis Camp",
+      "scene": "dish",
+      "lines": [
+        { "who": "kofi", "say": "Radio call from Isidis Camp. Three geologists, forty kilometres east. The storm fried their power. They're asking for two of our battery packs." },
+        { "who": "ana", "say": "We're not exactly rich ourselves." }
+      ],
+      "sources": [],
+      "learn": "Nobody has lived on Mars yet, so nobody knows how outposts will share. What would be fair? Talk about it.",
+      "choices": [
+        {
+          "id": "send_packs",
+          "label": "Send the battery packs",
+          "detail": "Costs 2 power cells. They will not forget it.",
+          "needs": { "v": "power", "gte": 20 },
+          "needsText": "Needs 2 power cells",
+          "effects": [
+            { "v": "power", "add": -20 }, { "v": "morale", "add": 8 }, { "flag": "helpedNeighbor", "set": true }, { "flag": "neighborAsked", "set": true },
+            { "after": 1, "do": [ { "v": "air", "add": 10 } ], "because": "Because you helped Isidis Camp, they sent a drone with their spare air filters." },
+            { "log": "You shared power with Isidis Camp.", "kind": "turn" }
+          ],
+          "result": [ { "who": "kofi", "say": "Packs are on the drone. Somewhere out there, three people just started breathing easier." } ]
+        },
+        {
+          "id": "talk_fix",
+          "label": "Talk them through a repair by radio",
+          "detail": "Free in power. Kofi is busy all day, and it may not work.",
+          "effects": [
+            { "flag": "neighborAsked", "set": true }, { "v": "health", "add": -3 },
+            { "chance": 0.6, "do": [ { "flag": "helpedNeighbor", "set": true }, { "v": "morale", "add": 6 }, { "say": "kofi", "text": "Their lights are back on. I talked a geologist through rewiring a power bus. I need to lie down." } ], "else": [ { "v": "morale", "add": -4 }, { "say": "kofi", "text": "No good. They're leaving for their ship tonight. They're safe. They're just done." } ] }
+          ],
+          "result": [ { "who": "kofi", "say": "Put me on with whoever has the steadiest hands." } ]
+        },
+        {
+          "id": "refuse",
+          "label": "We can't spare it",
+          "detail": "You keep your power. They pack up and leave Mars early.",
+          "effects": [ { "flag": "neighborAsked", "set": true }, { "v": "morale", "add": -8 }, { "log": "You could not spare power for Isidis Camp. They left Mars early, safe.", "kind": "loss" } ],
+          "result": [ { "who": "dil", "say": "They'd have done the same. ...Would they?" } ]
+        }
+      ]
+    },
+    {
+      "id": "launch_window",
+      "kind": "story",
+      "sol": 10,
+      "exclusive": true,
+      "priority": 100,
+      "title": "The launch window",
+      "scene": "pad",
+      "lines": [
+        { "who": "sam", "say": "Lakeshore, this is Mission Control. Your window opens at sunset. Bring home everyone, and whatever else you can. We are with you." },
+        { "who": "pip", "say": "That message left Earth {delayMin} minutes ago." }
+      ],
+      "sources": ["nasa-launch-window"],
+      "learn": "A ship can only leave Mars for Earth when the two planets line up the right way. Miss the window and you wait a very long time.",
+      "choices": [
+        {
+          "id": "launch",
+          "label": "Launch on time",
+          "detail": "Go home with what you have.",
+          "effects": [],
+          "result": [ { "who": "kofi", "say": "Hatch sealed. Everybody count your fingers." } ]
+        },
+        {
+          "id": "last_run",
+          "label": "One last run for the core",
+          "detail": "A gamble. Dil races back to the outcrop before the window.",
+          "needs": { "all": [ { "flag": "sampleSecured", "is": false }, { "flag": "sampleLost", "is": false }, { "v": "science", "gte": 70 }, { "flag": "dilGrounded", "is": false }, { "v": "power", "gte": 30 } ] },
+          "needsText": "Only possible if the core is nearly done, Dil can drive, and you have 3 power cells",
+          "risk": 2,
+          "effects": [
+            { "v": "power", "add": -30 },
+            { "chance": 0.5, "do": [ { "flag": "sampleSecured", "set": true }, { "v": "science", "set": 100 }, { "say": "dil", "text": "GOT IT. Sealed. Driving like I stole it." } ], "else": [ { "v": "health", "add": -10 }, { "flag": "sampleLost", "set": true }, { "say": "dil", "text": "Drill jammed. I had to leave it. I'm sorry. I'm so sorry." } ] },
+            { "log": "Sol 10: a last-minute dash for the core.", "kind": "turn" }
+          ],
+          "result": [ { "who": "dil", "say": "Go go go go go." } ]
+        },
+        {
+          "id": "lights_on",
+          "label": "Leave the garden lights on for the next crew",
+          "detail": "Costs 1 power cell. A gift for people you will never meet.",
+          "needs": { "all": [ { "flag": "plantsDead", "is": false }, { "v": "power", "gte": 10 } ] },
+          "needsText": "Needs a living garden and 1 power cell",
+          "effects": [ { "v": "power", "add": -10 }, { "flag": "gardenLegacy", "set": true }, { "v": "morale", "add": 5 } ],
+          "result": [ { "who": "ana", "say": "Grow well, Amu. Grow well, Syr. Someone is coming." } ]
+        }
+      ]
+    },
+    {
+      "id": "against_orders",
+      "kind": "auto",
+      "when": { "all": [ { "v": "morale", "lt": 30 }, { "flag": "defied", "is": false }, { "sol": { "gte": 3, "lte": 9 } } ] },
+      "priority": 95,
+      "note": true,
+      "title": "Against orders",
+      "scene": "greenhouse",
+      "lines": [
+        { "who": "pip", "say": "Commander, someone moved power last night without asking. One cell went from the battery to the greenhouse lamps." },
+        { "who": "ana", "say": "It was me. You stopped listening, so I stopped asking. I'm sorry. And I'm not." }
+      ],
+      "effects": [ { "flag": "defied", "set": true }, { "v": "power", "add": -10 }, { "v": "plants", "add": 8 }, { "v": "morale", "add": 6 }, { "log": "With morale low, Ana moved power to the garden against orders.", "kind": "surprise" } ]
+    },
+    {
+      "id": "scrubber_clog",
+      "kind": "deck",
+      "when": { "sol": { "gte": 2, "lte": 9 } },
+      "weight": 10,
+      "once": true,
+      "title": "The air smells of dust",
+      "scene": "airmaker",
+      "lines": [
+        { "who": "kofi", "say": "The air scrubber is choking. Dust got into the filter. It still works, just badly." }
+      ],
+      "sources": ["nasa-o2-084"],
+      "learn": "People breathe out a gas called carbon dioxide. In a sealed habitat it builds up fast, so machines must scrub it out. Each person also needs about 0.84 kilograms of oxygen every day.",
+      "choices": [
+        {
+          "id": "fix_now",
+          "label": "Swap the filter now",
+          "detail": "Costs 1 power cell and Kofi's morning.",
+          "effects": [ { "v": "power", "add": -10 }, { "v": "air", "add": 4 } ],
+          "result": [ { "who": "kofi", "say": "New filter in. Breathe deep. That's the good stuff." } ]
+        },
+        {
+          "id": "limp",
+          "label": "Run it as it is",
+          "detail": "Free today. The air gets worse for two sols.",
+          "effects": [
+            { "v": "air", "add": -6 },
+            { "after": 1, "do": [ { "v": "air", "add": -8 } ], "because": "Because the clogged filter was left in, the air got thinner again." }
+          ],
+          "result": [ { "who": "kofi", "say": "It'll hold. Probably. If you get a headache, that's the filter talking." } ]
+        },
+        {
+          "id": "plants_help",
+          "label": "Move plant trays next to the scrubber",
+          "detail": "Plants clean a little air. Needs a healthy garden.",
+          "needs": { "v": "plants", "gte": 55 },
+          "needsText": "The garden is too small to help yet",
+          "effects": [ { "v": "air", "add": 2 }, { "v": "plants", "add": -4 }, { "v": "morale", "add": 2 } ],
+          "result": [ { "who": "ana", "say": "Nile and Volta will do their best. Plants have been cleaning air for a long time." } ]
+        }
+      ]
+    },
+    {
+      "id": "water_recycler",
+      "kind": "deck",
+      "when": { "sol": { "gte": 2, "lte": 9 } },
+      "weight": 10,
+      "once": true,
+      "title": "The recycler coughs",
+      "scene": "interior",
+      "lines": [
+        { "who": "ana", "say": "The water recycler is leaking into its own drain. We are losing water with every cup." }
+      ],
+      "sources": ["nasa-water-98"],
+      "learn": "On the International Space Station, machines turn sweat, breath and even urine back into clean drinking water. They recover about 98 percent of it. Each astronaut needs about a gallon a day.",
+      "choices": [
+        {
+          "id": "fix",
+          "label": "Fix the pump",
+          "detail": "Costs 1 power cell. Water is safe again.",
+          "effects": [ { "v": "power", "add": -10 }, { "v": "water", "add": -2 } ],
+          "result": [ { "who": "kofi", "say": "One new seal. The most valuable rubber ring on this planet." } ]
+        },
+        {
+          "id": "ration",
+          "label": "Ration water until the dust settles",
+          "detail": "Free in power. Everyone is thirsty and grumpy for two sols.",
+          "effects": [
+            { "v": "water", "add": -6 }, { "v": "morale", "add": -4 },
+            { "after": 1, "do": [ { "v": "water", "add": -6 }, { "v": "health", "add": -3 } ], "because": "Because the recycler was not fixed, more water leaked away overnight." }
+          ],
+          "result": [ { "who": "dil", "say": "No tea? On Mars? This is how missions fail." } ]
+        },
+        {
+          "id": "garden_water",
+          "label": "Borrow the garden's water",
+          "detail": "The crew drinks. The plants go thirsty.",
+          "effects": [ { "v": "water", "add": -3 }, { "v": "plants", "add": -9 }, { "v": "power", "add": -10 } ],
+          "result": [ { "who": "ana", "say": "They can take one dry day. One." } ]
+        }
+      ]
+    },
+    {
+      "id": "cold_snap",
+      "kind": "deck",
+      "when": { "sol": { "gte": 2, "lte": 9 } },
+      "weight": 8,
+      "once": true,
+      "title": "The coldest night yet",
+      "scene": "outpost",
+      "lines": [
+        { "who": "pip", "say": "Tonight will be much colder than usual. The heaters will want more power." }
+      ],
+      "sources": ["nasa-mars-facts"],
+      "learn": "Mars has thin air that cannot hold heat. NASA says temperatures there can reach 20 degrees Celsius and fall as low as about minus 153.",
+      "choices": [
+        {
+          "id": "heaters",
+          "label": "Turn the heaters up",
+          "detail": "Costs 1 power cell. Everyone sleeps warm.",
+          "effects": [ { "v": "power", "add": -10 }, { "v": "health", "add": 2 } ],
+          "result": [ { "who": "kofi", "say": "Toasty. I'll take first watch on the fuse box." } ]
+        },
+        {
+          "id": "huddle",
+          "label": "Everyone sleeps in one room",
+          "detail": "Free. Nobody sleeps well.",
+          "effects": [ { "v": "health", "add": -5 }, { "v": "morale", "add": -2 } ],
+          "result": [ { "who": "dil", "say": "Kofi snores like a rover stuck in sand." } ]
+        },
+        {
+          "id": "garden_heat",
+          "label": "Heat the greenhouse, not the bunks",
+          "detail": "Plants stay warm. People wear every sock they own.",
+          "effects": [ { "v": "plants", "add": 4 }, { "v": "health", "add": -6 } ],
+          "result": [ { "who": "ana", "say": "You are kind. Cold, but kind." } ]
+        }
+      ]
+    },
+    {
+      "id": "panel_dust",
+      "kind": "deck",
+      "when": { "flag": "panelsDusty" },
+      "weight": 30,
+      "once": true,
+      "title": "Dusty panels",
+      "scene": "solar",
+      "lines": [
+        { "who": "kofi", "say": "The storm left a blanket of dust on the solar panels. We're losing a cell of power every sol." }
+      ],
+      "sources": ["nasa-insight-dust"],
+      "learn": "Dust on solar panels is a real problem on Mars. NASA's InSight lander slowly lost power as dust piled up on its panels, and its mission ended in 2022.",
+      "choices": [
+        {
+          "id": "brush",
+          "label": "Send Kofi out with a brush",
+          "detail": "Panels clean today. Kofi spends hours outside.",
+          "effects": [ { "flag": "panelsDusty", "set": false }, { "clearMod": "dustyPanels" }, { "v": "health", "add": -4 }, { "v": "dose", "add": 40 } ],
+          "result": [ { "who": "kofi", "say": "Twenty panels, one brush. Call me the cleanest man on Mars." } ]
+        },
+        {
+          "id": "wait_wind",
+          "label": "Wait for the wind",
+          "detail": "Free. Maybe a dust devil will do the job. Maybe not.",
+          "effects": [
+            { "chance": 0.4, "do": [ { "after": 1, "do": [ { "flag": "panelsDusty", "set": false }, { "clearMod": "dustyPanels" }, { "flag": "dustDevilCleaned", "set": true } ], "because": "Because you waited, a dust devil danced across the solar field and swept the panels clean." } ], "else": [] }
+          ],
+          "result": [ { "who": "kofi", "say": "Waiting for Mars to do my job. It has happened before." } ]
+        }
+      ]
+    },
+    {
+      "id": "ana_light_recipe",
+      "kind": "deck",
+      "when": { "all": [ { "flag": "plantsDead", "is": false }, { "sol": { "gte": 2, "lte": 7 } } ] },
+      "weight": 9,
+      "once": true,
+      "title": "A new light recipe",
+      "scene": "greenhouse",
+      "lines": [
+        { "who": "ana", "say": "I want to try a new light recipe. More red, longer days. The tomatoes could grow much faster. It uses more power." }
+      ],
+      "sources": ["osdr-766", "nasa-veggie"],
+      "learn": "Scientists really test different light 'recipes' on space plants. One study in NASA's open science library grew tomatoes on the Space Station under different lighting to see what changed.",
+      "choices": [
+        {
+          "id": "try_it",
+          "label": "Try the new recipe",
+          "detail": "Costs 1 power cell. Plants grow faster for three sols.",
+          "effects": [ { "v": "power", "add": -10 }, { "mod": "plantsDrift", "add": 4, "sols": 3, "id": "lightRecipe" }, { "v": "morale", "add": 2 } ],
+          "result": [ { "who": "ana", "say": "Watch them go. Syr is already showing off." } ]
+        },
+        {
+          "id": "keep_it",
+          "label": "Keep the lights as they are",
+          "detail": "Free. Slow and steady.",
+          "effects": [ { "v": "morale", "add": -1 } ],
+          "result": [ { "who": "ana", "say": "Fine. Science can wait. It usually has to." } ]
+        }
+      ]
+    },
+    {
+      "id": "kofi_shortcut",
+      "kind": "deck",
+      "when": { "sol": { "gte": 3, "lte": 9 } },
+      "weight": 8,
+      "once": true,
+      "title": "Kofi's shortcut",
+      "scene": "interior",
+      "lines": [
+        { "who": "kofi", "say": "I can trick the battery into holding more charge. The safety limit is very careful. Too careful, maybe. It could go wrong." }
+      ],
+      "sources": [],
+      "learn": "Safety limits exist because space is far from help. Engineers call the extra room a 'margin'. Spending your margin can be smart or sorry.",
+      "choices": [
+        {
+          "id": "do_it",
+          "label": "Do it",
+          "detail": "A gamble. Probably +2 power cells. Possibly a blown fuse.",
+          "risk": 1,
+          "effects": [
+            { "chance": 0.7, "do": [ { "v": "power", "add": 20 }, { "say": "kofi", "text": "Ha! Two extra cells. I am wasted on this planet." } ], "else": [ { "v": "power", "add": -15 }, { "v": "morale", "add": -3 }, { "say": "kofi", "text": "...That was the fuse. And the spare fuse. I'll be in the corner feeling bad." } ] }
+          ],
+          "result": [ { "who": "kofi", "say": "Stand back. Further. A bit further." } ]
+        },
+        {
+          "id": "by_the_book",
+          "label": "By the book",
+          "detail": "No gain, no risk.",
+          "effects": [ { "v": "morale", "add": 1 } ],
+          "result": [ { "who": "kofi", "say": "Sensible. Boring. Sensible." } ]
+        }
+      ]
+    },
+    {
+      "id": "dil_detour",
+      "kind": "deck",
+      "when": { "all": [ { "flag": "dilInField" }, { "v": "science", "lt": 70 } ] },
+      "weight": 12,
+      "once": true,
+      "title": "A second outcrop",
+      "scene": "delta",
+      "lines": [
+        { "who": "dil", "say": "There's a second outcrop across the valley. Layers like the pages of a book. It's a long way round, but two samples beat one." }
+      ],
+      "sources": ["nasa-jezero"],
+      "learn": "Jezero Crater held a lake about 3.5 billion years ago. A river carried mud and sand into it and built a delta. Layers of old mud are a good place to look for signs of ancient life.",
+      "choices": [
+        {
+          "id": "go",
+          "label": "Go and look",
+          "detail": "Science up. Dil is further from home.",
+          "risk": 1,
+          "effects": [ { "v": "science", "add": 8 }, { "v": "power", "add": -10 }, { "flag": "farAfield", "set": true } ],
+          "result": [ { "who": "dil", "say": "Worth it. Oh, this is so worth it." } ]
+        },
+        {
+          "id": "stay",
+          "label": "Stay on the main target",
+          "detail": "No detour. Dil sighs loudly on the radio.",
+          "effects": [ { "v": "morale", "add": -2 }, { "v": "science", "add": 2 } ],
+          "result": [ { "who": "dil", "say": "One rock at a time. Understood. Sigh. Did you hear the sigh?" } ]
+        }
+      ]
+    },
+    {
+      "id": "relay_pass",
+      "kind": "deck",
+      "when": { "sol": { "gte": 2, "lte": 9 } },
+      "weight": 9,
+      "once": true,
+      "title": "The orbiter flies over",
+      "scene": "dish",
+      "lines": [
+        { "who": "pip", "say": "A relay orbiter is passing overhead. We get ten minutes of fast radio. What do we send?" }
+      ],
+      "sources": ["nasa-mars-relay"],
+      "learn": "Rovers on Mars usually talk to Earth through orbiters that fly overhead a few times a day. The orbiters pass the data on with their bigger antennas.",
+      "choices": [
+        {
+          "id": "science_data",
+          "label": "Dil's rock data",
+          "detail": "Earth helps aim the drill. Science up.",
+          "effects": [ { "v": "science", "add": 6 } ],
+          "result": [ { "who": "dil", "say": "Sent. Somewhere on Earth a geologist just spilled their coffee." } ]
+        },
+        {
+          "id": "family",
+          "label": "Messages to families",
+          "detail": "Morale up.",
+          "effects": [ { "v": "morale", "add": 7 } ],
+          "result": [ { "who": "ana", "say": "I told my mother the tomatoes say hello." } ]
+        },
+        {
+          "id": "listen",
+          "label": "Listen for the broken message",
+          "detail": "PIP uses the pass to catch another piece.",
+          "needs": { "v": "fragments", "lt": 3 },
+          "needsText": "The message is already complete",
+          "effects": [ { "v": "fragments", "add": 1 }, { "say": "pip", "text": "Another piece: \"...you are our eyes now...\"" } ],
+          "result": [ { "who": "pip", "say": "Listening." } ]
+        }
+      ]
+    },
+    {
+      "id": "seal_leak",
+      "kind": "deck",
+      "when": { "sol": { "gte": 2, "lte": 8 } },
+      "weight": 8,
+      "once": true,
+      "title": "A tiny hiss",
+      "scene": "interior",
+      "lines": [
+        { "who": "pip", "say": "I hear a hiss at the airlock. The door seal is leaking a little air every hour." }
+      ],
+      "sources": ["nasa-mars-facts"],
+      "learn": "The air on Mars is mostly carbon dioxide and very thin. A habitat is a bubble of Earth air. Any hole lets that air escape.",
+      "choices": [
+        {
+          "id": "patch",
+          "label": "Patch it now",
+          "detail": "Costs 1 power cell and an hour of work.",
+          "effects": [ { "v": "power", "add": -10 }, { "v": "air", "add": -2 } ],
+          "result": [ { "who": "kofi", "say": "Sealed. I used the fancy tape." } ]
+        },
+        {
+          "id": "watch",
+          "label": "Keep an eye on it",
+          "detail": "Free today. The leak keeps leaking.",
+          "effects": [ { "mod": "airDrift", "add": -5, "sols": 3, "id": "sealLeak" } ],
+          "result": [ { "who": "pip", "say": "I will count every breath that gets away." } ]
+        }
+      ]
+    },
+    {
+      "id": "tired_crew",
+      "kind": "deck",
+      "when": { "all": [ { "sol": { "gte": 3, "lte": 9 } }, { "v": "health", "lt": 85 } ] },
+      "weight": 9,
+      "once": true,
+      "title": "Running on empty",
+      "scene": "interior",
+      "lines": [
+        { "who": "ana", "say": "Doctor's orders: this crew is tired. Tired people make mistakes. I want a rest day." }
+      ],
+      "sources": ["nasa-hrp-sleep"],
+      "learn": "Real astronauts have their sleep and work hours planned carefully. Tired crews make more mistakes, and on Mars a small mistake can be a big problem.",
+      "choices": [
+        {
+          "id": "rest",
+          "label": "Rest day",
+          "detail": "Health and morale up. Science slows today.",
+          "effects": [ { "v": "health", "add": 12 }, { "v": "morale", "add": 5 }, { "mod": "scienceRate", "add": -6, "sols": 1, "id": "restDay" } ],
+          "result": [ { "who": "kofi", "say": "A nap. On Mars. Write that in the history books." } ]
+        },
+        {
+          "id": "push",
+          "label": "Push on",
+          "detail": "No time lost. The crew wears down.",
+          "effects": [ { "v": "health", "add": -8 }, { "v": "morale", "add": -4 }, { "v": "science", "add": 3 } ],
+          "result": [ { "who": "ana", "say": "Then I'm writing it in the log. In capital letters." } ]
+        }
+      ]
+    },
+    {
+      "id": "phobos_eclipse",
+      "kind": "deck",
+      "when": { "all": [ { "sol": { "gte": 2, "lte": 7 } }, { "flag": "dustStorm", "is": false } ] },
+      "weight": 6,
+      "once": true,
+      "title": "A potato crosses the Sun",
+      "scene": "sky",
+      "lines": [
+        { "who": "pip", "say": "In four minutes, the moon Phobos will cross the Sun. It lasts less than a minute. Solar power will dip a little." },
+        { "who": "dil", "say": "A lumpy little moon in front of the Sun. You do not see that on Earth." }
+      ],
+      "sources": ["nasa-phobos-eclipse", "nasa-mars-facts"],
+      "learn": "Mars has two small moons, Phobos and Deimos. NASA's Perseverance rover filmed Phobos crossing the Sun from right here in Jezero Crater in 2022.",
+      "choices": [
+        {
+          "id": "watch",
+          "label": "Everyone outside the window to watch",
+          "detail": "A little work lost. A memory for life.",
+          "effects": [ { "v": "morale", "add": 8 }, { "v": "science", "add": -2 }, { "flag": "sawEclipse", "set": true } ],
+          "result": [ { "who": "ana", "say": "Oh. Oh, that's lovely." } ]
+        },
+        {
+          "id": "work",
+          "label": "Keep working",
+          "detail": "Nothing lost, nothing gained.",
+          "effects": [ { "v": "science", "add": 2 } ],
+          "result": [ { "who": "dil", "say": "I'll watch the recording. It's not the same. It's fine." } ]
+        }
+      ]
+    },
+    {
+      "id": "blue_sunset",
+      "kind": "deck",
+      "when": { "all": [ { "sol": { "gte": 2, "lte": 9 } }, { "flag": "dustStorm", "is": false } ] },
+      "weight": 6,
+      "once": true,
+      "title": "The blue hour",
+      "scene": "sky",
+      "lines": [
+        { "who": "kofi", "say": "Sunset in ten minutes. Clear sky. You know what colour it goes." },
+        { "who": "ana", "say": "Blue. On the red planet, the sunset is blue. I will never get used to it." }
+      ],
+      "sources": ["nasa-sunset"],
+      "learn": "On Mars the daytime sky is butterscotch and the sunset is blue. The fine dust in the air scatters blue light forward, so the sky glows blue around the setting Sun.",
+      "choices": [
+        {
+          "id": "watch",
+          "label": "Stop work and watch together",
+          "detail": "Costs a little work time. Lifts everyone.",
+          "effects": [ { "v": "morale", "add": 7 }, { "v": "science", "add": -2 }, { "flag": "sawSunset", "set": true } ],
+          "result": [ { "who": "dil", "say": "Four people, one window, one blue Sun." } ]
+        },
+        {
+          "id": "work",
+          "label": "Work through it",
+          "detail": "Use the last light for the panels.",
+          "effects": [ { "v": "power", "add": 5 } ],
+          "result": [ { "who": "kofi", "say": "Squeezed a little more out of the day. The sunset will be there tomorrow." } ]
+        }
+      ]
+    },
+    {
+      "id": "sensor_alarm",
+      "kind": "deck",
+      "when": { "all": [ { "sol": { "gte": 3, "lte": 7 } }, { "sw": "stormLevel", "eq": 0 } ] },
+      "weight": 8,
+      "once": true,
+      "title": "One sensor screams",
+      "scene": "shelter",
+      "lines": [
+        { "who": "pip", "say": "Radiation alarm on sensor two. Sensor one says everything is normal. One of them is wrong." }
+      ],
+      "realData": ["radlab-msl"],
+      "sources": ["radlab-msl"],
+      "learn": "Scientists never trust one instrument alone. The real radiation today, measured on Mars by NASA's Curiosity rover, was {doseToday} micrograys: a normal, calm day.",
+      "choices": [
+        {
+          "id": "shelter_anyway",
+          "label": "Everyone to the shelter, just in case",
+          "detail": "Safe. A whole afternoon of work is lost.",
+          "effects": [ { "v": "science", "add": -5 }, { "v": "plants", "add": -3 }, { "v": "morale", "add": -2 } ],
+          "result": [ { "who": "kofi", "say": "False alarm. A grain of dust in the sensor. Better a lost afternoon than a bad guess." } ]
+        },
+        {
+          "id": "check",
+          "label": "Check it against the other sensor first",
+          "detail": "Takes a few minutes. You learn which one to trust.",
+          "effects": [ { "v": "morale", "add": 2 }, { "flag": "sensorChecked", "set": true } ],
+          "result": [ { "who": "pip", "say": "Sensor two had dust in it. Sensor one is right. I will remember which of us was calm." } ]
+        },
+        {
+          "id": "ignore",
+          "label": "Ignore it",
+          "detail": "It is probably nothing. Probably.",
+          "risk": 1,
+          "effects": [],
+          "result": [ { "who": "ana", "say": "It was nothing. This time. Please don't make that a habit." } ]
+        }
+      ]
+    },
+    {
+      "id": "earth_disagrees",
+      "kind": "deck",
+      "when": { "all": [ { "v": "earthAsks", "gte": 1 }, { "sol": { "gte": 3, "lte": 9 } } ] },
+      "weight": 7,
+      "once": true,
+      "title": "Earth would have done it differently",
+      "scene": "dish",
+      "lines": [
+        { "who": "sam", "say": "Lakeshore, about yesterday. We would have chosen differently. But we were not there, and you were. Tell us what you saw." }
+      ],
+      "sources": ["nasa-comm-crewed"],
+      "learn": "Because of the radio delay, a Mars crew will have to make many decisions on its own. NASA studies how to give crews that independence safely.",
+      "choices": [
+        {
+          "id": "own_it",
+          "label": "Explain your choice honestly",
+          "detail": "Earth learns to trust you.",
+          "effects": [ { "v": "morale", "add": 6 }, { "flag": "earthTrust", "set": true } ],
+          "result": [ { "who": "pip", "say": "Report sent. I think they will like that you did not hide anything." } ]
+        },
+        {
+          "id": "blame_delay",
+          "label": "Say there was no time to ask",
+          "detail": "True, and a little bit of an excuse.",
+          "effects": [ { "v": "morale", "add": -2 } ],
+          "result": [ { "who": "kofi", "say": "True. They'll still wonder." } ]
+        }
+      ]
+    }
+  ]
+}

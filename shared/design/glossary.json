@@ -1,0 +1,26 @@
+{
+  "_comment": "Plain-language words. Shown as tap-to-explain chips wherever the word appears. Keep each explanation to one or two short sentences a 9-year-old can read. Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "schemaVersion": 1,
+  "terms": [
+    { "id": "sol", "word": "sol", "say": "A day on Mars. It is about 40 minutes longer than a day on Earth.", "sources": ["nasa-sol"] },
+    { "id": "radiation", "word": "radiation", "say": "Tiny, fast particles and rays from the Sun and from deep space. You cannot see or feel them. Too many over a lifetime are bad for the body." },
+    { "id": "dose", "word": "dose", "say": "How much radiation a body has soaked up. It only ever adds up, like steps on a step counter." },
+    { "id": "microgray", "word": "microgray", "say": "A tiny unit for measuring radiation dose. Scientists write it µGy." },
+    { "id": "flare", "word": "solar flare", "say": "A giant flash of light and X-rays on the Sun. The classes go C, M, X. X is the strongest.", "sources": ["jpl-may2024-storm"] },
+    { "id": "cme", "word": "CME", "say": "Short for coronal mass ejection. A huge cloud of hot gas thrown out by the Sun. It can cross the solar system in a few days." },
+    { "id": "sep", "word": "solar particles", "say": "Very fast particles shot out by the biggest eruptions. They can reach Mars in less than an hour." },
+    { "id": "aurora", "word": "aurora", "say": "Glowing light in the sky made when particles from the Sun hit the air. Earth has them near the poles. Mars can have them all over.", "sources": ["jpl-sep2017-storm"] },
+    { "id": "magnetic", "word": "magnetic field", "say": "An invisible shield around Earth that pushes solar particles away. Mars lost its own long ago.", "sources": ["nasa-mars-facts"] },
+    { "id": "delay", "word": "radio delay", "say": "Radio travels at the speed of light, and Mars is far away. A message needs many minutes to cross.", "sources": ["nasa-comm-delay"] },
+    { "id": "delta", "word": "delta", "say": "A fan of mud and sand that a river leaves where it flows into a lake or sea." },
+    { "id": "regolith", "word": "regolith", "say": "The loose dust and broken rock that covers the ground on Mars and the Moon." },
+    { "id": "biosignature", "word": "biosignature", "say": "A clue that living things may once have been there. A clue is not proof.", "sources": ["nasa-cheyava"] },
+    { "id": "core", "word": "core", "say": "A stick of rock, about the size of a piece of chalk, drilled out and sealed in a tube." },
+    { "id": "scrubber", "word": "scrubber", "say": "A machine that takes the gas we breathe out (carbon dioxide) out of the air." },
+    { "id": "tau", "word": "tau", "say": "A number for how much dust is in the sky. Bigger means darker. 1 is a normal dusty day. Over 10 is almost night.", "sources": ["jpl-dust-2018"] },
+    { "id": "forecast", "word": "forecast", "say": "A best guess about what will happen, made by a computer model. It can be wrong." },
+    { "id": "margin", "word": "margin", "say": "Extra that you keep just in case: spare power, spare air, spare time." },
+    { "id": "launch_window", "word": "launch window", "say": "The short time when the planets are lined up so a ship can make the trip." },
+    { "id": "powercell", "word": "power cell", "say": "Our game's unit of electricity. One cell runs one machine on Low for one sol." }
+  ]
+}

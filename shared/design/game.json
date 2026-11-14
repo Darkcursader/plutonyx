@@ -1,0 +1,33 @@
+{
+  "_comment": "Global game identity and links. Both editions read this file. Change the title HERE and it changes everywhere. Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "schemaVersion": 1,
+  "contentVersion": "0.1.0",
+  "title": "PROJECT JEZERO",
+  "titleIsPlaceholder": true,
+  "subtitle": "A Junior Astronaut Mission Trainer",
+  "tagline": "Keep your crew alive on Mars, where every choice costs something precious and the real Sun decides how hard it gets.",
+  "team": "PlutonyX",
+  "teamCredit": "A PlutonyX game",
+  "event": "NASA Space Apps Challenge 2026",
+  "challenge": "Build a Junior Astronaut Mission Trainer",
+  "outpostName": "Lakeshore Outpost",
+  "siteName": "Jezero Crater, Mars",
+  "missionSols": 10,
+  "crewSize": 4,
+  "links": {
+    "repo": "https://github.com/Darkcursader/plutonyx",
+    "web": "https://darkcursader.github.io/plutonyx/",
+    "desktopDownload": "",
+    "demo": ""
+  },
+  "disclaimers": {
+    "noEndorsement": "This is a student hackathon project. It uses public NASA data and models. NASA does not endorse this game.",
+    "si": "Portions of the code, text and audio were generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX. SI-generated images and video carry a visible 'SI-generated' mark.",
+    "data": "Space weather and radiation values are real NASA records. Dust storms, machine faults and the story are fiction based on real Mars facts."
+  },
+  "storyMission": {
+    "windowId": "may-2024",
+    "startDate": "2024-05-13",
+    "revealHiddenUntilEnding": true
+  }
+}

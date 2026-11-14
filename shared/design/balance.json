@@ -1,0 +1,162 @@
+{
+  "_comment": "EVERY number of the simulation lives here. Both editions read this file; if code and this file disagree, this file wins. Values marked (game) are game simplifications; values marked (real) trace to shared/design/sources.json ids. Never change without a CHANGELOG line. Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "schemaVersion": 1,
+  "missionSols": 10,
+  "cell": {
+    "_comment": "(game) 1 power cell = 10 meter points = 10 kWh. Battery 100 points = 100 kWh.",
+    "points": 10,
+    "kWh": 10
+  },
+  "units": {
+    "_comment": "Real-unit conversions shown in Mission Planner view.",
+    "airPointKgO2": 0.168,
+    "airNote": "(real anchor) 4 crew x 0.84 kg O2 per person per day = 3.36 kg/sol (source: nasa-o2-084). (game) 100 air points = 5 sols of reserve = 16.8 kg.",
+    "waterPointLitres": 3.0,
+    "waterNote": "(real anchor) about a gallon (3.8 L) per person per day; the ISS recovers about 98 % (source: nasa-water-98). (game) 100 points = 300 L in the loop.",
+    "foodPointCrewMeals": 0.67,
+    "solHours": 24.66,
+    "solNote": "(real) Mars rotates once in about 24.6 hours (source: nasa-mars-facts). (game) one sol is paired with one real UTC day of data."
+  },
+  "systems": {
+    "_comment": "Index = level 0 Off, 1 Low, 2 Normal, 3 Boost. cost in meter points of power.",
+    "order": ["life", "garden", "shield", "rover"],
+    "life":   { "name": "Air Maker",       "icon": "air",    "cost": [0, 10, 20, 30], "air":     [-22, -9, 3, 12] },
+    "garden": { "name": "Greenhouse",      "icon": "sprout", "cost": [0, 10, 20, 30], "plants":  [-18, -3, 9, 15], "water": [0, -1, -2, -3], "airBonus": [0, 1, 2, 3], "airBonusNeedsPlants": 60 },
+    "shield": { "name": "Storm Shield",    "icon": "shield", "cost": [0, 10, 20, 30], "shield":  [-4, 10, 20, 32] },
+    "rover":  { "name": "Rover and Drill", "icon": "rover",  "cost": [0, 10, 20, 30], "science": [0, 7, 13, 20] }
+  },
+  "difficulty": {
+    "cadet": {
+      "name": "Cadet",
+      "ages": "7-9",
+      "blurb": "More sunlight, bigger reserves, hints from PIP, no timers.",
+      "start": { "air": 82, "power": 75, "shield": 20, "water": 90, "food": 85, "plants": 38, "science": 0, "health": 92, "morale": 74 },
+      "solar": { "clear": 100, "haze": 80, "dust": 50, "deepDust": 35 },
+      "baseLoad": 20,
+      "hints": true,
+      "timers": false,
+      "dose": { "amber": 1450, "red": 1950 },
+      "defaultAlloc": { "life": 2, "garden": 2, "shield": 1, "rover": 2 }
+    },
+    "commander": {
+      "name": "Commander",
+      "ages": "10-12+",
+      "blurb": "Tight margins and a ticking clock in the storm. Learn from failure.",
+      "start": { "air": 72, "power": 60, "shield": 10, "water": 80, "food": 78, "plants": 35, "science": 0, "health": 90, "morale": 70 },
+      "solar": { "clear": 90, "haze": 70, "dust": 40, "deepDust": 25 },
+      "baseLoad": 20,
+      "hints": false,
+      "timers": true,
+      "dose": { "amber": 1300, "red": 1700 },
+      "defaultAlloc": { "life": 2, "garden": 2, "shield": 0, "rover": 2 }
+    },
+    "classroom": {
+      "name": "Classroom",
+      "ages": "class",
+      "blurb": "Cadet numbers, no timers, one class code so everyone flies the same mission, and pause-and-discuss cards.",
+      "inherits": "cadet",
+      "discussion": true
+    }
+  },
+  "dust": {
+    "_comment": "(game scenario, based on real Mars dust storms; source: jpl-dust-2018). Seeded: start sol and length. Sky per sol of the storm, then one hazy sol, then clear.",
+    "startSol": [4, 5],
+    "lengthSols": [2, 3],
+    "profile2": ["dust", "deepDust"],
+    "profile3": ["dust", "deepDust", "dust"],
+    "afterHazeSols": 1,
+    "dustyPanelsPenalty": -10,
+    "dustyPanelsNote": "After the storm, panels stay dusty (solar -10) until cleaned by the crew or a dust devil."
+  },
+  "supplies": {
+    "waterPerSol": -1.5,
+    "foodPerSol": -6,
+    "harvestFood": 14,
+    "harvestMorale": 6,
+    "plantsAfterHarvest": 72,
+    "lowWaterThreshold": 20,
+    "lowWaterPlantsFactor": 0.5,
+    "lowFoodThreshold": 15
+  },
+  "story": {
+    "dilDepartsAtScience": 40,
+    "spotsAtScience": 70,
+    "coreSealedAtScience": 100,
+    "againstOrdersMorale": 30
+  },
+  "health": {
+    "naturalRecovery": 3,
+    "thinAir": { "below": 30, "delta": -8 },
+    "veryThinAir": { "below": 15, "delta": -15 },
+    "coldNight": { "whenPowerAtOrBelow": 0, "delta": -12, "plants": -10 },
+    "hungry": { "foodBelow": 15, "delta": -4, "morale": -5 },
+    "noWater": { "waterAtOrBelow": 0, "delta": -15 },
+    "lowMorale": { "below": 25, "delta": -3 }
+  },
+  "morale": {
+    "restTarget": 60,
+    "drift": 1,
+    "plantsDied": -15,
+    "sentHome": -10
+  },
+  "radiation": {
+    "_comment": "Dose is in micrograys (µGy), the unit of NASA RadLab's MSL-RAD-Surface record. Radiation at these levels never makes a character sick; it fills a dose badge and triggers flight rules.",
+    "habCalmFactor": 0.85,
+    "habCalmNote": "(game) Cosmic rays are very hard to stop; a habitat wall removes only a little.",
+    "habStormFactor": 0.6,
+    "habStormNote": "(game) Solar storm particles are easier to stop; walls and supplies help.",
+    "shieldMaxProtection": 0.92,
+    "shieldRequired": [0, 25, 55, 90],
+    "shieldDrain": [0, 15, 35, 70],
+    "shieldFailedBelowProtection": 0.5,
+    "waterWallProtection": 0.25,
+    "waterWallCost": 25,
+    "maxProtection": 0.95,
+    "cliffStormFactor": 0.4,
+    "cliffNote": "(real idea, game number) NASA/JPL: 'Cliffsides or lava tubes would provide additional shielding' (source: jpl-may2024-storm).",
+    "outsideFactor": 1.0,
+    "fieldCalmFactor": 1.0,
+    "runHomeOutsideShare": 0.2,
+    "limitsNote": "(game) Badge limits are scaled to a 10-sol mission so players can feel the trade-off. Real astronaut limits are far higher and cover a whole career; real crews keep dose 'as low as reasonably achievable'.",
+    "xrayEquivalentMicroGray": 270,
+    "xrayNote": "(real) NASA/JPL compared 8,100 µGy to 30 chest X-rays for the 20 May 2024 storm, i.e. 270 µGy each (source: jpl-may2024-storm). Used only for kid-friendly comparisons."
+  },
+  "spaceWeather": {
+    "_comment": "Rules that turn a real day summary into game values. Implemented in shared/scripts/lib/spaceweather.mjs (deriveGame). Calibration is explained in shared/science-log.md.",
+    "calmDoseDefault": 115,
+    "measuredRatio": [1.3, 2, 6],
+    "sepStormCmeSpeed": 2500,
+    "estimatedStormExtra": 1.5,
+    "flareLevels": { "M": 1e-5, "X": 1e-4, "X5": 5e-4 },
+    "kpRadioNoise": 7,
+    "peakSol": 8,
+    "calmWindowStorm": {
+      "_comment": "If a live window has no storm of level 2+, sols 8 and 9 replay the archived real storm below. The game labels those two sols 'ARCHIVED: real storm of 20 May 2024'.",
+      "window": "may-2024",
+      "dates": ["2024-05-20", "2024-05-21"]
+    }
+  },
+  "storm": {
+    "_comment": "The storm scene. 1 real second = 1 mission minute on Commander. onsetMinutes is real: on 20 May 2024 the eruption began 05:36 UTC (DONKI) and Curiosity's dose rate peaked about 06:15 UTC (RadLab).",
+    "minutesPerSecond": 1,
+    "onsetMinutes": 39,
+    "earthThinkingMinutes": 10,
+    "stepSeconds": 30,
+    "divertGarden": { "shield": 35, "plants": -25, "morale": -6 },
+    "strandedChance": 0.5,
+    "trustShelterChance": 0.6,
+    "rescueCost": { "power": -20, "health": -8 }
+  },
+  "endings": {
+    "gardenThrivingPlants": 75,
+    "crewFitHealth": 40,
+    "highRiskCount": 3,
+    "decodedFragments": 3,
+    "evac": { "airAtOrBelow": 0, "healthAtOrBelow": 0, "blackoutSols": 2 }
+  },
+  "ui": {
+    "warnAt": 30,
+    "dangerAt": 15,
+    "forecastMaxPerMission": 3
+  }
+}
