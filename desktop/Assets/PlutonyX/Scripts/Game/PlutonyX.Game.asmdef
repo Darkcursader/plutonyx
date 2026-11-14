@@ -1,0 +1,1 @@
+{ "name": "PlutonyX.Game", "rootNamespace": "PlutonyX.Game", "references": ["PlutonyX.Core", "Unity.RenderPipelines.Core.Runtime", "Unity.RenderPipelines.HighDefinition.Runtime", "Unity.InputSystem"], "includePlatforms": [], "excludePlatforms": [], "autoReferenced": true }
