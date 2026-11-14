@@ -1,0 +1,118 @@
+{
+  "schema": "plutonyx.endings/1",
+  "_note": "DRAFT. Rules are checked top to bottom; the first one whose conditions all hold is the ending. Condition keys are documented in tools/sim/sim.js (summary object). No ending ever claims life was found.",
+
+  "endings": [
+    {
+      "id": "evacuation",
+      "family": "Emergency Evacuation",
+      "title": "Early Ride Home",
+      "tagline": "The mission ended early. Everyone came home.",
+      "when": { "evacuated": true },
+      "epilogue": "The rules were written long before you landed: when the air, the water or the crew's health crosses the line, you leave. You gave the order. Four people climbed into the ascent ship, tired and safe. Mars will still be there next time.",
+      "science_title": "Why real missions have abort rules",
+      "science": "Space agencies decide the limits before a mission starts, so nobody has to argue in the middle of an emergency. NASA's rule for radiation is called ALARA: keep every dose As Low As Reasonably Achievable.",
+      "source": "radiation_protection",
+      "postcard": "The ascent ship climbing on a pillar of light above the delta at dawn, the outpost's lights still on below.",
+      "mood": "somber_hopeful",
+      "hint": "Some lines must never be crossed."
+    },
+    {
+      "id": "secret_message",
+      "family": "Secret",
+      "secret": true,
+      "title": "The Whole Message",
+      "tagline": "You heard every word.",
+      "when": { "sample": "secured", "standdowns": 0, "greenhouse_alive": true, "fragments_min": 3, "storm_protected": true, "risk_max": 2 },
+      "epilogue": "On the last night the antenna catches the final piece. \"Shoreline, the spots on that rock are the best clue we have ever had. So when you find it, please bring it home. And bring yourselves home. We cannot see the storms coming from here. But you can. Your detector is now the warning for everyone who follows you.\" Outside, Little Sol's first tomato is turning red.",
+      "science_title": "Why Mars needs its own storm watch",
+      "science": "The flare that hit Mars on May 20, 2024 was on the far side of the Sun, hidden from Earth. Radiation detectors on Mars saw it within minutes. Future crews will need their own space weather stations.",
+      "source": "may_2024_storm",
+      "postcard": "The crew around a glowing console at night, a single red tomato in the foreground, Earth a blue star through the window.",
+      "mood": "wonder",
+      "hint": "Keep the antenna listening. Keep everyone safe. Bring everything home."
+    },
+    {
+      "id": "gamble",
+      "family": "The Gamble Paid Off",
+      "title": "By a Whisker",
+      "tagline": "You got the sample. It was closer than it looked.",
+      "when": { "sample": "secured", "danger": true },
+      "epilogue": "The sample tube clicks into its case. Everyone is breathing hard. Looking back at the numbers, there were moments when one more bad hour would have ended everything. This time, the dice were kind.",
+      "science_title": "How close was it?",
+      "science": "Mars has no magnetic shield and only a thin atmosphere, so solar particles reach the ground. In the open, the May 2024 storm gave as much radiation in one day as almost two weeks of normal Mars days.",
+      "source": "radlab",
+      "postcard": "A dusty glove holding a sample tube up to a storm-green sky.",
+      "mood": "tense_relief",
+      "hint": "Take the big risk and get away with it."
+    },
+    {
+      "id": "full_success",
+      "family": "Full Success",
+      "title": "Homeward with the Answer",
+      "tagline": "Crew safe. Garden alive. Sample on its way to Earth.",
+      "when": { "sample": "secured", "standdowns": 0, "greenhouse_alive": true },
+      "epilogue": "The ascent ship lifts off with four healthy people and one small tube of rock. Is there a trace of ancient life inside? Nobody knows yet. Scientists on Earth will spend years finding out. Behind you, the greenhouse lights glow pink for the next crew.",
+      "science_title": "What is really in the tube?",
+      "science": "The Perseverance rover's sample from the rock called Cheyava Falls holds minerals that, on Earth, are sometimes made by microbes. They can also form without life. Only laboratories on Earth can tell the difference.",
+      "source": "cheyava_falls",
+      "postcard": "The ascent ship rising over the delta under a butterscotch sky, the greenhouse glowing below.",
+      "mood": "triumph",
+      "hint": "Bring it all home."
+    },
+    {
+      "id": "price_of_the_rock",
+      "family": "Bittersweet",
+      "title": "The Price of the Rock",
+      "tagline": "The sample is safe. The garden is gone.",
+      "when": { "sample": "secured", "greenhouse_alive": false },
+      "epilogue": "The sample is going home. Ana carries one small envelope of seeds onto the ship and holds it the whole way up. \"They are patient,\" she says. \"So am I.\" Nobody talks for a while.",
+      "science_title": "Why the plants could not wait",
+      "science": "Plants need light to make food and warmth to stay alive. A greenhouse without power on Mars gets as cold as the ground outside within hours.",
+      "source": "csa_food",
+      "postcard": "A dark greenhouse dome under the stars, one seed envelope in the foreground.",
+      "mood": "bittersweet",
+      "hint": "Win the science. Lose something you love."
+    },
+    {
+      "id": "green_outpost",
+      "family": "Green Outpost",
+      "title": "Green Outpost",
+      "tagline": "No sample, but the outpost can feed itself.",
+      "when": { "sample_not": "secured", "greenhouse_thriving": true, "standdowns": 0 },
+      "epilogue": "You never got the rock. You got something else: a garden that works. Little Sol's tomato is the first ever grown from seed on Mars. The next crew will land to fresh food and a head start. They will fetch the sample. You made sure they can stay.",
+      "science_title": "Why fresh food matters",
+      "science": "Packaged food loses vitamins over years in storage, and it is heavy to launch. Space agencies in Canada and the United States are learning to grow crops in closed rooms so far-away crews can feed themselves.",
+      "source": "csa_food",
+      "postcard": "The greenhouse interior bursting with green under pink light, a ripe tomato in close-up, Mars through the wall.",
+      "mood": "warm",
+      "hint": "Choose the garden over the rock."
+    },
+    {
+      "id": "bittersweet",
+      "family": "Bittersweet",
+      "title": "Safe Hands, Empty Case",
+      "tagline": "Everyone is safe. The sample stays on Mars.",
+      "when": {},
+      "epilogue": "The sample case is empty, and four people are alive to be annoyed about it. Zara looks back at the delta until it is too small to see. \"It waited three billion years,\" she says. \"It can wait for the next crew.\"",
+      "science_title": "Safety first is real",
+      "science": "Mission rules put the crew ahead of the science. A sample can be collected by the next mission. A person cannot be replaced.",
+      "source": "radiation_protection",
+      "postcard": "Zara's helmet reflection: the delta shrinking behind the ascent ship.",
+      "mood": "bittersweet",
+      "hint": "Play it safe all the way."
+    }
+  ],
+
+  "reveal": {
+    "title": "It really happened",
+    "lines": [
+      "Every flare and every storm in your mission was real.",
+      "They happened between {start_date} and {end_date}.",
+      "The Sun fired {x_count} X-class flares in that time. The biggest was {biggest_flare} on {biggest_flare_date}.",
+      "On {peak_date} the Curiosity rover on Mars measured radiation {peak_times} times higher than normal.",
+      "From Earth, nobody saw that blast coming. It was on the far side of the Sun."
+    ],
+    "source": "may_2024_storm"
+  }
+}
