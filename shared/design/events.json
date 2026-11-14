@@ -26,7 +26,6 @@
           "hint": "PIP: a question takes {delayMin} minutes to reach Earth, and the answer needs the same to come back.",
           "askEarth": true,
           "effects": [
-            { "after": 1, "do": [ { "v": "fragments", "add": 1 } ], "because": "Because you asked Earth to send the message again, one more piece came through." },
             { "log": "Sol 1: you spent power to ask Earth to repeat the broken message.", "kind": "turn" }
           ],
           "result": [ { "who": "kofi", "say": "Question sent. It's crossing space right now. Don't hold your breath." } ]
@@ -139,8 +138,8 @@
         { "who": "ana", "say": "How long?" },
         { "who": "kofi", "say": "Two sols. Maybe three. Mars doesn't tell." }
       ],
-      "sources": ["jpl-dust-2018", "nasa-oppy-end"],
-      "learn": "Dust storms on Mars can block most sunlight. In 2018 a storm grew to cover a quarter of the planet. Scientists measured how thick the dust was with a number called tau. It reached 10.8, about twice as thick as the big storm of 2007, and the solar-powered Opportunity rover fell silent.",
+      "sources": ["jpl-dust-2018"],
+      "learn": "Dust storms on Mars can block most sunlight. In 2018 a storm grew to cover a quarter of the planet. Scientists measured how thick the dust was with a number called tau. It reached 10.8, about twice as thick as the big storm of 2007. NASA's solar-powered Opportunity rover could not get enough sunlight to charge its batteries.",
       "choices": [
         {
           "id": "cover_panels",
@@ -485,8 +484,8 @@
         { "who": "sam", "say": "Lakeshore, this is Mission Control. Your window opens at sunset. Bring home everyone, and whatever else you can. We are with you." },
         { "who": "pip", "say": "That message left Earth {delayMin} minutes ago." }
       ],
-      "sources": ["nasa-launch-window"],
-      "learn": "A ship can only leave Mars for Earth when the two planets line up the right way. Miss the window and you wait a very long time.",
+      "sources": ["jpl-approx-pos"],
+      "learn": "Radio travels at the speed of light, the fastest speed there is. Even so, Mission Control's good-luck message was {delayMin} minutes old when you heard it.",
       "choices": [
         {
           "id": "launch",
@@ -664,8 +663,8 @@
       "lines": [
         { "who": "kofi", "say": "The storm left a blanket of dust on the solar panels. We're losing a cell of power every sol." }
       ],
-      "sources": ["nasa-insight-dust"],
-      "learn": "Dust on solar panels is a real problem on Mars. NASA's InSight lander slowly lost power as dust piled up on its panels, and its mission ended in 2022.",
+      "sources": ["jpl-dust-2018"],
+      "learn": "Dust is a real problem for solar power on Mars. In the 2018 dust storm, so little sunlight reached NASA's Opportunity rover that it could not recharge.",
       "choices": [
         {
           "id": "brush",
@@ -859,8 +858,8 @@
       "lines": [
         { "who": "ana", "say": "Doctor's orders: this crew is tired. Tired people make mistakes. I want a rest day." }
       ],
-      "sources": ["nasa-hrp-sleep"],
-      "learn": "Real astronauts have their sleep and work hours planned carefully. Tired crews make more mistakes, and on Mars a small mistake can be a big problem.",
+      "sources": [],
+      "learn": "Tired people make more mistakes. On Mars, far from help, a small mistake can become a big problem. What would you do?",
       "choices": [
         {
           "id": "rest",
@@ -890,8 +889,8 @@
         { "who": "pip", "say": "In four minutes, the moon Phobos will cross the Sun. It lasts less than a minute. Solar power will dip a little." },
         { "who": "dil", "say": "A lumpy little moon in front of the Sun. You do not see that on Earth." }
       ],
-      "sources": ["nasa-phobos-eclipse", "nasa-mars-facts"],
-      "learn": "Mars has two small moons, Phobos and Deimos. NASA's Perseverance rover filmed Phobos crossing the Sun from right here in Jezero Crater in 2022.",
+      "sources": ["nasa-mars-facts"],
+      "learn": "Mars has two small moons, Phobos and Deimos. Phobos is the bigger one. Deimos is about half its size.",
       "choices": [
         {
           "id": "watch",

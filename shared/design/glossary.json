@@ -2,7 +2,7 @@
   "_comment": "Plain-language words. Shown as tap-to-explain chips wherever the word appears. Keep each explanation to one or two short sentences a 9-year-old can read. Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
   "schemaVersion": 1,
   "terms": [
-    { "id": "sol", "word": "sol", "say": "A day on Mars. It is about 40 minutes longer than a day on Earth.", "sources": ["nasa-sol"] },
+    { "id": "sol", "word": "sol", "say": "A day on Mars. It lasts about 24.6 hours, a little longer than a day on Earth.", "sources": ["nasa-mars-facts"] },
     { "id": "radiation", "word": "radiation", "say": "Tiny, fast particles and rays from the Sun and from deep space. You cannot see or feel them. Too many over a lifetime are bad for the body." },
     { "id": "dose", "word": "dose", "say": "How much radiation a body has soaked up. It only ever adds up, like steps on a step counter." },
     { "id": "microgray", "word": "microgray", "say": "A tiny unit for measuring radiation dose. Scientists write it µGy." },

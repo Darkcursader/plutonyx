@@ -12,7 +12,7 @@
     { "id": "cliffhanger", "title": "Cliffhanger", "text": "Dil sat out a storm under a cliff and came home with the core.", "icon": "cliff", "when": { "all": [ { "flag": "dilShelteredAtCliff" }, { "flag": "sampleSecured" } ] }, "sources": ["jpl-may2024-storm"] },
     { "id": "good_neighbor", "title": "Good Neighbour", "text": "Help Isidis Camp.", "icon": "hands", "when": { "flag": "helpedNeighbor" } },
     { "id": "blue_hour", "title": "Blue Hour", "text": "Watch a blue Martian sunset with the crew.", "icon": "sunset", "when": { "flag": "sawSunset" }, "sources": ["nasa-sunset"] },
-    { "id": "eclipse_chaser", "title": "Eclipse Chaser", "text": "Watch Phobos cross the Sun.", "icon": "moon", "when": { "flag": "sawEclipse" }, "sources": ["nasa-phobos-eclipse"] },
+    { "id": "eclipse_chaser", "title": "Eclipse Chaser", "text": "Watch Phobos cross the Sun.", "icon": "moon", "when": { "flag": "sawEclipse" } },
     { "id": "birthday", "title": "Many Happy Returns", "text": "Make sure Kofi's birthday message arrives.", "icon": "cake", "when": { "flag": "kofiMessage" } },
     { "id": "chief_engineer", "title": "Chief Engineer", "text": "Finish with Air, Power and Shield all above 50.", "icon": "gauge", "when": { "all": [ { "v": "air", "gte": 50 }, { "v": "power", "gte": 50 }, { "v": "shield", "gte": 50 }, { "flag": "evac", "is": false } ] } },
     { "id": "clean_badge", "title": "As Low As You Can", "text": "Finish with every radiation badge in the green.", "icon": "badge", "when": { "all": [ { "flag": "anyAmber", "is": false }, { "flag": "evac", "is": false } ] } },

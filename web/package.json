@@ -1,0 +1,28 @@
+{
+  "name": "plutonyx-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Team PlutonyX - Junior Astronaut Mission Trainer (Web edition). Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "terrain": "node ../shared/scripts/fetch-terrain.mjs"
+  },
+  "dependencies": {
+    "@fontsource/atkinson-hyperlegible": "^5.3.0",
+    "@fontsource/oxanium": "^5.3.0",
+    "postprocessing": "^6.39.6",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.187.0",
+    "geotiff": "^3.0.5",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}
