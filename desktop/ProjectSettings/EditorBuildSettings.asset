@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/PlutonyX/Scenes/Main.unity
+    guid: 13022574aa9c040a5a13d9ae552ee56a
   m_configObjects: {}

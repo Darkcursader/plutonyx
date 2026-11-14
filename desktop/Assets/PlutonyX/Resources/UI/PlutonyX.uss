@@ -1,0 +1,56 @@
+/* PlutonyX UI — glass panels, large type, never colour alone (every meter has an icon letter and a label). */
+.root { flex-grow: 1; color: rgb(245, 241, 232); font-size: 22px; }
+.panel { background-color: rgba(10, 12, 18, 0.78); border-width: 1px; border-color: rgba(255, 255, 255, 0.14); border-radius: 16px; padding: 22px 28px; }
+.title { font-size: 92px; -unity-font-style: bold; letter-spacing: 14px; color: rgb(255, 244, 228); -unity-text-align: middle-center; text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8); }
+.subtitle { font-size: 26px; letter-spacing: 6px; color: rgb(242, 199, 68); -unity-text-align: middle-center; margin-bottom: 26px; }
+.tagline { font-size: 22px; color: rgba(245, 241, 232, 0.86); -unity-text-align: middle-center; white-space: normal; max-width: 900px; align-self: center; margin-bottom: 30px; }
+.h1 { font-size: 40px; -unity-font-style: bold; margin-bottom: 8px; white-space: normal; }
+.h2 { font-size: 28px; -unity-font-style: bold; margin-bottom: 6px; white-space: normal; }
+.body { font-size: 24px; white-space: normal; margin-bottom: 8px; }
+.small { font-size: 18px; color: rgba(245, 241, 232, 0.72); white-space: normal; }
+.dim { color: rgba(245, 241, 232, 0.6); }
+.btn { min-height: 56px; min-width: 220px; font-size: 24px; -unity-font-style: bold; color: rgb(245, 241, 232); background-color: rgba(255, 255, 255, 0.08);
+       border-width: 2px; border-color: rgba(255, 255, 255, 0.28); border-radius: 14px; padding: 10px 26px; margin: 6px; transition-duration: 0.12s; }
+.btn:hover, .btn.focus { background-color: rgba(242, 199, 68, 0.25); border-color: rgb(242, 199, 68); scale: 1.02 1.02; }
+.btn:active { background-color: rgba(242, 199, 68, 0.45); }
+.btn-primary { background-color: rgba(242, 199, 68, 0.22); border-color: rgb(242, 199, 68); }
+.btn:disabled { opacity: 0.38; }
+.choice { align-items: flex-start; -unity-text-align: upper-left; white-space: normal; min-height: 74px; padding: 12px 22px; }
+.choice-label { font-size: 25px; -unity-font-style: bold; white-space: normal; }
+.choice-detail { font-size: 19px; color: rgba(245, 241, 232, 0.8); white-space: normal; -unity-font-style: normal; }
+.choice-hint { font-size: 18px; color: rgb(92, 200, 240); white-space: normal; -unity-font-style: italic; }
+.chip { font-size: 16px; -unity-font-style: bold; letter-spacing: 2px; padding: 4px 12px; border-radius: 12px; border-width: 1px; margin-right: 8px; align-self: flex-start; }
+.chip-real { color: rgb(120, 230, 180); border-color: rgb(120, 230, 180); background-color: rgba(60, 199, 154, 0.14); }
+.chip-live { color: rgb(120, 230, 180); border-color: rgb(120, 230, 180); }
+.chip-arch { color: rgb(242, 199, 68); border-color: rgb(242, 199, 68); }
+.chip-warn { color: rgb(255, 150, 120); border-color: rgb(255, 150, 120); }
+.speaker { font-size: 20px; -unity-font-style: bold; letter-spacing: 2px; margin-bottom: 4px; }
+.line { font-size: 27px; white-space: normal; }
+.hud { position: absolute; left: 28px; top: 24px; flex-direction: row; align-items: center; }
+.hud-right { position: absolute; right: 28px; top: 24px; align-items: flex-end; }
+.meter { width: 250px; margin-right: 16px; padding: 10px 14px; }
+.meter-head { flex-direction: row; justify-content: space-between; font-size: 18px; -unity-font-style: bold; letter-spacing: 2px; }
+.meter-track { height: 12px; border-radius: 6px; background-color: rgba(255, 255, 255, 0.14); margin-top: 6px; overflow: hidden; }
+.meter-fill { height: 12px; border-radius: 6px; transition-property: width; transition-duration: 0.9s; }
+.meter-warn .meter-head { color: rgb(255, 190, 90); }
+.meter-danger .meter-head { color: rgb(255, 120, 100); }
+.sys-row { flex-direction: row; align-items: center; margin: 8px 0; }
+.sys-name { width: 250px; font-size: 25px; -unity-font-style: bold; }
+.sys-level { width: 150px; font-size: 24px; -unity-text-align: middle-center; color: rgb(242, 199, 68); -unity-font-style: bold; }
+.sys-effect { font-size: 20px; margin-left: 18px; color: rgba(245, 241, 232, 0.86); flex-shrink: 1; white-space: normal; }
+.pm { min-width: 64px; min-height: 56px; font-size: 32px; padding: 0; }
+.pip { width: 22px; height: 22px; border-radius: 4px; margin-right: 4px; background-color: rgba(255, 255, 255, 0.16); }
+.pip-on { background-color: rgb(242, 199, 68); }
+.up { color: rgb(120, 230, 180); } .down { color: rgb(255, 150, 120); }
+.center { position: absolute; left: 0; right: 0; top: 0; bottom: 0; align-items: center; justify-content: center; }
+.bottom { position: absolute; left: 0; right: 0; bottom: 44px; align-items: center; }
+.dialogue { width: 1180px; max-width: 92%; }
+.card { width: 1080px; max-width: 92%; max-height: 86%; }
+.row { flex-direction: row; align-items: center; flex-wrap: wrap; }
+.spacer { flex-grow: 1; }
+.timer-track { height: 10px; background-color: rgba(255, 255, 255, 0.16); border-radius: 5px; margin: 8px 0 12px 0; overflow: hidden; }
+.timer-fill { height: 10px; background-color: rgb(255, 120, 100); }
+.crisis { border-color: rgb(255, 120, 100); background-color: rgba(40, 8, 8, 0.82); }
+.letterbox { position: absolute; left: 0; right: 0; height: 9%; background-color: rgb(0, 0, 0); }
+.caption { position: absolute; left: 28px; bottom: 18px; font-size: 16px; color: rgba(245, 241, 232, 0.7); }
+.fade { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background-color: rgb(0, 0, 0); transition-property: opacity; transition-duration: 0.8s; }
