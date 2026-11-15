@@ -54,6 +54,18 @@ namespace PlutonyX.EditorTools
             sky.horizonTint.Override(new Color(1f, 0.86f, 0.70f));
             sky.zenithTint.Override(new Color(0.86f, 0.66f, 0.50f));
             sky.horizonZenithShift.Override(0.1f);
+            // a procedural star field so the night sky is not empty (artistic; not a real star map)
+            var stars = new Cubemap(1024, TextureFormat.RGBA32, false);
+            var rnd = new System.Random(2026);
+            foreach (CubemapFace face in new[] { CubemapFace.PositiveX, CubemapFace.NegativeX, CubemapFace.PositiveY, CubemapFace.NegativeY, CubemapFace.PositiveZ, CubemapFace.NegativeZ })
+            {
+                var px = new Color[1024 * 1024];
+                for (int i = 0; i < 2600; i++) { float b = Mathf.Pow((float)rnd.NextDouble(), 6f) * 0.9f + 0.06f; float tint = (float)rnd.NextDouble(); px[rnd.Next(px.Length)] = new Color(b * (0.85f + 0.15f * tint), b * 0.9f, b * (1f - 0.15f * tint), 1f); }
+                stars.SetPixels(px, face);
+            }
+            stars.Apply();
+            AssetDatabase.CreateAsset(stars, TerrainImporter.GeneratedDir + "/Stars.asset");
+            sky.spaceEmissionTexture.Override(stars); sky.spaceEmissionMultiplier.Override(6f);
             var fog = profile.Add<Fog>(true);
             fog.enabled.Override(true);
             fog.meanFreePath.Override(22000f);

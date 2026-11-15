@@ -26,7 +26,7 @@ namespace PlutonyX.EditorTools
             if (Mats.TryGetValue(name, out m)) return m;
             m = new Material(Shader.Find("HDRP/Lit")) { name = name };
             m.SetColor("_BaseColor", color); m.SetFloat("_Metallic", metallic); m.SetFloat("_Smoothness", smoothness);
-            if (emissive.HasValue) { m.SetColor("_EmissiveColor", emissive.Value); m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive; }
+            if (emissive.HasValue) { m.SetColor("_EmissiveColor", emissive.Value); m.SetFloat("_EmissiveExposureWeight", 0f); m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive; }
             HDMaterial.ValidateMaterial(m);
             AssetDatabase.CreateAsset(m, TerrainImporter.GeneratedDir + "/Mat_" + name + ".mat");
             Mats[name] = m; return m;
@@ -56,13 +56,13 @@ namespace PlutonyX.EditorTools
             Material hull = Mat("Hull", new Color(0.82f, 0.81f, 0.78f), 0.15f, 0.45f);
             Material hullDark = Mat("HullDark", new Color(0.30f, 0.31f, 0.33f), 0.5f, 0.5f);
             Material orange = Mat("Orange", new Color(0.85f, 0.42f, 0.12f), 0.1f, 0.4f);
-            Material solar = Mat("SolarCell", new Color(0.03f, 0.05f, 0.14f), 0.85f, 0.88f);
+            Material solar = Mat("SolarCell", new Color(0.05f, 0.09f, 0.24f), 0.6f, 0.82f);
             Material frame = Mat("Frame", new Color(0.55f, 0.56f, 0.58f), 0.8f, 0.55f);
             Material regolith = Mat("RegolithBerm", new Color(0.50f, 0.31f, 0.20f), 0f, 0.12f);
-            Material grow = Mat("GrowGlow", new Color(0.9f, 0.75f, 0.85f), 0f, 0.6f, new Color(1f, 0.25f, 0.85f) * 6000f);
-            Material window = Mat("WindowWarm", new Color(0.1f, 0.1f, 0.1f), 0f, 0.9f, new Color(1f, 0.74f, 0.42f) * 4000f);
-            Material shieldGlow = Mat("ShieldGlow", new Color(0.2f, 0.2f, 0.3f), 0.2f, 0.7f, new Color(0.55f, 0.45f, 1f) * 5000f);
-            Material beacon = Mat("Beacon", new Color(0.2f, 0.05f, 0.05f), 0f, 0.6f, new Color(1f, 0.2f, 0.12f) * 9000f);
+            Material grow = Mat("GrowGlow", new Color(0.9f, 0.75f, 0.85f), 0f, 0.6f, new Color(1f, 0.25f, 0.85f) * 2.2f);
+            Material window = Mat("WindowWarm", new Color(0.1f, 0.1f, 0.1f), 0f, 0.9f, new Color(1f, 0.74f, 0.42f) * 1.8f);
+            Material shieldGlow = Mat("ShieldGlow", new Color(0.2f, 0.2f, 0.3f), 0.2f, 0.7f, new Color(0.55f, 0.45f, 1f) * 2.2f);
+            Material beacon = Mat("Beacon", new Color(0.2f, 0.05f, 0.05f), 0f, 0.6f, new Color(1f, 0.2f, 0.12f) * 3f);
             Material pad = Mat("Pad", new Color(0.16f, 0.15f, 0.15f), 0.1f, 0.3f);
 
             // ---- habitat: two modules and a node, on legs ----
@@ -93,7 +93,7 @@ namespace PlutonyX.EditorTools
             Prim(PrimitiveType.Cube, "Tube to hab", gh, new Vector3(-13, ggy + 1.8f, 6.5f), new Vector3(1.6f, 1.6f, 9f), new Vector3(0, -38, 0), hull);
             var ghLightGo = new GameObject("Grow light"); ghLightGo.transform.SetParent(gh, false); ghLightGo.transform.position = new Vector3(-18, ggy + 5f, 12);
             var ghLight = ghLightGo.AddComponent<Light>(); ghLight.type = LightType.Point; ghLight.color = new Color(1f, 0.3f, 0.85f); ghLight.range = 38f;
-            ghLightGo.AddComponent<HDAdditionalLightData>(); ghLight.lightUnit = LightUnit.Lumen; ghLight.intensity = 60000f; ghLight.shadows = LightShadows.None;
+            ghLightGo.AddComponent<HDAdditionalLightData>(); ghLight.lightUnit = LightUnit.Lumen; ghLight.intensity = 26000f; ghLight.shadows = LightShadows.None;
 
             // ---- air maker ----
             Transform air = new GameObject("Air Maker").transform; air.SetParent(root, false);
@@ -157,7 +157,7 @@ namespace PlutonyX.EditorTools
                 Prim(PrimitiveType.Sphere, "Lamp", root, lpPos + Vector3.up * 3.1f, new Vector3(0.4f, 0.4f, 0.4f), Vector3.zero, window);
                 var lg = new GameObject("Lamp light"); lg.transform.SetParent(root, false); lg.transform.position = lpPos + Vector3.up * 3.1f;
                 var ll = lg.AddComponent<Light>(); ll.type = LightType.Point; ll.color = new Color(1f, 0.78f, 0.5f); ll.range = 22f; lg.AddComponent<HDAdditionalLightData>();
-                ll.lightUnit = LightUnit.Lumen; ll.intensity = 9000f; ll.shadows = LightShadows.None;
+                ll.lightUnit = LightUnit.Lumen; ll.intensity = 3200f; ll.shadows = LightShadows.None;
             }
 
             // ---- the field site at the delta (real place: Three Forks, where Perseverance left sample tubes) ----
@@ -203,7 +203,52 @@ namespace PlutonyX.EditorTools
             var world = game.AddComponent<WorldDirector>();
             world.Cam = cam; world.Sun = sun; world.SkyVolume = skyVolume; world.ShotsRoot = shots;
             world.GrowLights.Add(tunnel.GetComponent<Renderer>());
-            var director = game.AddComponent<GameDirector>(); director.UI = gameUi; director.World = world;
+            var audio = game.AddComponent<AudioDirector>();
+            var director = game.AddComponent<GameDirector>(); director.UI = gameUi; director.World = world; director.Audio = audio;
+
+            // night fill (starlight and dust-scattered glow), shield light, particles
+            var nf = new GameObject("Night fill"); nf.transform.rotation = Quaternion.Euler(55, 20, 0);
+            var nl = nf.AddComponent<Light>(); nl.type = LightType.Directional; nl.color = new Color(0.55f, 0.66f, 1f); nl.shadows = LightShadows.None; nf.AddComponent<HDAdditionalLightData>();
+            nl.lightUnit = LightUnit.Lux; nl.intensity = 0.9f; nl.enabled = false; world.NightFill = nl;
+            var slg = new GameObject("Shield light"); slg.transform.position = On(-32, -24, 7f);
+            var sl = slg.AddComponent<Light>(); sl.type = LightType.Point; sl.color = new Color(0.6f, 0.5f, 1f); sl.range = 60f; sl.shadows = LightShadows.None; slg.AddComponent<HDAdditionalLightData>();
+            sl.lightUnit = LightUnit.Lumen; sl.intensity = 0f; sl.enabled = false; world.ShieldLight = sl;
+            foreach (Light l in Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) if (l.type == LightType.Point && l != sl && l != ghLight) world.SmallLights.Add(l);
+            // white specks, like the "snow" charged particles left in the Curiosity rover's camera images during the May 2024 storm
+            world.StormParticles = Particles("Storm particles", cam.transform, new Color(1f, 1f, 1f, 0.9f), new Vector3(0, 0, 4), new Vector3(7f, 4f, 0.5f), new Vector3(0, 0, 0), 0.018f, 0.09f, true);
+            world.DustParticles = Particles("Dust", cam.transform, new Color(0.80f, 0.56f, 0.38f, 0.035f), new Vector3(0, 8, 70), new Vector3(180, 16, 100), new Vector3(16, 0.5f, 3), 14f, 9f, false);
+        }
+
+        static Texture2D _soft;
+        static ParticleSystem Particles(string name, Transform parent, Color color, Vector3 offset, Vector3 box, Vector3 velocity, float size, float life, bool streaks)
+        {
+            if (_soft == null)
+            {
+                _soft = new Texture2D(64, 64, TextureFormat.RGBA32, true);
+                for (int y = 0; y < 64; y++) for (int x = 0; x < 64; x++)
+                { float d = Mathf.Clamp01(1f - Vector2.Distance(new Vector2(x, y), new Vector2(31.5f, 31.5f)) / 31.5f); _soft.SetPixel(x, y, new Color(1, 1, 1, d * d)); }
+                _soft.Apply(); AssetDatabase.CreateAsset(_soft, TerrainImporter.GeneratedDir + "/SoftParticle.asset");
+            }
+            var mat = new Material(Shader.Find("HDRP/Unlit")) { name = "Particles_" + name.Replace(" ", "") };
+            mat.SetFloat("_SurfaceType", 1f); mat.SetFloat("_BlendMode", streaks ? 1f : 0f); mat.SetColor("_UnlitColor", color); mat.SetTexture("_UnlitColorMap", _soft);   // HDRP/Unlit ignores particle vertex colour, so the tint lives in the material
+            HDMaterial.ValidateMaterial(mat);
+            AssetDatabase.CreateAsset(mat, TerrainImporter.GeneratedDir + "/" + mat.name + ".mat");
+            var go = new GameObject(name); go.transform.SetParent(parent, false); go.transform.localPosition = offset;
+            var ps = go.AddComponent<ParticleSystem>();
+            var main = ps.main; main.startColor = color; main.startSize = size; main.startLifetime = life; main.startSpeed = 0f; main.maxParticles = 4000;
+            main.simulationSpace = ParticleSystemSimulationSpace.World; main.playOnAwake = true; main.loop = true;
+            var em = ps.emission; em.rateOverTime = 0f;
+            var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Box; sh.scale = box;
+            var vel = ps.velocityOverLifetime; vel.enabled = true; vel.space = ParticleSystemSimulationSpace.World;
+            vel.x = new ParticleSystem.MinMaxCurve(velocity.x * 0.7f, velocity.x * 1.3f); vel.y = new ParticleSystem.MinMaxCurve(velocity.y * 0.7f, velocity.y * 1.3f); vel.z = new ParticleSystem.MinMaxCurve(velocity.z * 0.7f, velocity.z * 1.3f);
+            var sol = ps.sizeOverLifetime; sol.enabled = true;
+            sol.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.25f, 1f), new Keyframe(0.75f, 1f), new Keyframe(1f, 0f)));
+            var col = ps.colorOverLifetime; col.enabled = false;
+            var grad = new Gradient(); grad.SetKeys(new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) }, new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(1f, 0.2f), new GradientAlphaKey(1f, 0.8f), new GradientAlphaKey(0f, 1f) });
+            col.color = grad;
+            var r = go.GetComponent<ParticleSystemRenderer>(); r.sharedMaterial = mat;
+            r.renderMode = ParticleSystemRenderMode.Billboard;
+            return ps;
         }
 
         static void BuildRover(Transform root, Vector3 at, float yaw, Material hull, Material dark, Material frame, Material orange, Material window)
@@ -235,7 +280,7 @@ namespace PlutonyX.EditorTools
             var ps = AssetDatabase.LoadAssetAtPath<PanelSettings>(path);
             if (ps == null) { ps = ScriptableObject.CreateInstance<PanelSettings>(); AssetDatabase.CreateAsset(ps, path); }
             ps.themeStyleSheet = AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(tss);
-            ps.scaleMode = PanelScaleMode.ScaleWithScreenSize; ps.referenceResolution = new Vector2Int(1920, 1080);
+            ps.scaleMode = PanelScaleMode.ScaleWithScreenSize; ps.referenceResolution = new Vector2Int(1680, 945);
             ps.screenMatchMode = PanelScreenMatchMode.MatchWidthOrHeight; ps.match = 0.5f;
             EditorUtility.SetDirty(ps);
             return ps;

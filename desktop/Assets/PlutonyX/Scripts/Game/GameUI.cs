@@ -27,6 +27,9 @@ namespace PlutonyX.Game
         public bool ReducedMotion;
         // Autoplay (command line: -autoplay <folder>): the game plays itself and saves a screenshot of every screen.
         // Used for automated end-to-end tests of the built player and for the visual quality gate.
+        public AudioDirector Audio;
+        public WorldDirector World;
+        public bool Paused;
         public bool Auto;
         public string CaptureDir;
         public int AutoTitleIndex;
@@ -71,6 +74,8 @@ namespace PlutonyX.Game
             _center = Box("center"); _center.pickingMode = PickingMode.Ignore; _root.Add(_center);
             _fade = Box("fade"); _fade.pickingMode = PickingMode.Ignore; _fade.style.opacity = 0; _root.Add(_fade);
             ShowHud(false);
+            ReducedMotion = PlayerPrefs.GetInt("reducedMotion", 0) == 1;
+            ApplyTextSize();
         }
 
         static VisualElement Box(params string[] classes)
@@ -99,12 +104,14 @@ namespace PlutonyX.Game
         void Update()
         {
             Keyboard k = Keyboard.current; Gamepad g = Gamepad.current;
+            if (!Paused && !Auto && ((k != null && k.escapeKey.wasPressedThisFrame) || (g != null && g.startButton.wasPressedThisFrame))) StartCoroutine(PauseMenu());
+            if (Paused) { _advance = false; return; }
             if ((k != null && (k.spaceKey.wasPressedThisFrame || k.enterKey.wasPressedThisFrame || k.numpadEnterKey.wasPressedThisFrame))
                 || (g != null && g.buttonSouth.wasPressedThisFrame)) _advance = true;
         }
         void LateUpdate() { _advanceConsumed = _advance; _advance = false; }
         bool _advanceConsumed;
-        bool Advance { get { return _advanceConsumed; } }
+        bool Advance { get { return _advanceConsumed && !Paused; } }
         static int MoveY()
         {
             Keyboard k = Keyboard.current; Gamepad g = Gamepad.current;
@@ -187,6 +194,7 @@ namespace PlutonyX.Game
                 speaker.text = CrewName(l.Who); speaker.style.color = CrewColor(l.Who);
                 speaker.style.display = string.IsNullOrEmpty(speaker.text) ? DisplayStyle.None : DisplayStyle.Flex;
                 text.text = l.Say; clicked = false;
+                if (Audio != null) { if (l.Who == "sam") Audio.Message(); else Audio.Advance(); }
                 yield return null;
                 float waited = 0;
                 while (!clicked && !Advance && !(Auto && waited > 0.12f)) { waited += Time.unscaledDeltaTime; yield return null; }
@@ -270,10 +278,79 @@ namespace PlutonyX.Game
                 yield return null;
             }
             _center.Remove(card);
+            if (Audio != null) Audio.Confirm();
             result(chosen);
             yield return null;
         }
         const int dyHeld = 0;
+
+        // ------------------------------------------------------------------ pause and settings
+        static readonly string[] QualityNames = { "Low", "Medium", "High", "Ultra" };
+        IEnumerator PauseMenu()
+        {
+            Paused = true;
+            VisualElement veil = Box("center"); veil.style.backgroundColor = new Color(0, 0, 0, 0.55f);
+            VisualElement card = Box("panel", "card"); card.style.width = 720; veil.Add(card);
+            card.Add(Text("Paused", "h1"));
+            _root.Add(veil);
+            int focus = 0; bool close = false, rebuild = true; var buttons = new List<Button>();
+            while (!close)
+            {
+                if (rebuild)
+                {
+                    foreach (Button old in buttons) card.Remove(old);
+                    buttons.Clear(); rebuild = false;
+                    string[] labels = {
+                        "Resume",
+                        "Text size:  " + (PlayerPrefs.GetInt("largeText", 0) == 1 ? "Large" : "Normal"),
+                        "Graphics:  " + QualityNames[Mathf.Clamp(PlayerPrefs.GetInt("quality", 3), 0, 3)],
+                        "Display:  " + (Screen.fullScreen ? "Fullscreen" : "Window"),
+                        "Volume:  " + Mathf.RoundToInt(AudioListener.volume * 100) + "%",
+                        "Less motion:  " + (ReducedMotion ? "On" : "Off"),
+                        "Quit to desktop" };
+                    for (int i = 0; i < labels.Length; i++)
+                    {
+                        int index = i;
+                        var b = new Button(() => { focus = index; PauseAction(index, ref close); rebuild = true; }) { text = labels[i] };
+                        b.AddToClassList("btn"); card.Add(b); buttons.Add(b);
+                    }
+                }
+                Keyboard k = Keyboard.current; Gamepad g = Gamepad.current;
+                int dy = MoveY(); if (dy != 0) focus = (focus + dy + buttons.Count) % buttons.Count;
+                for (int i = 0; i < buttons.Count; i++) buttons[i].EnableInClassList("focus", i == focus);
+                if (_advanceConsumed) { PauseAction(focus, ref close); rebuild = true; }
+                if ((k != null && k.escapeKey.wasPressedThisFrame) || (g != null && (g.startButton.wasPressedThisFrame || g.buttonEast.wasPressedThisFrame))) close = true;
+                // Update() skips reading "continue" while paused, so read it here
+                _advance = (k != null && (k.spaceKey.wasPressedThisFrame || k.enterKey.wasPressedThisFrame)) || (g != null && g.buttonSouth.wasPressedThisFrame);
+                yield return null;
+            }
+            _root.Remove(veil);
+            yield return null;
+            Paused = false;
+        }
+        void PauseAction(int index, ref bool close)
+        {
+            if (Audio != null) Audio.Click();
+            switch (index)
+            {
+                case 0: close = true; break;
+                case 1: PlayerPrefs.SetInt("largeText", 1 - PlayerPrefs.GetInt("largeText", 0)); ApplyTextSize(); break;
+                case 2: { int q = (PlayerPrefs.GetInt("quality", 3) + 3) % 4; PlayerPrefs.SetInt("quality", q); if (World != null) World.ApplyQuality(q); break; }
+                case 3:
+                    if (Screen.fullScreen) Screen.SetResolution(1600, 900, FullScreenMode.Windowed);
+                    else Screen.SetResolution(Display.main.systemWidth, Display.main.systemHeight, FullScreenMode.FullScreenWindow);
+                    break;
+                case 4: { float v = AudioListener.volume <= 0.05f ? 1f : AudioListener.volume - 0.25f; AudioListener.volume = Mathf.Max(0f, v); PlayerPrefs.SetFloat("volume", AudioListener.volume); break; }
+                case 5: ReducedMotion = !ReducedMotion; PlayerPrefs.SetInt("reducedMotion", ReducedMotion ? 1 : 0); if (World != null) World.ReducedMotion = ReducedMotion; break;
+                case 6: PlayerPrefs.Save(); Application.Quit(); break;
+            }
+            PlayerPrefs.Save();
+        }
+        public void ApplyTextSize()
+        {
+            bool large = PlayerPrefs.GetInt("largeText", 0) == 1;
+            Document.panelSettings.referenceResolution = large ? new Vector2Int(1440, 810) : new Vector2Int(1680, 945);
+        }
 
         // ------------------------------------------------------------------ events
         public IEnumerator Event(EventView e, float timerSeconds, Action<string> chosen)
@@ -312,8 +389,8 @@ namespace PlutonyX.Game
                 int row = r; string id = ids[r];
                 VisualElement line = Box("sys-row");
                 line.Add(Text(sys[id]["name"].Str(id), "sys-name"));
-                var minus = new Button(() => { a.Set(id, a.Get(id) - 1); focusRow = row; }) { text = "−" }; minus.AddToClassList("btn"); minus.AddToClassList("pm");
-                var plus = new Button(() => { a.Set(id, a.Get(id) + 1); if (!m.CanAfford(a)) a.Set(id, a.Get(id) - 1); focusRow = row; }) { text = "+" }; plus.AddToClassList("btn"); plus.AddToClassList("pm");
+                var minus = new Button(() => { a.Set(id, a.Get(id) - 1); focusRow = row; if (Audio != null) Audio.Click(); }) { text = "−" }; minus.AddToClassList("btn"); minus.AddToClassList("pm");
+                var plus = new Button(() => { a.Set(id, a.Get(id) + 1); if (!m.CanAfford(a)) a.Set(id, a.Get(id) - 1); focusRow = row; if (Audio != null) Audio.Click(); }) { text = "+" }; plus.AddToClassList("btn"); plus.AddToClassList("pm");
                 line.Add(minus);
                 VisualElement pipRow = Box("row"); pips[r] = new List<VisualElement>();
                 for (int p = 0; p < 3; p++) { VisualElement pip = Box("pip"); pipRow.Add(pip); pips[r].Add(pip); }
@@ -342,7 +419,7 @@ namespace PlutonyX.Game
                 else if (Auto) { yield return AutoCapture("powerboard"); confirm = true; }
                 int dy = MoveY(), dx = MoveX();
                 if (dy != 0) focusRow = (focusRow + dy + 4) % 4;
-                if (dx != 0) { string id = ids[focusRow]; a.Set(id, a.Get(id) + dx); if (!m.CanAfford(a)) a.Set(id, a.Get(id) - 1); }
+                if (dx != 0) { string id = ids[focusRow]; a.Set(id, a.Get(id) + dx); if (!m.CanAfford(a)) a.Set(id, a.Get(id) - 1); if (Audio != null) Audio.Click(); }
                 if (Advance) confirm = true;
 
                 double after = m.PowerAfter(a);
@@ -370,6 +447,7 @@ namespace PlutonyX.Game
                 yield return null;
             }
             _center.Remove(card);
+            if (Audio != null) Audio.Confirm();
             done(a);
             yield return null;
         }

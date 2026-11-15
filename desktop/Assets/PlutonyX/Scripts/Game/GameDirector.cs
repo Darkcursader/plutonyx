@@ -14,6 +14,7 @@ namespace PlutonyX.Game
     {
         public GameUI UI;
         public WorldDirector World;
+        public AudioDirector Audio;
         public const string Version = "1.0.0";
 
         Design _design;
@@ -25,6 +26,7 @@ namespace PlutonyX.Game
             Application.targetFrameRate = 60;
             GameData.Load();
             _design = GameData.Design;
+            UI.Audio = Audio; UI.World = World; World.Audio = Audio;
             UI.Init(_design);
             _difficulty = PlayerPrefs.GetString("difficulty", "cadet");
             string[] args = Environment.GetCommandLineArgs();
@@ -34,6 +36,14 @@ namespace PlutonyX.Game
                 if (args[i] == "-difficulty" && i + 1 < args.Length) _difficulty = args[i + 1];
             }
             yield return null;
+            string capDir; bool capVideo;
+            if (CaptureDirector.Wanted(out capDir, out capVideo))
+            {
+                UI.ShowHud(false); UI.Letterbox(false); UI.Caption("");
+                var cap = gameObject.AddComponent<CaptureDirector>(); cap.World = World;
+                yield return cap.Run(capDir, capVideo);
+                yield break;
+            }
             int rounds = 0;
             while (true)
             {
@@ -56,7 +66,7 @@ namespace PlutonyX.Game
             string sunNow = "The Sun on " + latest.Date + ": " + (latest.FlareLevel >= 2 ? "storming" : latest.FlareLevel == 1 ? "active" : "calm") +
                             (string.IsNullOrEmpty(latest.FlareMax) ? "" : "  ·  biggest flare " + latest.FlareMax) + "  ·  " + GameData.Badge(recent, live);
             var options = new List<string> { "Play  ·  " + _design.Window("may-2024")["menuTitle"].Str("Mission One"), "Today's real sky", "Replay history",
-                                             "Difficulty:  " + _design.Balance["difficulty"][_difficulty]["name"].Str(_difficulty), "Mission Science Log", "Credits and data", "Quit" };
+                                             "Difficulty:  " + _design.Balance["difficulty"][_difficulty]["name"].Str(_difficulty), "Ending gallery", "Mission Science Log", "Credits and data", "Quit" };
             int pick = 0;
             yield return UI.Title(_design.Title, _design.Game["subtitle"].Str(), _design.Game["tagline"].Str(), options, i => pick = i, sunNow, live,
                                   _design.Game["teamCredit"].Str("A PlutonyX game") + "  ·  Desktop Ultra edition v" + Version + "  ·  " + _design.Game["event"].Str());
@@ -67,9 +77,10 @@ namespace PlutonyX.Game
                 case 1: yield return PlayMission("live"); break;
                 case 2: yield return HistoryMenu(); break;
                 case 3: _difficulty = _difficulty == "cadet" ? "commander" : "cadet"; PlayerPrefs.SetString("difficulty", _difficulty); break;
-                case 4: yield return ScienceLog(); break;
-                case 5: yield return Credits(); break;
-                case 6: Application.Quit(); break;
+                case 4: yield return Gallery(); break;
+                case 5: yield return ScienceLog(); break;
+                case 6: yield return Credits(); break;
+                case 7: Application.Quit(); break;
             }
         }
 
@@ -112,6 +123,7 @@ namespace PlutonyX.Game
                 World.SetStorm(m.Flag("stormDone") && dawn.Day.StormLevel >= 1 ? 0.5f : 0f);
                 World.Shot("outpost");
                 UI.ShowHud(true); UI.UpdateHud(m, _badge, _live);
+                if (Audio != null) Audio.SetDanger(m.Get("air") < 30 || m.Get("power") < 15 || m.Get("health") < 45 ? 0.6f : dawn.Sky == "deepDust" ? 0.35f : 0f);
                 var notes = new List<string>(dawn.Notes);
                 notes.AddRange(dawn.Because);
                 notes.Add("Today's sunlight: " + N(dawn.Solar) + " power points. Heat, lights and computers take " + N(dawn.BaseLoad) + " first.");
@@ -139,7 +151,7 @@ namespace PlutonyX.Game
                 for (EventView e = m.NextEvent(); e != null; e = m.NextEvent())
                 {
                     World.Shot(e.Scene);
-                    if (e.IsCrisis) { World.SetStorm(1f); World.SetTime(18.6f); }
+                    if (e.IsCrisis) { World.SetStorm(1f); World.SetTime(17.85f); if (Audio != null && e.StepIndex == 0) Audio.Alarm(); }
                     float timer = e.IsCrisis && m.Timers ? (float)_design.Balance["storm"]["stepSeconds"].Num(30) : 0f;
                     string choice = null;
                     yield return UI.Event(e, timer, c => choice = c);
@@ -151,7 +163,7 @@ namespace PlutonyX.Game
                 }
 
                 // ---- night ----
-                World.SetTime(21f); World.Shot("night");
+                World.SetTime(19.3f); World.Shot("night");
                 NightReport n = m.EndSol();
                 UI.UpdateHud(m, _badge, _live);
                 var lines = new List<string>();
@@ -183,7 +195,7 @@ namespace PlutonyX.Game
             Mission m = _mission; EndingResult end = m.Ending; JsonValue e = end.Data;
             UI.ShowHud(false);
             yield return UI.Fade(true);
-            World.SetStorm(0); World.SetDust(0); World.SetTime(end.Id == "evac" ? 5.2f : 18.2f, true); World.Shot(e["shot"].Str("pad"), true);
+            World.SetStorm(0); World.SetDust(0); World.SetTime(end.Id == "evac" ? 5.6f : 17.7f, true); World.Shot(e["shot"].Str("pad"), true);
             UI.Letterbox(true);
             yield return UI.Fade(false);
 
@@ -218,6 +230,18 @@ namespace PlutonyX.Game
             yield return UI.Fade(true, 0.5f);
         }
 
+        IEnumerator Gallery()
+        {
+            var p = new List<string>(); int found = 0, total = 0;
+            foreach (JsonValue e in _design.Endings["endings"].Items)
+            {
+                total++;
+                bool got = PlayerPrefs.GetInt("ending_" + e["id"].Str(), 0) == 1; if (got) found++;
+                p.Add(got ? "★  " + e["title"].Str() + "  —  " + e["oneLine"].Str() : "☐  " + (e["secret"].Bool() ? "A secret ending" : "Locked") + "  —  " + e["lockedHint"].Str());
+            }
+            yield return UI.Info("Ending gallery  ·  " + found + " of " + total, p, "Back", null, null, "Every ending comes from the whole mission, not from one button.");
+        }
+
         // ------------------------------------------------------------------ science log and credits
         IEnumerator ScienceLog()
         {
@@ -239,7 +263,7 @@ namespace PlutonyX.Game
             {
                 _design.Game["teamCredit"].Str("A PlutonyX game") + " for the " + _design.Game["event"].Str() + ". Challenge: " + _design.Game["challenge"].Str() + ".",
                 "Data: NASA DONKI (CCMC, Goddard Space Flight Center) · NASA RadLab / OSDR (MSL RAD: NASA/JPL-Caltech/SwRI) · JPL Solar System Dynamics · NASA/JPL-Caltech/MSSS and USGS Astrogeology (Jezero CTX elevation and imagery).",
-                "Ground textures: Poly Haven (CC0). Engine: Unity 6 with the High Definition Render Pipeline.",
+                "Ground textures: Poly Haven (CC0). Engine: Unity 6 with the High Definition Render Pipeline. All sound and music is synthesised in code (SI-assisted); there are no recorded voices.",
                 _design.Game["disclaimers"]["si"].Str(),
                 _design.Game["disclaimers"]["data"].Str(),
                 _design.Game["disclaimers"]["noEndorsement"].Str(),

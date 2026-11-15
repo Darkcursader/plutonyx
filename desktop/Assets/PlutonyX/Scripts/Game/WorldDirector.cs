@@ -15,6 +15,12 @@ namespace PlutonyX.Game
         public Volume SkyVolume;
         public Transform ShotsRoot;
         public bool ReducedMotion;
+        public Light NightFill;
+        public ParticleSystem StormParticles, DustParticles;
+        public AudioDirector Audio;
+        public Light ShieldLight;
+        public readonly List<Light> SmallLights = new List<Light>();
+        public float Storm { get { return _storm; } }
 
         readonly Dictionary<string, Transform> _shots = new Dictionary<string, Transform>();
         Transform _shot; float _shotTime, _blend = 1f; Vector3 _fromPos; Quaternion _fromRot; float _fromFov;
@@ -36,6 +42,26 @@ namespace PlutonyX.Game
                 if (_fog != null) _baseFog = _fog.meanFreePath.value;
             }
             if (Sun != null) _baseLux = Sun.intensity;
+            ApplyQuality(PlayerPrefs.GetInt("quality", 3));
+            ReducedMotion = PlayerPrefs.GetInt("reducedMotion", 0) == 1;
+        }
+
+        /// <summary>0 Low .. 3 Ultra. Low must still look good: native resolution and sharp textures stay; costly effects go.</summary>
+        public void ApplyQuality(int q)
+        {
+            Terrain t = Terrain.activeTerrain;
+            if (t != null) { t.heightmapPixelError = q >= 3 ? 3f : q == 2 ? 5f : q == 1 ? 8f : 12f; t.basemapDistance = q >= 2 ? 6000f : q == 1 ? 2500f : 1200f; }
+            QualitySettings.lodBias = q >= 2 ? 2f : 1f;
+            if (SkyVolume != null)
+            {
+                HDShadowSettings sh; Bloom bloom;
+                if (SkyVolume.profile.TryGet(out sh)) sh.maxShadowDistance.value = q >= 3 ? 900f : q == 2 ? 500f : q == 1 ? 250f : 120f;
+                if (SkyVolume.profile.TryGet(out bloom)) bloom.active = q >= 1;
+            }
+            var hd = Cam != null ? Cam.GetComponent<HDAdditionalCameraData>() : null;
+            if (hd != null) hd.antialiasing = q >= 2 ? HDAdditionalCameraData.AntialiasingMode.TemporalAntialiasing : q == 1 ? HDAdditionalCameraData.AntialiasingMode.SubpixelMorphologicalAntiAliasing : HDAdditionalCameraData.AntialiasingMode.FastApproximateAntialiasing;
+            for (int i = 0; i < SmallLights.Count; i++) if (SmallLights[i] != null) SmallLights[i].enabled = q >= 2 || i < 2;
+            if (Sun != null) Sun.shadows = q >= 1 ? LightShadows.Soft : LightShadows.Hard;
         }
 
         public void Shot(string name, bool cut = false)
@@ -50,16 +76,16 @@ namespace PlutonyX.Game
         /// <summary>hour: 0..24 mission clock (6 = sunrise, 12 = noon, 18 = sunset).</summary>
         public void SetTime(float hour, bool instant = false)
         {
-            float day = Mathf.Clamp01((hour - 6f) / 12f);
-            _targetEl = Mathf.Sin(day * Mathf.PI) * 58f + (hour < 6f || hour > 18f ? -12f : 2f);
-            _targetAz = Mathf.Lerp(95f, 265f, day);
+            float phase = (hour - 6f) / 12f;                              // 0 = sunrise, 1 = sunset
+            _targetEl = Mathf.Max(-18f, Mathf.Sin(phase * Mathf.PI) * 60f);
+            _targetAz = Mathf.Lerp(95f, 265f, Mathf.Clamp01(phase));
             if (instant) { _sunEl = _targetEl; _sunAz = _targetAz; }
         }
         public void SetDust(float amount) { _targetDust = Mathf.Clamp01(amount); }
         public void SetStorm(float amount) { _targetStorm = Mathf.Clamp01(amount); }
         public void SetGrowLights(float level01)
         {
-            foreach (Renderer r in GrowLights) if (r != null) r.material.SetColor("_EmissiveColor", new Color(1f, 0.25f, 0.85f) * (level01 * 9000f));
+            foreach (Renderer r in GrowLights) if (r != null) r.material.SetColor("_EmissiveColor", new Color(1f, 0.25f, 0.85f) * (0.15f + level01 * 2.4f));
         }
 
         void Update()
@@ -85,18 +111,32 @@ namespace PlutonyX.Game
             if (Sun != null)
             {
                 Sun.transform.rotation = Quaternion.Euler(_sunEl, _sunAz + 180f, 0f);
-                float up = Mathf.Clamp01((_sunEl + 4f) / 12f);
-                Sun.intensity = _baseLux * up * Mathf.Lerp(1f, 0.22f, _dust);
+                float up = Mathf.Clamp01((_sunEl + 2f) / 8f);
+                Sun.intensity = _baseLux * up * Mathf.Lerp(1f, 0.22f, _dust) * Mathf.Lerp(1f, 0.45f, _storm);
                 Sun.color = Color.Lerp(new Color(1f, 0.96f, 0.9f), new Color(0.75f, 1f, 0.85f), _storm * 0.5f);
+                // the real Mars sunset is blue: fine dust scatters blue light forward, around the low Sun
+                float sunset = 1f - Mathf.Clamp01(Mathf.Abs(_sunEl) / 14f);
+                if (_sky != null)
+                {
+                    _sky.aerosolTint.value = Color.Lerp(new Color(0.80f, 0.62f, 0.46f), new Color(0.50f, 0.62f, 0.92f), sunset * 0.55f);
+                    _sky.aerosolAnisotropy.value = Mathf.Lerp(0.5f, 0.86f, sunset);
+                }
+                Sun.color = Color.Lerp(Sun.color, new Color(0.82f, 0.9f, 1f), sunset * 0.5f);
             }
             if (_sky != null) _sky.aerosolDensity.value = Mathf.Lerp(_baseAerosol, 0.75f, _dust);
             if (_fog != null) _fog.meanFreePath.value = Mathf.Lerp(_baseFog, 420f, _dust * _dust);
             if (_exposure != null)
             {
-                float night = 1f - Mathf.Clamp01((_sunEl + 6f) / 16f);
-                _exposure.fixedExposure.value = Mathf.Lerp(12.4f, 5.5f, night) - _dust * 1.3f;
+                float dayT = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((_sunEl + 6f) / 22f));
+                _exposure.fixedExposure.value = Mathf.Lerp(3.9f, 12.4f, dayT) - _dust * 1.3f + _storm * 0.5f;
             }
-            if (_color != null) _color.colorFilter.value = Color.Lerp(Color.white, new Color(0.72f, 1f, 0.82f), _storm * 0.55f);
+            if (_color != null) _color.colorFilter.value = Color.Lerp(Color.white, new Color(0.86f, 1f, 0.9f), _storm * 0.35f);
+            float nightAmount = 1f - Mathf.Clamp01((_sunEl + 6f) / 16f);
+            if (NightFill != null) { NightFill.enabled = nightAmount > 0.02f; NightFill.intensity = 14f * nightAmount; }
+            if (StormParticles != null) { var em = StormParticles.emission; em.rateOverTime = _storm * _storm * (ReducedMotion ? 40f : 260f); }
+            if (DustParticles != null) { var em = DustParticles.emission; em.rateOverTime = _dust * (ReducedMotion ? 30f : 160f); }
+            if (ShieldLight != null) { ShieldLight.enabled = _storm > 0.05f; ShieldLight.intensity = 400000f * _storm * (0.8f + 0.2f * Mathf.Sin(Time.time * 5f)); }
+            if (Audio != null) Audio.SetWorld(_dust, _storm, nightAmount);
         }
     }
 }
