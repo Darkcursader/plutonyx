@@ -315,7 +315,7 @@ namespace PlutonyX.Game
             {
                 _design.Game["teamCredit"].Str("A PlutonyX game") + " for the " + _design.Game["event"].Str() + ". Challenge: " + _design.Game["challenge"].Str() + ".",
                 "Data: NASA DONKI (CCMC, Goddard Space Flight Center) · NASA RadLab / OSDR (MSL RAD: NASA/JPL-Caltech/SwRI) · JPL Solar System Dynamics · NASA/JPL-Caltech/MSSS and USGS Astrogeology (Jezero CTX elevation and imagery).",
-                "Ground textures: Poly Haven (CC0). Engine: Unity 6 with the High Definition Render Pipeline. All sound and music is synthesised in code (SI-assisted); there are no recorded voices.",
+                "Ground textures and scanned rocks: Poly Haven (CC0; Earth rocks, tinted). The outpost, rover, ascent ship and crew are original models generated in code (SI-assisted); they are not real NASA hardware. Engine: Unity 6 with the High Definition Render Pipeline. All sound and music is synthesised in code (SI-assisted); there are no recorded voices.",
                 _design.Game["disclaimers"]["si"].Str(),
                 _design.Game["disclaimers"]["data"].Str(),
                 _design.Game["disclaimers"]["noEndorsement"].Str(),

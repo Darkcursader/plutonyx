@@ -18,6 +18,7 @@ namespace PlutonyX.Game
         public Light NightFill;
         public bool ExternalCamera;                 // true while Explore mode drives the camera
         public Transform Track;                     // when set, the camera keeps looking at this (the launching ship)
+        public float Shake;                         // camera tremble in metres (engine ignition)
         public ParticleSystem StormParticles, DustParticles;
         public AudioDirector Audio;
         public Light ShieldLight;
@@ -31,7 +32,9 @@ namespace PlutonyX.Game
         PhysicallyBasedSky _sky; Fog _fog; Exposure _exposure; ColorAdjustments _color;
         float _baseAerosol = 0.16f, _baseFog = 26000f, _baseLux = 60000f;
         readonly List<Light> _alarmLights = new List<Light>();
-        public readonly List<Renderer> GrowLights = new List<Renderer>();
+        public List<Renderer> GrowLights = new List<Renderer>();
+        public List<Material> NightGlow = new List<Material>(), StormGlow = new List<Material>();   // windows and lamps brighten after dark; the shield glows in a storm
+        Color[] _nightBase = new Color[0], _stormBase = new Color[0]; float _growLevel = 0.6f;
 
         void Awake()
         {
@@ -44,6 +47,8 @@ namespace PlutonyX.Game
                 if (_fog != null) _baseFog = _fog.meanFreePath.value;
             }
             if (Sun != null) _baseLux = Sun.intensity;
+            _nightBase = new Color[NightGlow.Count]; for (int i = 0; i < NightGlow.Count; i++) _nightBase[i] = NightGlow[i] != null ? NightGlow[i].GetColor("_EmissiveColor") : Color.black;
+            _stormBase = new Color[StormGlow.Count]; for (int i = 0; i < StormGlow.Count; i++) _stormBase[i] = StormGlow[i] != null ? StormGlow[i].GetColor("_EmissiveColor") : Color.black;
             ApplyQuality(PlayerPrefs.GetInt("quality", 3));
             ReducedMotion = PlayerPrefs.GetInt("reducedMotion", 0) == 1;
         }
@@ -86,10 +91,7 @@ namespace PlutonyX.Game
         }
         public void SetDust(float amount) { _targetDust = Mathf.Clamp01(amount); }
         public void SetStorm(float amount) { _targetStorm = Mathf.Clamp01(amount); }
-        public void SetGrowLights(float level01)
-        {
-            foreach (Renderer r in GrowLights) if (r != null) r.material.SetColor("_EmissiveColor", new Color(1f, 0.25f, 0.85f) * (0.15f + level01 * 2.4f));
-        }
+        public void SetGrowLights(float level01) { _growLevel = Mathf.Clamp01(level01); }
 
         void Update()
         {
@@ -104,6 +106,7 @@ namespace PlutonyX.Game
                 Vector3 pos = _shot.position + drift;
                 Quaternion rot = look != null ? Quaternion.LookRotation(look.position - pos) : _shot.rotation;
                 if (Track != null && Track.gameObject.activeInHierarchy) rot = Quaternion.Slerp(Cam.transform.rotation, Quaternion.LookRotation(Track.position + Vector3.up * 8f - pos), Time.deltaTime * 2.5f);
+                if (Shake > 0.0001f && !ReducedMotion) pos += new Vector3(Mathf.PerlinNoise(Time.time * 31f, 0f) - 0.5f, Mathf.PerlinNoise(0f, Time.time * 37f) - 0.5f, 0f) * (Shake * 2f);
                 Cam.transform.position = Vector3.Lerp(_fromPos, pos, e);
                 Cam.transform.rotation = Quaternion.Slerp(_fromRot, rot, e);
                 Cam.fieldOfView = Mathf.Lerp(_fromFov, _shot.localScale.z > 5f ? _shot.localScale.z : 45f, e);
@@ -136,7 +139,11 @@ namespace PlutonyX.Game
             }
             if (_color != null) _color.colorFilter.value = Color.Lerp(Color.white, new Color(0.86f, 1f, 0.9f), _storm * 0.35f);
             float nightAmount = 1f - Mathf.Clamp01((_sunEl + 6f) / 16f);
-            if (NightFill != null) { NightFill.enabled = nightAmount > 0.02f; NightFill.intensity = 14f * nightAmount; }
+            float glow = Mathf.Max(nightAmount, _dust * 0.55f);
+            for (int i = 0; i < NightGlow.Count; i++) if (NightGlow[i] != null) NightGlow[i].SetColor("_EmissiveColor", _nightBase[i] * Mathf.Lerp(0.07f, 1f, glow));
+            for (int i = 0; i < StormGlow.Count; i++) if (StormGlow[i] != null) StormGlow[i].SetColor("_EmissiveColor", _stormBase[i] * Mathf.Lerp(0.04f, 1f, _storm));
+            foreach (Renderer r in GrowLights) if (r != null) r.material.SetColor("_EmissiveColor", new Color(1f, 0.25f, 0.85f) * (0.03f + _growLevel * Mathf.Lerp(0.16f, 2.4f, glow)));
+            if (NightFill != null) { NightFill.enabled = nightAmount > 0.02f; NightFill.intensity = 34f * nightAmount; }
             if (StormParticles != null) { var em = StormParticles.emission; em.rateOverTime = _storm * _storm * (ReducedMotion ? 40f : 260f); }
             if (DustParticles != null) { var em = DustParticles.emission; em.rateOverTime = _dust * (ReducedMotion ? 30f : 160f); }
             if (ShieldLight != null) { ShieldLight.enabled = _storm > 0.05f; ShieldLight.intensity = 400000f * _storm * (0.8f + 0.2f * Mathf.Sin(Time.time * 5f)); }

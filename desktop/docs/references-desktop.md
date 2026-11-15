@@ -12,7 +12,8 @@
 | rasterio, NumPy, Pillow (build-time terrain tools) | https://pypi.org | BSD / PIL licence | their authors |
 | Default UI font (bundled with Unity's runtime theme) | Unity | Unity licence | Unity Technologies |
 | All sound effects and music | generated in code (`AudioDirector.cs`) | Original, SI-assisted | Team PlutonyX |
-| Outpost 3D models | generated in code (`OutpostBuilder.cs`) | Original | Team PlutonyX |
+| Scanned rock models `namaqualand_boulder_02/03/05`, `moon_rock_01/03`, `namaqualand_stones_01` (1K, FBX) | https://polyhaven.com/models | CC0 | Poly Haven (Earth rocks, tinted; scenery, not Mars data; the same rocks the web edition uses) |
+| Outpost, ascent ship, rover and crew 3D models; hull, foil, fabric, solar-cell and pad textures | generated in code (`OutpostBuilder.cs`, `MeshKit.cs`) | Original, SI-assisted | Team PlutonyX |
 
 Facts quoted in desktop-only text: NASA/JPL, "NASA Watches Mars Light Up During Epic Solar Storm" (10 June 2024),
 https://www.jpl.nasa.gov/news/nasa-watches-mars-light-up-during-epic-solar-storm/ (8,100 micrograys ≈ 30 chest X-rays;

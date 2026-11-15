@@ -12,6 +12,8 @@ Tick items as they are finished. `[x]` done · `[~]` in progress · `[ ]` not st
 - [x] Synthesised audio, pause/settings, quality presets, keyboard + gamepad
 - [x] macOS + Windows builds, portable ZIPs, SHA-256, 4K stills, 1080p clips, 29 s montage
 - [x] README, desktop-notes, desktop references, handoff docs
+- [x] Realism pass: detailed procedural models (habitat, greenhouse, air maker, solar field, shelter, dish, rover, ascent ship,
+      pad + service tower, jointed astronauts), scanned rocks, ground tracks, AO/contact shadows, launch flame/dust/shake
 
 ## Not done
 - [!] GitHub push and release (needs `gh auth login`)

@@ -1,62 +1,75 @@
 # HANDOFF — where we left off
 
-**Last updated:** Sun 15 Nov 2026, 11:45 Tashkent · **Phase 5** (release prep). Builder's deadline for this edition: **22:00**; submission 23:59.
+**Last updated:** Sun 15 Nov 2026, 18:00 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
 
 ## State right now
-- **Playable, built, packaged.** `Build/mac/PlutonyX.app`, `Build/win/PlutonyX/PlutonyX.exe`; ZIPs + `SHA256SUMS.txt` in `Build/release/`
-  (`tools/package.sh v1.0`). macOS build passes a full autoplay mission with no runtime errors.
+- **Playable, built, tested, packaged with the new realistic look.** `Build/mac/PlutonyX.app`, `Build/win/PlutonyX/PlutonyX.exe`;
+  ZIPs + `SHA256SUMS.txt` in `Build/release/` (built 17:42 by `tools/package.sh v1.0`):
+  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `7020739afd6340cb5bc1aff306c29d119a5b58531643314b9eb5655beaa63dc0`
+  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `b82b4815d6810c4629d847e56e56bb1c01785dda2334db39f87fc6f0c8e434c0`
+- macOS build passed a full autoplay mission (67 screens), the stills run and the recording run with **0 exceptions** in the player logs.
   **The Windows build has never been run on a PC.**
-- Merged the Web lead's work (web edition + updated `/shared`) on Sun 11:25. Simulation aligned with `web/src/sim/engine.ts`:
-  message fragments with every Earth reply, `cooldownSols`, cold-night rule, ending-value definitions. Harness: all 7 endings
-  reachable on the story and live windows.
-- Features in: title menu, story mission, Today's real sky (LIVE DONKI fetch, fallback ARCHIVED), Replay history, **Explore the outpost**
-  (third-person walk, Mars-gravity jump, info points), Cadet/Commander, power board, events, storm scene with timer, night report with
-  real units, reveal, endings with **rocket launch**, debrief with badges, ending gallery, pause/settings (text size, graphics preset,
-  window/fullscreen, volume, less motion), synthesised audio, keyboard/gamepad/mouse.
-- Captures on the builder's Mac: `desktop/Captures/stills/*.png` (3840×2160), `desktop/Captures/video/*.mp4` (1080p clips +
-  `PlutonyX_desktop_montage.mp4`, 29 s). **These are not in git** — the builder must send them to the Web lead.
-- **Nothing is pushed.** Local `main` = web lead's commits + 11 desktop commits + 1 merge. `gh` is installed but not logged in.
+- Realism pass (Sun afternoon): every outpost model rebuilt in code with `Editor/MeshKit.cs` — habitat modules with flanges, portholes,
+  airlock and porch; greenhouse; air maker; solar field; storm shelter; dish; six-wheeled rover; launch pad with service tower;
+  ascent ship (engines, legs, bands, portholes); jointed astronauts (`Scripts/Game/AstronautRig.cs`). Poly Haven scanned rocks.
+  AO, contact shadows, grain, vignette. Launch has a flame core, pad dust, camera shake and a pitch-over. Windows/lamps/greenhouse
+  glow at night and in dust; shield emitters glow in the storm. Terrain heights get a light blur (removes 1 m terraces).
+- Simulation and game flow unchanged since the morning: title menu, story mission, Today's real sky (LIVE DONKI, fallback ARCHIVED),
+  Replay history, Explore, Cadet/Commander, power board, events, storm scene, night report, reveal, 7 endings with launch, debrief,
+  badges, gallery, pause/settings, synthesised audio, keyboard/gamepad/mouse.
+- Captures (not in git, on the builder's Mac): `Captures/stills/*.png` (14 × 3840×2160), `Captures/video/*.mp4` (14 clips, 1080p) +
+  `PlutonyX_desktop_montage.mp4` (29 s). **The builder must send them to the Web lead.**
+- Release notes text: `docs/RELEASE_NOTES.md`.
 
-## How to run things (from `desktop/`)
+## How to run things (from `desktop/`) — use ABSOLUTE paths for the player's folders and log file
 ```
-tools/unity.sh -executeMethod PlutonyX.EditorTools.WorldBuilder.BuildWorld     # regenerate scene + generated assets (needed after clone)
+python3 tools/fetch_textures.py && python3 tools/fetch_models.py               # once after a clone (CC0 textures and rocks)
+tools/unity.sh -executeMethod PlutonyX.EditorTools.WorldBuilder.BuildWorld     # regenerate scene + generated assets
 tools/unity.sh -executeMethod PlutonyX.EditorTools.BuildPipeline.BuildMac | BuildWin
-Build/mac/PlutonyX.app/Contents/MacOS/PlutonyX -autoplay Captures/auto -difficulty commander -screen-width 1600 -screen-height 900 -screen-fullscreen 0
-Build/mac/PlutonyX.app/Contents/MacOS/PlutonyX -stills Captures/stills      # 4K stills, no UI   (add  -take <part of name>  for one take)
-Build/mac/PlutonyX.app/Contents/MacOS/PlutonyX -record Captures/video       # frame sequences; then tools/encode_clips.sh Captures/video
+P=Build/mac/PlutonyX.app/Contents/MacOS/PlutonyX; D="$PWD"
+$P -autoplay "$D/Captures/auto" -difficulty commander -screen-width 1600 -screen-height 900 -screen-fullscreen 0 -logFile "$D/Logs/player-auto.log"
+$P -stills "$D/Captures/stills" -logFile "$D/Logs/player-stills.log"          # 4K stills, no UI  (add  -take <part of name>)
+$P -record "$D/Captures/video"  -logFile "$D/Logs/player-record.log"          # then FFMPEG=... tools/encode_clips.sh Captures/video
 tools/harness/run.sh 1000        # simulation balance test without Unity
 tools/package.sh v1.0
+tools/out/final.sh               # the whole chain above in one go (local file, not in git)
 ```
+`tools/unity.sh -executeMethod PlutonyX.EditorTools.WorldBuilder.BuildAndTune` rebuilds and renders the shots listed in `tools/sky.json`
+into `Captures/c_*.png` (fast look-check without a player build; emissive windows look brighter there than in the game).
 
 ## Next 3 steps
-1. **Release** (blocked on login): `~/.local/bin/gh auth login`, then `git push origin main` and
-   `gh release create v1.0-desktop Build/release/*.zip Build/release/SHA256SUMS.txt --title "Desktop Ultra edition v1.0" --notes-file desktop/README.md`.
-   Then tell the Web lead the URL for `shared/design/game.json → links.desktopDownload`.
+1. **Release** (blocked: the logged-in token is fine-grained and is refused on push): `~/.local/bin/gh auth login -h github.com -p https`
+   (browser, or a classic token with `repo` scope), then `git push origin main` and
+   `gh release create v1.0-desktop Build/release/*.zip Build/release/SHA256SUMS.txt --title "Desktop Ultra edition v1.0" --notes-file docs/RELEASE_NOTES.md`
+   (run from `desktop/`). Then give the Web lead the URL for `shared/design/game.json → links.desktopDownload`.
 2. Get the Windows ZIP run once on a real PC; fix whatever it shows.
 3. Have two or three kids/adults play; note where they stall (nobody but the autoplay bot has played it).
 
 ## Known gaps (be blunt)
-- Outpost is original low-poly geometry made from primitives; no NASA 3D models (converting the web edition's GLBs needed an npm
-  install that the permission system blocked). No VFX Graph, Cinemachine or Timeline (custom camera and particle systems).
-- No save/continue, photo mode, key rebinding, read-aloud, classroom mode UI, SI portraits/postcards.
-- Live missions: flares/CMEs are live; forecasts (`marsForecasts`) are not fetched live; radiation is an estimate (labelled).
-- Quality presets exist but were never tested on weak hardware. Explore mode has simple circle collisions only.
+- Ground-track decals (`BuildGroundMarks`) are built but **do not show** in the game; cause not found. Harmless.
+- The Web lead's `shared/models/habitat.glb` / `ascent.glb` are not used (no glTF importer in the project); the desktop models are
+  similar in design but not the same meshes. Astronauts are stylised (simple jointed figures).
+- Scanned boulders are heavy (65–98 k triangles each, 26 of them) and the build grew to ~190 MB zipped; never tested on weak hardware.
+- No save/continue, photo mode, key rebinding, read-aloud, classroom mode UI, SI portraits/postcards, share card, resource graphs.
+- Live missions: flares/CMEs are live; forecasts are not fetched live; radiation is an estimate (labelled).
+- Some history replays cannot reach the `full`/`secret` endings on some difficulties (harness result).
 - Cross-edition numbers are aligned by reading the reference engine, not by shared test vectors.
 
 ## Known bugs / gotchas
+- The player ignores **relative** paths for `-stills/-record/-autoplay/-logFile` (exits at once): always pass absolute paths.
 - `git pull --rebase` fails here because generated, git-ignored files sit in `desktop/`: use `git merge origin/main` instead.
 - `VolumeProfile.Add<T>()` in editor code must be followed by `AssetDatabase.AddObjectToAsset`.
 - HDRP/Unlit ignores particle vertex colour: tint lives in the material; fade with size-over-lifetime.
-- Emissive materials use exposure weight 0 so they read the same at noon and at night; point lights are tuned for night exposure.
-- Only one Unity batch process at a time. The project path has a space: quote it.
+- Emissive materials use exposure weight 0; `WorldDirector` scales the window/lamp/shield materials at run time (shared materials).
+- Do not edit scripts while a Unity batch run is in progress. Only one Unity batch process at a time. The project path has a space.
 - DONKI host: `https://ccmc.gsfc.nasa.gov/DONKI/WS/get/<TYPE>` (no key).
 
 ## Waiting on team
-- **Builder:** GitHub login; send captures to the Web lead; Windows PC test.
-- **Web lead:** put the release URL in `game.json`; final title.
+- **Builder:** GitHub login that can push; send captures to the Web lead; Windows PC test.
+- **Web lead:** put the release URL in `game.json`; merge `desktop/docs/references-desktop.md` rows into `shared/references.md`.
 
 ## Do NOT redo
-- Terrain pipeline, sky tuning (`tools/sky.json`), Core simulation, build/capture tooling.
+- Terrain pipeline, sky tuning (`tools/sky.json`), Core simulation, build/capture tooling, the model toolkit.
 
 ## Self-grade, desktop part (1–5)
-Impact 3 · Creativity 4 · Validity 3 (no human playtest, Windows untested) · Relevance 4 · Presentation 3 (real terrain and launch help; simple models hurt)
+Impact 3 · Creativity 4 · Validity 3 (no human playtest, Windows untested) · Relevance 4 · Presentation 4 (real terrain, detailed outpost, launch)

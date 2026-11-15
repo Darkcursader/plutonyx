@@ -38,6 +38,16 @@ namespace PlutonyX.EditorTools
             for (int y = 0; y < res; y++)            // row 0 = south edge = Unity z 0
                 for (int x = 0; x < res; x++) { heights[y, x] = (raw[i] | (raw[i + 1] << 8)) / 65535f; i += 2; }
 
+            // The source DTM stores whole-metre steps, which show up as terraces on gentle slopes. A light Gaussian
+            // blur (about 30 m) removes the steps; the shape of the land is unchanged at the scale of the data (20 m).
+            float[] kernel = { 0.0625f, 0.25f, 0.375f, 0.25f, 0.0625f };
+            var tmp = new float[res, res];
+            for (int pass = 0; pass < 2; pass++)
+            {
+                for (int y = 0; y < res; y++) for (int x = 0; x < res; x++) { float a = 0; for (int k = -2; k <= 2; k++) a += heights[y, Mathf.Clamp(x + k, 0, res - 1)] * kernel[k + 2]; tmp[y, x] = a; }
+                for (int y = 0; y < res; y++) for (int x = 0; x < res; x++) { float a = 0; for (int k = -2; k <= 2; k++) a += tmp[Mathf.Clamp(y + k, 0, res - 1), x] * kernel[k + 2]; heights[y, x] = a; }
+            }
+
             var td = new TerrainData();
             td.heightmapResolution = res;
             td.size = new Vector3((float)meta["size_x_m"].Num(), (float)meta["relief_m"].Num(), (float)meta["size_z_m"].Num());

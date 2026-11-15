@@ -23,20 +23,14 @@ namespace PlutonyX.Game
         public float LastJumpHeight { get; private set; }
         float _yaw = 326f, _pitch = 12f, _dist = 8f, _vy, _air, _walkPhase, _jumpStartY, _peak;
         bool _grounded = true;
-        readonly List<Transform> _legs = new List<Transform>(), _arms = new List<Transform>();
-        readonly Dictionary<Transform, Vector3> _basePos = new Dictionary<Transform, Vector3>();
-        static void Swing(Transform t, Vector3 basePos, float pivotUp, float degrees)
-        {   // rotate a limb about its top end (hip or shoulder), not its middle
-            Quaternion q = Quaternion.Euler(degrees, 0, 0); Vector3 pivot = basePos + Vector3.up * pivotUp;
-            t.localPosition = pivot + q * (basePos - pivot); t.localRotation = q;
-        }
+        AstronautRig _rig;
         Vector3 _home;
 
         void Awake()
         {
             if (Player == null) return;
             _home = Player.position;
-            foreach (Transform t in Player) { if (t.name == "Leg") _legs.Add(t); if (t.name == "Arm") _arms.Add(t); _basePos[t] = t.localPosition; }
+            _rig = Player.GetComponent<AstronautRig>();
             Player.gameObject.SetActive(false);
         }
 
@@ -105,13 +99,12 @@ namespace PlutonyX.Game
 
             // ---- a simple stride: legs and arms swing while walking ----
             float moving = _grounded ? dir.magnitude : 0f;
-            _walkPhase += moving * speed * dt * 2.6f;
-            float swing = Mathf.Sin(_walkPhase) * 38f * Mathf.Clamp01(moving * 2f);
-            for (int i = 0; i < _legs.Count; i++) Swing(_legs[i], _basePos[_legs[i]], 0.4f, (i % 2 == 0 ? swing : -swing) + (_grounded ? 0 : (i % 2 == 0 ? 25f : -15f)));
-            for (int i = 0; i < _arms.Count; i++) Swing(_arms[i], _basePos[_arms[i]], 0.33f, (i % 2 == 0 ? -swing : swing) * 0.8f + (_grounded ? 0 : -150f));
+            _walkPhase += moving * speed * dt * (run ? 1.5f : 2.3f);
+            if (_rig != null) _rig.Pose(_walkPhase, Mathf.Clamp01(moving * (run ? 1.25f : 0.8f)), !_grounded);
+            if (_grounded && moving > 0.1f) { Vector3 pp = Player.position; pp.y += Mathf.Abs(Mathf.Sin(_walkPhase)) * (run ? 0.10f : 0.04f); Player.position = pp; }
 
             // ---- camera follows ----
-            Vector3 target = p + Vector3.up * 1.5f;
+            Vector3 target = p + Vector3.up * 1.35f;
             Vector3 camPos = target + Quaternion.Euler(_pitch, _yaw, 0) * new Vector3(0, 0, -_dist);
             float cg = Ground(camPos) + 0.6f; if (camPos.y < cg) camPos.y = cg;
             Cam.transform.position = Vector3.Lerp(Cam.transform.position, camPos, 1f - Mathf.Exp(-dt * 10f));

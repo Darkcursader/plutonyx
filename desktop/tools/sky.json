@@ -1,4 +1,4 @@
-{ "tag": "c", "shots": ["title", "outpost", "greenhouse", "shelter", "pad", "flyover_end"], "airR": 0.0005, "airG": 0.0009, "airB": 0.0018, "airTint": [1,1,1], "airMaxAlt": 45000,
+{ "tag": "c", "shots": ["title", "outpost", "cu_hab", "cu_crew", "cu_rover", "cu_ship", "cu_air", "cu_dish", "cu_solar", "greenhouse", "shelter", "pad", "garage"], "airR": 0.0005, "airG": 0.0009, "airB": 0.0018, "airTint": [1,1,1], "airMaxAlt": 45000,
   "aerosol": 0.16, "aerosolTint": [0.80, 0.62, 0.46], "aerosolMaxAlt": 26000, "anisotropy": 0.5,
   "groundTint": [0.38, 0.25, 0.18], "horizonTint": [1,1,1], "zenithTint": [1,1,1], "hzShift": 0, "saturation": 1, "ozone": 0,
   "fogMfp": 26000, "fogTint": [1, 0.86, 0.72], "fogMaxH": 9000, "ev": 12.4, "sunLux": 60000, "sunColor": [1, 0.96, 0.9], "sunAz": 120, "sunEl": 32 }

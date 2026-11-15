@@ -29,6 +29,8 @@ namespace PlutonyX.EditorTools
             var sun = sunGo.AddComponent<Light>();
             sun.type = LightType.Directional; sun.shadows = LightShadows.Soft; sun.color = new Color(1f, 0.93f, 0.84f);
             var hdSun = sunGo.AddComponent<HDAdditionalLightData>();
+            hdSun.useContactShadow.useOverride = true; hdSun.useContactShadow.@override = true;
+            hdSun.shadowResolution.useOverride = true; hdSun.shadowResolution.@override = 4096;
             sun.lightUnit = LightUnit.Lux; sun.intensity = 42000f;
             hdSun.angularDiameter = 0.35f; hdSun.interactsWithSky = true; hdSun.affectsVolumetric = true;
             SetSun(sunGo.transform, 100f, 18f);
@@ -77,8 +79,15 @@ namespace PlutonyX.EditorTools
             var exposure = profile.Add<Exposure>(true);
             exposure.mode.Override(ExposureMode.Fixed); exposure.fixedExposure.Override(13.2f);
             var tone = profile.Add<Tonemapping>(true); tone.mode.Override(TonemappingMode.ACES);
-            var bloom = profile.Add<Bloom>(true); bloom.intensity.Override(0.18f); bloom.threshold.Override(1.0f);
-            var shadows = profile.Add<HDShadowSettings>(true); shadows.maxShadowDistance.Override(900f);
+            var bloom = profile.Add<Bloom>(true); bloom.intensity.Override(0.22f); bloom.threshold.Override(1.0f); bloom.scatter.Override(0.72f);
+            var shadows = profile.Add<HDShadowSettings>(true); shadows.maxShadowDistance.Override(700f);
+            shadows.cascadeShadowSplitCount.Override(4); shadows.cascadeShadowSplit0.Override(0.035f); shadows.cascadeShadowSplit1.Override(0.11f); shadows.cascadeShadowSplit2.Override(0.32f);
+            // grounding: soft shadowing in creases and where things meet the ground, plus a gentle lens finish
+            var ao = profile.Add<ScreenSpaceAmbientOcclusion>(true); ao.intensity.Override(1.6f); ao.radius.Override(2.4f); ao.directLightingStrength.Override(0.25f);
+            var contact = profile.Add<ContactShadows>(true); contact.enable.Override(true); contact.length.Override(0.12f); contact.maxDistance.Override(160f);
+            var micro = profile.Add<MicroShadowing>(true); micro.enable.Override(true); micro.opacity.Override(1f);
+            var vig = profile.Add<Vignette>(true); vig.intensity.Override(0.22f); vig.smoothness.Override(0.45f);
+            var grain = profile.Add<FilmGrain>(true); grain.type.Override(FilmGrainLookup.Thin1); grain.intensity.Override(0.14f); grain.response.Override(0.8f);
             var color = profile.Add<ColorAdjustments>(true); color.contrast.Override(8f); color.saturation.Override(-4f); color.colorFilter.Override(Color.white);
             foreach (VolumeComponent c in profile.components) { c.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy; AssetDatabase.AddObjectToAsset(c, profile); }
             EditorUtility.SetDirty(profile);
