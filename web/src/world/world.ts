@@ -78,7 +78,7 @@ export class World {
       const gl = r.getContext();
       const ext = gl.getExtension('WEBGL_debug_renderer_info');
       const name = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : '';
-      if (/swiftshader|llvmpipe|software|mali-[4t]|adreno \(tm\) [3-5]|powervr|intel.*(hd graphics [2-6]|uhd graphics 6[0-2]\d\b)|celeron|pentium/i.test(name)) return 'low';
+      if (/swiftshader|llvmpipe|software|mali-[4t]|adreno \(tm\) [3-5]|powervr|intel.*hd graphics [2-6]|celeron|pentium/i.test(name)) return 'low';
       if (/rtx|radeon rx [6-9]|radeon pro|apple m[1-9]|arc\(tm\) a[57]/i.test(name)) return 'ultra';
       if (matchMedia('(pointer: coarse)').matches) return 'low';
     } catch { /* fall through */ }
@@ -259,8 +259,27 @@ export class World {
     const loop = () => { requestAnimationFrame(loop); const dt = Math.min(0.05, this.clock.getDelta()); if (!this.manual) this.step(dt); };
     loop();
   }
+  /**
+   * Keeps the game smooth on weak laptops: if the frame rate stays low, effects are switched off step by step
+   * (ambient occlusion first, then extra pixels, then shadows and particles). The picture stays at native
+   * sharpness on the Low step 1; nothing is ever upscaled from a tiny canvas.
+   */
+  degradeLevel = 0; private fpsT = 0; private fpsN = 0;
+  private watchFps(dt: number) {
+    if (this.manual || this.photo || document.hidden) return;
+    this.fpsT += dt; this.fpsN++;
+    if (this.fpsN < 150) return;
+    const fps = this.fpsN / this.fpsT; this.fpsT = 0; this.fpsN = 0;
+    if (fps >= 24 || this.degradeLevel >= 3) return;
+    this.degradeLevel++;
+    if (this.degradeLevel === 1) { if (this.ao) this.ao.enabled = false; this.grade.bloom.intensity = 0.35; }
+    if (this.degradeLevel === 2) { this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1)); this.composer.setSize(innerWidth, innerHeight); this.dustPts.visible = false; }
+    if (this.degradeLevel === 3) { this.sun.castShadow = false; this.renderer.shadowMap.enabled = false; this.terrain.uniforms.uDetail.value = 0.6; }
+    console.info('[quality] low frame rate (' + fps.toFixed(0) + ' fps): effects step ' + this.degradeLevel);
+  }
   step(dt: number) {
     {
+      this.watchFps(dt);
       this.time += dt;
       if (this.todT < 1) { this.todT = Math.min(1, this.todT + dt / this.todDur); this.tod = this.todFrom + (this.todTo - this.todFrom) * ease(this.todT); if (this.todT >= 1) this.tod %= 1; }
       this.dust += (this.dustTo - this.dust) * Math.min(1, dt * 0.8);

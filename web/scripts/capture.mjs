@@ -21,14 +21,20 @@ const want = process.argv.slice(2);
 const on = (name) => !want.length || want.includes(name);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const browser = await chromium.launch({ headless: false, args: [`--window-size=${W},${H + 90}`, '--force-device-scale-factor=1', '--ignore-gpu-blocklist', '--enable-gpu-rasterization', '--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding', '--disable-background-timer-throttling', '--disable-features=CalculateNativeWinOcclusion'] });
+const browser = await chromium.launch({ headless: false, args: [`--window-size=${W},${H + 90}`, '--force-device-scale-factor=1', '--ignore-gpu-blocklist', '--enable-gpu-rasterization', '--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding', '--disable-background-timer-throttling', '--disable-features=CalculateNativeWinOcclusion', '--force_high_performance_gpu'] });
 const page = await (await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 })).newPage();
 page.on('pageerror', (e) => console.error('PAGE ERROR', e.message));
 await page.goto(BASE + '?capture=1&q=high', { waitUntil: 'load' });
 await page.waitForFunction(() => window.__cap?.ready === true, null, { timeout: 120000 });
 console.log('game ready');
 
+/** Stop early if the 3D view is blank (lost graphics context or a hidden window) instead of recording white frames. */
+async function sanity(where) {
+  const r = await page.evaluate(() => { const w = window.__cap.world, gl = w.renderer.getContext(); window.__cap.step(1 / 30); const p = new Uint8Array(4); gl.readPixels(Math.floor(gl.drawingBufferWidth / 2), Math.floor(gl.drawingBufferHeight * 0.75), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, p); return { lost: gl.isContextLost(), p: [...p] }; });
+  if (r.lost || (r.p[0] > 250 && r.p[1] > 250 && r.p[2] > 250) || r.p[3] === 0) throw new Error('3D view is blank at ' + where + ': ' + JSON.stringify(r));
+}
 async function clip(name, seconds, { ui = true } = {}) {
+  await page.bringToFront(); await sanity(name);
   const dir = path.join(OUT, name); fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true });
   await page.evaluate((v) => { document.getElementById('ui').style.visibility = v ? '' : 'hidden'; }, ui);
   const n = Math.round(seconds * FPS), t0 = Date.now();
