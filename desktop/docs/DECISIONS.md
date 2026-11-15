@@ -24,3 +24,5 @@ One line each, newest at the bottom. Don't re-debate these; add a new line if on
 | Sun 15 Nov 15:10 | Rocks: Poly Haven CC0 scans as FBX (`tools/fetch_models.py`), heavy scans limited to 26 hero boulders | Same rocks as the web edition (already in shared references); keeps triangle count sane |
 | Sun 15 Nov 17:25 | Terrain heights get two passes of a 5-tap Gaussian blur at import | Source DTM is quantised to whole metres, which showed as terraces; the blur is below the 20 m data resolution |
 | Sun 15 Nov 17:25 | Windows, lamps and the greenhouse glow follow night/dust; shield emitters follow the storm | Emissive surfaces looked like flat cream discs in daylight |
+| Sun 15 Nov 20:00 | Active Input Handling = Both (was Input Manager only) | Game code uses the Input System package; with the old setting the keyboard and gamepad were dead in the player |
+| Sun 15 Nov 20:00 | Keep "NASA" in data credits, facts and the event name; no "HASA" rename | Builder's choice after being shown that the brief requires real data to be attributed |

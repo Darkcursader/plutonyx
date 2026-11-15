@@ -31,6 +31,9 @@ namespace PlutonyX.EditorTools
             PlayerSettings.resizableWindow = true;
             PlayerSettings.runInBackground = true;
             PlayerSettings.visibleInBackground = true;
+            // the game reads keyboard, mouse and gamepad through the Input System package: "Both" keeps it and the old manager active
+            var ps = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);
+            SerializedProperty aih = ps.FindProperty("activeInputHandler"); if (aih != null) { aih.intValue = 2; ps.ApplyModifiedProperties(); }
 
             string path = SettingsDir + "/HDRP_Ultra.asset";
             var asset = AssetDatabase.LoadAssetAtPath<HDRenderPipelineAsset>(path);

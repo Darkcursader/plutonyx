@@ -52,6 +52,7 @@ namespace PlutonyX.Game
         {
             _design = design;
             Narrator.Load();
+            Debug.Log("[PlutonyX] input devices: keyboard " + (Keyboard.current != null) + ", mouse " + (Mouse.current != null) + ", gamepad " + (Gamepad.current != null));
             _root = Document.rootVisualElement;
             _root.Clear();
             _root.AddToClassList("root");
@@ -668,6 +669,7 @@ namespace PlutonyX.Game
                 yield return null;
             }
             _center.Remove(col);
+            Debug.Log("[PlutonyX] title choice " + chosen + " (" + options[chosen] + ")");
             result(chosen);
             yield return null;
         }
