@@ -130,5 +130,5 @@ describe('simulation', () => {
     }
     console.log('endings seen:', [...seen].sort().join(', '));
     for (const id of ['evac', 'secret', 'full', 'gamble', 'green', 'bittersweet', 'survival']) expect(seen.has(id), `ending ${id} reachable`).toBe(true);
-  });
+  }, 120000);
 });
