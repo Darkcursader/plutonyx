@@ -19,6 +19,7 @@ labels them ARCHIVED.
   (live for "Today's real sky", archived for the story of the May 2024 storm); Curiosity RAD surface dose rates.
 - After each mission: a chart of how your supplies changed, the turning points, and a mission card with a code a friend can
   type to fly the same mission.
+- Optional read-aloud (press Esc → Read aloud): your computer's own voice reads the story, choices and menus.
 - Explore mode: walk the outpost in third person and jump under real Mars gravity.
 - A detailed outpost: habitat, greenhouse, oxygen plant, solar field, storm shelter, radio dish, pressurised rover and an
   ascent ship that launches at the end of every mission.

@@ -38,6 +38,7 @@ terrain and data shown as real are real NASA products, never SI-generated.
   The terrain heights get a light 30 m blur to remove the whole-metre steps of the source DTM.
 - Debrief shows a chart of air, power, food, health and dose per sol with the turning points; a mission card (ending + code,
   no personal data) can be saved as a picture; a friend can type the code under Replay history.
+- Optional read-aloud (Esc menu): the computer's own speech voice reads the story, choices and menus. No recorded voices.
 - Not in the desktop edition: save/continue, photo mode, SI art (portraits/postcards), NASA 3D models.
 - Captures for the demo (new look, made Sun 17:30–17:40): 14 stills in `desktop/Captures/stills/*.png` (3840×2160) and 14 clips +
   a 29 s montage in `desktop/Captures/video/*.mp4` (1080p), on the builder's Mac (not in git).

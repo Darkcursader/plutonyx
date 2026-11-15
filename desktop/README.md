@@ -71,6 +71,9 @@ radiation measurement exists for recent dates, so live missions use an estimate 
 storm sols replay the archived 20 May 2024 storm, labelled ARCHIVED. **ARCHIVED:** without internet, or for the story
 and history missions, the bundled real records are used and labelled ARCHIVED.
 
+**Read aloud.** Press Esc and switch on *Read aloud*: the computer's own built-in speech voice (macOS `say`, Windows speech)
+reads the dialogue, cards, choices and menus. It is off by default. No voice recordings ship with the game.
+
 ## Build from source
 
 Requires Unity **6000.6.9f1** with Windows Build Support (Mono), Python 3.9+.

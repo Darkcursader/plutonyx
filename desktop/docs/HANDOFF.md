@@ -1,12 +1,12 @@
 # HANDOFF — where we left off
 
-**Last updated:** Sun 15 Nov 2026, 19:25 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
+**Last updated:** Sun 15 Nov 2026, 19:45 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
 
 ## State right now
 - **Playable, built, tested, packaged with the new realistic look.** `Build/mac/PlutonyX.app`, `Build/win/PlutonyX/PlutonyX.exe`;
-  ZIPs + `SHA256SUMS.txt` in `Build/release/` (built 19:22 by `tools/package.sh v1.0`):
-  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `ba01c0bb34ff34ff241de90a2fe06b6cfeb511f4d8dd4d729768b15cd81a13fb`
-  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `3186fda8e1d46e85bb45d1d541d43bbe21d17353f4ece4f709233c48488032e1`
+  ZIPs + `SHA256SUMS.txt` in `Build/release/` (built 19:43 by `tools/package.sh v1.0`):
+  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `c839893efc324b25286d9cef2b73cae18e729c058d574fc934d390de41edffd3`
+  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `d6060d0773652cbb5a92de29bfab10662f2a0ebf507499af93769823322371fa`
 - macOS build passed a full autoplay mission (68 screens, re-run at 19:20 on the final build), the stills run and the recording run with **0 exceptions** in the player logs.
   **The Windows build has never been run on a PC.**
 - Realism pass (Sun afternoon): every outpost model rebuilt in code with `Editor/MeshKit.cs` — habitat modules with flanges, portholes,
@@ -18,6 +18,11 @@
   **mission card** (ending, code, numbers; "Save picture" writes a PNG to Pictures/PlutonyX); **Enter a mission code** under Replay
   history (same window + seed = same mission). The chart and card are verified in autoplay screenshots; **"Save picture" and code
   entry were never exercised** (autoplay skips them).
+- Added Sun 19:40: optional **Read aloud** (Esc menu, off by default) — `Scripts/Game/Narrator.cs`. Uses the computer's own voice:
+  macOS `say`, Windows System.Speech through one hidden PowerShell process. Reads dialogue (with the speaker's name), info cards,
+  choices, the focused menu item, the power board, Explore info points and the mission card. Tested on macOS: a full autoplay with
+  `-narratortest` (silent, logs each line) read 140 lines with 0 exceptions; a run with it off read none. **The Windows voice was
+  never tried** (needs a Windows PC); if PowerShell or System.Speech is missing it fails quietly and the menu says "Not available".
 - Simulation unchanged since the morning: title menu, story mission, Today's real sky (LIVE DONKI, fallback ARCHIVED),
   Replay history, Explore, Cadet/Commander, power board, events, storm scene, night report, reveal, 7 endings with launch, debrief,
   badges, gallery, pause/settings, synthesised audio, keyboard/gamepad/mouse.
@@ -54,7 +59,7 @@ into `Captures/c_*.png` (fast look-check without a player build; emissive window
 - The Web lead's `shared/models/habitat.glb` / `ascent.glb` are not used (no glTF importer in the project); the desktop models are
   similar in design but not the same meshes. Astronauts are stylised (simple jointed figures).
 - Scanned boulders are heavy (65–98 k triangles each, 26 of them) and the build grew to ~190 MB zipped; never tested on weak hardware.
-- No save/continue, photo mode, key rebinding, read-aloud, classroom mode UI, SI portraits/postcards.
+- No save/continue, photo mode, key rebinding, classroom mode UI, SI portraits/postcards.
 - Live missions: flares/CMEs are live; forecasts are not fetched live; radiation is an estimate (labelled).
 - Some history replays cannot reach the `full`/`secret` endings on some difficulties (harness result).
 - Cross-edition numbers are aligned by reading the reference engine, not by shared test vectors.

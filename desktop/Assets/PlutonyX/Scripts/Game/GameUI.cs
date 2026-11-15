@@ -51,6 +51,7 @@ namespace PlutonyX.Game
         public void Init(Design design)
         {
             _design = design;
+            Narrator.Load();
             _root = Document.rootVisualElement;
             _root.Clear();
             _root.AddToClassList("root");
@@ -101,8 +102,18 @@ namespace PlutonyX.Game
         }
 
         // ------------------------------------------------------------------ input
+        void OnApplicationQuit() { Narrator.Shutdown(); }
+        string SpeakerName(string who)
+        {
+            if (string.IsNullOrEmpty(who) || who == "narrator") return "";
+            JsonValue c = _design.CrewMember(who);
+            return c.IsNull ? who : c["shortName"].Str(who);
+        }
+        string _exploreSpoken = "";
+
         void Update()
         {
+            Narrator.Muted = Auto || CaptureDirector.Active;
             Keyboard k = Keyboard.current; Gamepad g = Gamepad.current;
             if (!Paused && !Auto && ((k != null && k.escapeKey.wasPressedThisFrame) || (g != null && g.startButton.wasPressedThisFrame))) StartCoroutine(PauseMenu());
             if (Paused) { _advance = false; return; }
@@ -192,7 +203,11 @@ namespace PlutonyX.Game
             if (on && _explore.parent == null) _root.Insert(_root.IndexOf(_center), _explore);
             if (!on && _explore.parent != null) _root.Remove(_explore);
         }
-        public void ExploreInfo(string title, string text, string hint) { _exploreTitle.text = title; _exploreText.text = text; _exploreHint.text = hint; }
+        public void ExploreInfo(string title, string text, string hint)
+        {
+            _exploreTitle.text = title; _exploreText.text = text; _exploreHint.text = hint;
+            if (title != _exploreSpoken) { _exploreSpoken = title; if (!string.IsNullOrEmpty(title)) Narrator.Speak(title + ". " + text); }
+        }
 
         // ------------------------------------------------------------------ dialogue
         public IEnumerator Say(IList<Line> lines)
@@ -210,6 +225,7 @@ namespace PlutonyX.Game
                 speaker.text = CrewName(l.Who); speaker.style.color = CrewColor(l.Who);
                 speaker.style.display = string.IsNullOrEmpty(speaker.text) ? DisplayStyle.None : DisplayStyle.Flex;
                 text.text = l.Say; clicked = false;
+                string who = SpeakerName(l.Who); Narrator.Speak(who.Length > 0 ? who + ": " + l.Say : l.Say);
                 if (Audio != null) { if (l.Who == "sam") Audio.Message(); else Audio.Advance(); }
                 yield return null;
                 float waited = 0;
@@ -294,6 +310,7 @@ namespace PlutonyX.Game
         {
             VisualElement card = Card(heading, null, null);
             card.Add(Text(body, "body"));
+            Narrator.Speak(heading + ". " + body);
             var field = new TextField { maxLength = 24 }; field.style.fontSize = 28; field.style.marginTop = 10; field.style.marginBottom = 10; card.Add(field);
             int done = 0;
             var row = new VisualElement(); row.style.flexDirection = FlexDirection.Row; row.style.justifyContent = Justify.FlexEnd;
@@ -317,6 +334,7 @@ namespace PlutonyX.Game
             card.Add(Text(ending, "h1"));
             Label codeLabel = Text("Mission code   " + code, "h1"); codeLabel.style.color = new Color(0.95f, 0.78f, 0.27f); codeLabel.style.marginTop = 6; codeLabel.style.marginBottom = 8; card.Add(codeLabel);
             foreach (string f in facts) card.Add(Text(f, "body"));
+            Narrator.Speak("Mission card. " + ending + ". Mission code " + string.Join(" ", code.ToCharArray()) + ".");
             Label note = Text("A friend can type this code under Replay history to fly the very same mission. This card holds no personal data.", "small"); card.Add(note);
             int done = 0; bool saving = false;
             var row = new VisualElement(); row.style.flexDirection = FlexDirection.Row; row.style.justifyContent = Justify.FlexEnd; row.style.marginTop = 12;
@@ -364,6 +382,7 @@ namespace PlutonyX.Game
             foreach (string p in paragraphs) if (!string.IsNullOrEmpty(p)) scroll.Add(Text(p, "body"));
             card.Add(scroll);
             if (!string.IsNullOrEmpty(footer)) card.Add(Text(footer, "small"));
+            Narrator.Speak(heading + ". " + string.Join(". ", paragraphs));
             bool done = false;
             var b = new Button(() => done = true) { text = button }; b.AddToClassList("btn"); b.AddToClassList("btn-primary"); b.style.alignSelf = Align.FlexEnd; b.style.marginTop = 12;
             card.Add(b);
@@ -397,6 +416,12 @@ namespace PlutonyX.Game
                 if (on && focus < 0) focus = i;
             }
             float t = 0;
+            {
+                var said = new System.Text.StringBuilder(heading ?? ""); said.Append(". ");
+                if (intro != null) foreach (string p in intro) said.Append(p).Append(". ");
+                for (int i = 0; i < options.Count; i++) said.Append("Choice ").Append(i + 1).Append(": ").Append(options[i]).Append(". ");
+                Narrator.Speak(said.ToString());
+            }
             yield return null;
             yield return AutoCapture(crisis ? "storm" : "choice");
             if (Auto) chosen = Mathf.Max(0, focus);
@@ -406,6 +431,7 @@ namespace PlutonyX.Game
                 if (dy != 0 && buttons.Count > 0)
                 {
                     for (int n = 0; n < buttons.Count; n++) { focus = (focus + dy + buttons.Count) % buttons.Count; if (buttons[focus].enabledSelf) break; }
+                    Narrator.Speak((focus + 1) + ": " + options[focus] + (details != null && focus < details.Count ? ". " + details[focus] : ""));
                 }
                 for (int i = 0; i < buttons.Count; i++) buttons[i].EnableInClassList("focus", i == focus);
                 int digit = DigitPressed();
@@ -430,7 +456,7 @@ namespace PlutonyX.Game
         static readonly string[] QualityNames = { "Low", "Medium", "High", "Ultra" };
         IEnumerator PauseMenu()
         {
-            Paused = true;
+            Paused = true; Narrator.Stop();
             VisualElement veil = Box("center"); veil.style.backgroundColor = new Color(0, 0, 0, 0.55f);
             VisualElement card = Box("panel", "card"); card.style.width = 720; veil.Add(card);
             card.Add(Text("Paused", "h1"));
@@ -449,6 +475,7 @@ namespace PlutonyX.Game
                         "Display:  " + (Screen.fullScreen ? "Fullscreen" : "Window"),
                         "Volume:  " + Mathf.RoundToInt(AudioListener.volume * 100) + "%",
                         "Less motion:  " + (ReducedMotion ? "On" : "Off"),
+                        "Read aloud:  " + (!Narrator.Available ? "Not available here" : Narrator.Enabled ? "On" : "Off"),
                         "Quit to desktop" };
                     for (int i = 0; i < labels.Length; i++)
                     {
@@ -458,7 +485,7 @@ namespace PlutonyX.Game
                     }
                 }
                 Keyboard k = Keyboard.current; Gamepad g = Gamepad.current;
-                int dy = MoveY(); if (dy != 0) focus = (focus + dy + buttons.Count) % buttons.Count;
+                int dy = MoveY(); if (dy != 0) { focus = (focus + dy + buttons.Count) % buttons.Count; Narrator.Speak(buttons[focus].text); }
                 for (int i = 0; i < buttons.Count; i++) buttons[i].EnableInClassList("focus", i == focus);
                 if (_advanceConsumed) { PauseAction(focus, ref close); rebuild = true; }
                 if ((k != null && k.escapeKey.wasPressedThisFrame) || (g != null && (g.startButton.wasPressedThisFrame || g.buttonEast.wasPressedThisFrame))) close = true;
@@ -484,7 +511,11 @@ namespace PlutonyX.Game
                     break;
                 case 4: { float v = AudioListener.volume <= 0.05f ? 1f : AudioListener.volume - 0.25f; AudioListener.volume = Mathf.Max(0f, v); PlayerPrefs.SetFloat("volume", AudioListener.volume); break; }
                 case 5: ReducedMotion = !ReducedMotion; PlayerPrefs.SetInt("reducedMotion", ReducedMotion ? 1 : 0); if (World != null) World.ReducedMotion = ReducedMotion; break;
-                case 6: PlayerPrefs.Save(); Application.Quit(); break;
+                case 6:
+                    Narrator.SetEnabled(!Narrator.Enabled);
+                    if (Narrator.Enabled) Narrator.Speak("Read aloud is on. The computer's own voice will read the story and the choices.", true);
+                    break;
+                case 7: PlayerPrefs.Save(); Narrator.Shutdown(); Application.Quit(); break;
             }
             PlayerPrefs.Save();
         }
@@ -521,6 +552,7 @@ namespace PlutonyX.Game
         {
             Allocation a = m.Alloc.Clone();
             VisualElement card = Card("Power board  ·  Sol " + m.Sol, null, null);
+            Narrator.Speak("Power board, sol " + m.Sol + ". Up and down picks a system, left and right gives it less or more power. Then confirm.");
             Label budget = Text("", "body"); card.Add(budget);
             card.Add(Text("Water " + N(m.Get("water")) + "   ·   Food " + N(m.Get("food")) + "   ·   Plants " + N(m.Get("plants")) + "   ·   Science " + N(m.Get("science")) +
                           "   ·   Crew health " + N(m.Get("health")) + "   ·   Morale " + N(m.Get("morale")), "small"));
@@ -627,9 +659,10 @@ namespace PlutonyX.Game
             yield return null;
             yield return AutoCapture("title");
             if (Auto) chosen = AutoTitleIndex;
+            Narrator.Speak(title + ". " + subtitle + ". " + options[0]);
             while (chosen < 0)
             {
-                int dy = MoveY(); if (dy != 0) focus = (focus + dy + buttons.Count) % buttons.Count;
+                int dy = MoveY(); if (dy != 0) { focus = (focus + dy + buttons.Count) % buttons.Count; Narrator.Speak(options[focus]); }
                 for (int i = 0; i < buttons.Count; i++) buttons[i].EnableInClassList("focus", i == focus);
                 if (Advance) chosen = focus;
                 yield return null;
