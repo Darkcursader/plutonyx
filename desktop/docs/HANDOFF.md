@@ -1,12 +1,12 @@
 # HANDOFF — where we left off
 
-**Last updated:** Sun 15 Nov 2026, 20:55 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
+**Last updated:** Sun 15 Nov 2026, 21:05 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
 
 ## State right now
 - **Playable, built, tested, packaged with the new realistic look.** `Build/mac/PlutonyX.app`, `Build/win/PlutonyX/PlutonyX.exe`;
   ZIPs + `SHA256SUMS.txt` in `Build/release/` (built 19:43 by `tools/package.sh v1.0`):
-  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `934d3cca37f65944f3c243a4de1a5240c37862993814d4917ca877ce2748d138`
-  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `5a81c8cc92caba264c2daabfd4cd857def4cf90ae49a58db59bae1f0bfa5d8b7`
+  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `db66af42d414b3447cf41f96e37ecf30392e6d8cc70e94b22cc6215e9d2d7ab3`
+  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `6bd9302cb2d3642146f21836ef3beca3bb556c446a16b1e690c1e2e53615b599`
 - macOS build passed a full autoplay mission (68 screens, re-run at 19:20 on the final build), the stills run and the recording run with **0 exceptions** in the player logs.
   **The Windows build has never been run on a PC.**
 - Realism pass (Sun afternoon): every outpost model rebuilt in code with `Editor/MeshKit.cs` — habitat modules with flanges, portholes,
@@ -31,6 +31,8 @@
   `Scripts/Game/Keys.cs`, which accepts a key if EITHER the Input System or the classic Input Manager sees it. `-keylog` writes every
   key press (both systems, window focus) and Explore positions to the log; `tools/keytest.command` (double-click) starts the Mac
   build with it, log in `Logs/player-keys.log`. **Not yet confirmed by a human key test.**
+- Sun 21:00: merged the Web lead's agency-neutral `/shared` text; rebuilt; autoplay 68 screens, 0 exceptions; harness OK.
+  Desktop-only C# strings (credits, badges, captions, Explore facts) still name NASA where they credit real data.
 - Builder decided Sun 20:00: keep "NASA" wherever it names real data, missions or the event (no rename to "HASA").
 - Simulation unchanged since the morning: title menu, story mission, Today's real sky (LIVE DONKI, fallback ARCHIVED),
   Replay history, Explore, Cadet/Commander, power board, events, storm scene, night report, reveal, 7 endings with launch, debrief,
