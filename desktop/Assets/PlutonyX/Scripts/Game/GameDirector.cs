@@ -328,8 +328,8 @@ namespace PlutonyX.Game
             while (true)
             {
                 var k = UnityEngine.InputSystem.Keyboard.current; var g = UnityEngine.InputSystem.Gamepad.current;
-                if (!UI.Paused && ((k != null && (k.backspaceKey.wasPressedThisFrame || k.tabKey.wasPressedThisFrame)) || (g != null && g.buttonEast.wasPressedThisFrame))) break;
-                if ((k != null && k.tKey.wasPressedThisFrame) || (g != null && g.buttonNorth.wasPressedThisFrame)) { hourIndex = (hourIndex + 1) % hours.Length; World.SetTime(hours[hourIndex]); }
+                if (!UI.Paused && (((Keys.Down(UnityEngine.InputSystem.Key.Backspace) || Keys.Down(UnityEngine.InputSystem.Key.Tab))) || (g != null && g.buttonEast.wasPressedThisFrame))) break;
+                if ((Keys.Down(UnityEngine.InputSystem.Key.T)) || (g != null && g.buttonNorth.wasPressedThisFrame)) { hourIndex = (hourIndex + 1) % hours.Length; World.SetTime(hours[hourIndex]); }
                 ExploreController.Spot near = Explore.Near;
                 string jump = Explore.LastJumpHeight > 0.3f
                     ? "Your last jump: " + Explore.LastJumpHeight.ToString("0.0", CultureInfo.InvariantCulture) + " m. The same push on Earth: " +

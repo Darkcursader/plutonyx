@@ -115,10 +115,11 @@ namespace PlutonyX.Game
         void Update()
         {
             Narrator.Muted = Auto || CaptureDirector.Active;
+            Keys.LogFrame();
             Keyboard k = Keyboard.current; Gamepad g = Gamepad.current;
-            if (!Paused && !Auto && ((k != null && k.escapeKey.wasPressedThisFrame) || (g != null && g.startButton.wasPressedThisFrame))) StartCoroutine(PauseMenu());
+            if (!Paused && !Auto && ((Keys.Down(Key.Escape)) || (g != null && g.startButton.wasPressedThisFrame))) StartCoroutine(PauseMenu());
             if (Paused) { _advance = false; return; }
-            if ((k != null && (k.spaceKey.wasPressedThisFrame || k.enterKey.wasPressedThisFrame || k.numpadEnterKey.wasPressedThisFrame))
+            if (((Keys.Down(Key.Space) || Keys.Down(Key.Enter) || Keys.Down(Key.NumpadEnter)))
                 || (g != null && g.buttonSouth.wasPressedThisFrame)) _advance = true;
         }
         void LateUpdate() { _advanceConsumed = _advance; _advance = false; }
@@ -127,8 +128,8 @@ namespace PlutonyX.Game
         static int MoveY()
         {
             Keyboard k = Keyboard.current; Gamepad g = Gamepad.current;
-            if (k != null && (k.downArrowKey.wasPressedThisFrame || k.sKey.wasPressedThisFrame)) return 1;
-            if (k != null && (k.upArrowKey.wasPressedThisFrame || k.wKey.wasPressedThisFrame)) return -1;
+            if ((Keys.Down(Key.DownArrow) || Keys.Down(Key.S))) return 1;
+            if ((Keys.Down(Key.UpArrow) || Keys.Down(Key.W))) return -1;
             if (g != null && g.dpad.down.wasPressedThisFrame) return 1;
             if (g != null && g.dpad.up.wasPressedThisFrame) return -1;
             return 0;
@@ -136,18 +137,18 @@ namespace PlutonyX.Game
         static int MoveX()
         {
             Keyboard k = Keyboard.current; Gamepad g = Gamepad.current;
-            if (k != null && (k.rightArrowKey.wasPressedThisFrame || k.dKey.wasPressedThisFrame)) return 1;
-            if (k != null && (k.leftArrowKey.wasPressedThisFrame || k.aKey.wasPressedThisFrame)) return -1;
+            if ((Keys.Down(Key.RightArrow) || Keys.Down(Key.D))) return 1;
+            if ((Keys.Down(Key.LeftArrow) || Keys.Down(Key.A))) return -1;
             if (g != null && g.dpad.right.wasPressedThisFrame) return 1;
             if (g != null && g.dpad.left.wasPressedThisFrame) return -1;
             return 0;
         }
         static int DigitPressed()
         {
-            Keyboard k = Keyboard.current; if (k == null) return 0;
-            if (k.digit1Key.wasPressedThisFrame) return 1; if (k.digit2Key.wasPressedThisFrame) return 2;
-            if (k.digit3Key.wasPressedThisFrame) return 3; if (k.digit4Key.wasPressedThisFrame) return 4;
-            if (k.digit5Key.wasPressedThisFrame) return 5; if (k.digit6Key.wasPressedThisFrame) return 6;
+            Keyboard k = Keyboard.current;
+            if (Keys.Down(Key.Digit1)) return 1; if (Keys.Down(Key.Digit2)) return 2;
+            if (Keys.Down(Key.Digit3)) return 3; if (Keys.Down(Key.Digit4)) return 4;
+            if (Keys.Down(Key.Digit5)) return 5; if (Keys.Down(Key.Digit6)) return 6;
             return 0;
         }
 
@@ -320,7 +321,7 @@ namespace PlutonyX.Game
             card.Add(row);
             yield return null; field.Focus();
             yield return AutoCapture("prompt");
-            while (done == 0 && !Auto) { if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame) done = 1; if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) done = 2; yield return null; }
+            while (done == 0 && !Auto) { if (Keys.Down(Key.Enter)) done = 1; if (Keys.Down(Key.Escape)) done = 2; yield return null; }
             string text = field.value;
             _center.Remove(card);
             result(done == 1 && !string.IsNullOrEmpty(text) ? text.Trim() : null);
@@ -489,9 +490,9 @@ namespace PlutonyX.Game
                 int dy = MoveY(); if (dy != 0) { focus = (focus + dy + buttons.Count) % buttons.Count; Narrator.Speak(buttons[focus].text); }
                 for (int i = 0; i < buttons.Count; i++) buttons[i].EnableInClassList("focus", i == focus);
                 if (_advanceConsumed) { PauseAction(focus, ref close); rebuild = true; }
-                if ((k != null && k.escapeKey.wasPressedThisFrame) || (g != null && (g.startButton.wasPressedThisFrame || g.buttonEast.wasPressedThisFrame))) close = true;
+                if ((Keys.Down(Key.Escape)) || (g != null && (g.startButton.wasPressedThisFrame || g.buttonEast.wasPressedThisFrame))) close = true;
                 // Update() skips reading "continue" while paused, so read it here
-                _advance = (k != null && (k.spaceKey.wasPressedThisFrame || k.enterKey.wasPressedThisFrame)) || (g != null && g.buttonSouth.wasPressedThisFrame);
+                _advance = ((Keys.Down(Key.Space) || Keys.Down(Key.Enter))) || (g != null && g.buttonSouth.wasPressedThisFrame);
                 yield return null;
             }
             _root.Remove(veil);

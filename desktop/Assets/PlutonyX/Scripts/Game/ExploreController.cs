@@ -23,7 +23,7 @@ namespace PlutonyX.Game
         public float LastJumpHeight { get; private set; }
         float _yaw = 326f, _pitch = 12f, _dist = 8f, _vy, _air, _walkPhase, _jumpStartY, _peak;
         bool _grounded = true;
-        AstronautRig _rig;
+        AstronautRig _rig; float _lastLog;
         Vector3 _home;
 
         void Awake()
@@ -55,7 +55,7 @@ namespace PlutonyX.Game
 
             // ---- camera orbit: Q/E or right mouse drag or right stick ----
             float turn = 0f, tilt = 0f;
-            if (k != null) { if (k.qKey.isPressed) turn -= 1f; if (k.eKey.isPressed) turn += 1f; }
+            { if (Keys.Held(Key.Q)) turn -= 1f; if (Keys.Held(Key.E)) turn += 1f; }
             if (g != null) { Vector2 rs = g.rightStick.ReadValue(); turn += rs.x; tilt -= rs.y; }
             if (m != null && m.rightButton.isPressed) { Vector2 d = m.delta.ReadValue(); turn += d.x * 0.12f; tilt -= d.y * 0.12f; }
             if (m != null) _dist = Mathf.Clamp(_dist - m.scroll.ReadValue().y * 0.01f, 4f, 22f);
@@ -63,15 +63,15 @@ namespace PlutonyX.Game
 
             // ---- movement relative to the camera ----
             Vector2 move = Vector2.zero;
-            if (k != null)
+            {}
             {
-                if (k.wKey.isPressed || k.upArrowKey.isPressed) move.y += 1; if (k.sKey.isPressed || k.downArrowKey.isPressed) move.y -= 1;
-                if (k.dKey.isPressed || k.rightArrowKey.isPressed) move.x += 1; if (k.aKey.isPressed || k.leftArrowKey.isPressed) move.x -= 1;
+                if (Keys.Held(Key.W) || Keys.Held(Key.UpArrow)) move.y += 1; if (Keys.Held(Key.S) || Keys.Held(Key.DownArrow)) move.y -= 1;
+                if (Keys.Held(Key.D) || Keys.Held(Key.RightArrow)) move.x += 1; if (Keys.Held(Key.A) || Keys.Held(Key.LeftArrow)) move.x -= 1;
             }
             if (g != null) move += g.leftStick.ReadValue();
             move += AutoMove;
             if (move.sqrMagnitude > 1f) move.Normalize();
-            bool run = (k != null && k.leftShiftKey.isPressed) || (g != null && g.rightTrigger.ReadValue() > 0.3f);
+            bool run = (Keys.Held(Key.LeftShift)) || (g != null && g.rightTrigger.ReadValue() > 0.3f);
             Quaternion camYaw = Quaternion.Euler(0, _yaw, 0);
             Vector3 dir = camYaw * new Vector3(move.x, 0, move.y);
             Vector3 p = Player.position;
@@ -86,7 +86,7 @@ namespace PlutonyX.Game
 
             // ---- jumping under real Mars gravity ----
             float ground = Ground(p);
-            bool jump = (k != null && k.spaceKey.wasPressedThisFrame) || (g != null && g.buttonSouth.wasPressedThisFrame) || AutoJump;
+            bool jump = (Keys.Down(Key.Space)) || (g != null && g.buttonSouth.wasPressedThisFrame) || AutoJump;
             AutoJump = false;
             if (_grounded && jump) { _vy = JumpSpeed; _grounded = false; _jumpStartY = p.y; _peak = p.y; }
             if (!_grounded)
@@ -96,6 +96,7 @@ namespace PlutonyX.Game
             }
             else p.y = ground;
             Player.position = p;
+            if (Time.time - _lastLog > 2f && dir.sqrMagnitude > 0.01f) { _lastLog = Time.time; Debug.Log("[PlutonyX] explore: walking, player at " + p.ToString("F1")); }
 
             // ---- a simple stride: legs and arms swing while walking ----
             float moving = _grounded ? dir.magnitude : 0f;

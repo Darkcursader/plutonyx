@@ -1,12 +1,12 @@
 # HANDOFF — where we left off
 
-**Last updated:** Sun 15 Nov 2026, 20:05 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
+**Last updated:** Sun 15 Nov 2026, 20:55 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
 
 ## State right now
 - **Playable, built, tested, packaged with the new realistic look.** `Build/mac/PlutonyX.app`, `Build/win/PlutonyX/PlutonyX.exe`;
   ZIPs + `SHA256SUMS.txt` in `Build/release/` (built 19:43 by `tools/package.sh v1.0`):
-  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `36bd779d350f18e93f482137ce2f63204be4493023d8121291b7eac6f94eb5de`
-  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `4e8a56c781db8f680b3be78bfd0da2da9aa5ddcb8dde56dad4c2577c7be96f5b`
+  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `934d3cca37f65944f3c243a4de1a5240c37862993814d4917ca877ce2748d138`
+  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `5a81c8cc92caba264c2daabfd4cd857def4cf90ae49a58db59bae1f0bfa5d8b7`
 - macOS build passed a full autoplay mission (68 screens, re-run at 19:20 on the final build), the stills run and the recording run with **0 exceptions** in the player logs.
   **The Windows build has never been run on a PC.**
 - Realism pass (Sun afternoon): every outpost model rebuilt in code with `Editor/MeshKit.cs` — habitat modules with flanges, portholes,
@@ -27,6 +27,10 @@
   (old Input Manager only) while all game code reads the Input System package, so `Keyboard.current` was null; only mouse clicks on
   buttons worked. Now `2` (Both); `ProjectSetup.Configure` enforces it. The player logs `input devices: keyboard True, mouse True` at
   start. Real key presses could not be sent from this session (macOS blocks synthetic keystrokes), so **a human must press keys once**.
+- Sun 20:45: builder reported keys still partly broken (menus work; Explore WASD/Space suspected). All key reads now go through
+  `Scripts/Game/Keys.cs`, which accepts a key if EITHER the Input System or the classic Input Manager sees it. `-keylog` writes every
+  key press (both systems, window focus) and Explore positions to the log; `tools/keytest.command` (double-click) starts the Mac
+  build with it, log in `Logs/player-keys.log`. **Not yet confirmed by a human key test.**
 - Builder decided Sun 20:00: keep "NASA" wherever it names real data, missions or the event (no rename to "HASA").
 - Simulation unchanged since the morning: title menu, story mission, Today's real sky (LIVE DONKI, fallback ARCHIVED),
   Replay history, Explore, Cadet/Commander, power board, events, storm scene, night report, reveal, 7 endings with launch, debrief,
