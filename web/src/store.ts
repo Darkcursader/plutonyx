@@ -3,7 +3,7 @@
 const KEY = 'plutonyx.v1';
 
 const defaults = {
-  settings: { quality: 'auto' as 'auto' | 'low' | 'high' | 'ultra', volume: 0.7, readAloud: false, textSize: 1, reducedMotion: false, colorBlind: false, planner: false },
+  settings: { quality: 'auto' as 'auto' | 'low' | 'high' | 'ultra', volume: 0.7, readAloud: false, textSize: 1, reducedMotion: false, colorBlind: false, planner: false, firstPerson: false },
   endings: {} as Record<string, boolean>,
   achievements: {} as Record<string, boolean>,
   missions: 0,

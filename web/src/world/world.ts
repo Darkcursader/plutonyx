@@ -8,7 +8,7 @@ import { EffectComposer, RenderPass, EffectPass, BloomEffect, SMAAEffect, ToneMa
 import { Terrain } from './terrain';
 import { Sky } from './sky';
 import { Outpost, type OutpostState } from './outpost';
-import { loadGround, loadRocks, loadRover } from './assets';
+import { loadGround, loadRocks, loadRover, loadHardware } from './assets';
 // @ts-ignore — n8ao ships without type declarations
 import { N8AOPostPass } from 'n8ao';
 
@@ -33,7 +33,11 @@ const SHOTS: Record<string, Shot> = {
   sky: { pos: [-36, 2.5, 34], look: [-10, 90, -220], fov: 52 },
   interior: { pos: [9, 5.6, -13], look: [0, 5.2, -37], fov: 26 },
   delta: { pos: [-16, 3.2, 12], look: [0, 2, 0], fov: 36, around: 'delta' },
-  launch: { pos: [70, 3, 150], look: [0, 60, 60], fov: 40 },
+  launch: { pos: [58, 2.0, 128], look: [0, 10, 60], fov: 36 },
+  beauty_hab: { pos: [13, 2.2, -19.5], look: [0, 4.4, -37], fov: 40 },
+  beauty_hab2: { pos: [-9.5, 1.7, -27.5], look: [2, 3.6, -40], fov: 42 },
+  beauty_ship: { pos: [10.5, 1.8, 73], look: [0, 7.2, 60], fov: 46 },
+  beauty_ship2: { pos: [-5.2, 1.6, 54.2], look: [0, 3.2, 60], fov: 44 },
 };
 
 export class World {
@@ -46,6 +50,8 @@ export class World {
   quality: Quality;
   reducedMotion = false;
   photo = false;
+  /** True while first-person mode drives the camera. */
+  external = false;
   private composer!: EffectComposer;
   private grade!: { hue: HueSaturationEffect; bc: BrightnessContrastEffect; vig: VignetteEffect; bloom: BloomEffect };
   private sun = new THREE.DirectionalLight(0xffffff, 3);
@@ -78,7 +84,8 @@ export class World {
       const gl = r.getContext();
       const ext = gl.getExtension('WEBGL_debug_renderer_info');
       const name = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : '';
-      if (/swiftshader|llvmpipe|software|mali-[4t]|adreno \(tm\) [3-5]|powervr|intel.*hd graphics [2-6]|celeron|pentium/i.test(name)) return 'low';
+      // integrated graphics start on Low: measured about 10 fps on High with Intel UHD
+      if (/swiftshader|llvmpipe|software|mali|adreno|powervr|celeron|pentium/i.test(name) || (/intel/i.test(name) && !/arc/i.test(name))) return 'low';
       if (/rtx|radeon rx [6-9]|radeon pro|apple m[1-9]|arc\(tm\) a[57]/i.test(name)) return 'ultra';
       if (matchMedia('(pointer: coarse)').matches) return 'low';
     } catch { /* fall through */ }
@@ -88,16 +95,17 @@ export class World {
   async init(base: string, onProgress: (p: number, label: string) => void) {
     const q = this.quality;
     onProgress(0.1, 'Reading the real elevation of Jezero Crater');
-    await this.terrain.load(base, q === 'ultra' ? 1023 : q === 'high' ? 767 : 383, Math.min(16, this.renderer.capabilities.getMaxAnisotropy()));
+    await this.terrain.load(base, q === 'ultra' ? 1023 : q === 'high' ? 767 : 255, Math.min(q === 'low' ? 4 : 16, this.renderer.capabilities.getMaxAnisotropy()), q === 'low');
     onProgress(0.6, 'Building Lakeshore Outpost');
     const aniso = Math.min(16, this.renderer.capabilities.getMaxAnisotropy());
     onProgress(0.45, 'Laying down scanned ground and rocks');
-    const [ground, rocks, rover] = await Promise.all([loadGround(base, aniso).catch(() => null), loadRocks(base), loadRover(base)]);
+    const [ground, rocks, rover, hardware] = await Promise.all([loadGround(base, aniso).catch(() => null), loadRocks(base), loadRover(base), /[?&]hw=0/.test(location.search) ? Promise.resolve({ habitat: null, ascent: null }) : loadHardware(base)]);
     if (ground) this.terrain.setGround(ground);
     this.scene.add(this.terrain.mesh, this.sky.mesh);
     this.outpost = new Outpost((x, z) => this.terrain.heightAt(x, z));
-    this.outpost.scatterRocks(rocks, q === 'ultra' ? 1700 : q === 'high' ? 1100 : 450);
+    this.outpost.scatterRocks(rocks, q === 'ultra' ? 1700 : q === 'high' ? 1100 : 320);
     if (rover) this.outpost.addExplorer(rover);
+    this.outpost.useHardware(hardware.habitat, hardware.ascent);
     // persistent rover tracks and boot prints around the base
     const T = this.terrain; T.uniforms.uTrackRect.value.set(-128, -158, 256, 256);
     T.track([[-8, -10], [-18, -4], [-44, 1], [-80, -8], [-127, -30]]); T.track([[-8, -10], [-5, 8], [-1, 30], [0, 44]]); T.track([[-17, 1], [-30, 14], [-60, 40], [-110, 70]], 2.2, 0.4);
@@ -154,7 +162,7 @@ export class World {
     const noise = new NoiseEffect({ blendFunction: BlendFunction.OVERLAY, premultiply: false }); noise.blendMode.opacity.value = 0.09;
     const tone = new ToneMappingEffect({ mode: ToneMappingMode.ACES_FILMIC });
     this.grade = { hue, bc, vig, bloom };
-    const fx = q === 'low' ? [new SMAAEffect(), tone, hue, bc, vig] : [bloom, tone, hue, bc, vig, noise, new SMAAEffect()];
+    const fx = q === 'low' ? [tone, hue, bc, vig] : [bloom, tone, hue, bc, vig, noise, new SMAAEffect()];
     this.composer.addPass(new EffectPass(this.camera, ...fx));
     this.resize();
     addEventListener('resize', () => this.resize());
@@ -165,7 +173,7 @@ export class World {
 
   resize() {
     const w = innerWidth, h = innerHeight;
-    const cap = this.quality === 'ultra' ? 3 : this.quality === 'high' ? 2 : 1.5;
+    const cap = this.quality === 'ultra' ? 3 : this.quality === 'high' ? 2 : 1;
     this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, cap));
     this.renderer.setSize(w, h, false);
     this.composer?.setSize(w, h); this.ao?.setSize?.(w, h);
@@ -287,7 +295,7 @@ export class World {
       this.dustU.uTime.value = this.time;
       this.applySun();
       const c = this.cam;
-      if (!this.photo) {
+      if (!this.photo && !this.external) {
         if (c.orbit) {
           const o = c.orbit; o.a += dt * o.speed * (this.reducedMotion ? 0.25 : 1);
           const x = o.c.x + Math.cos(o.a) * o.r, z = o.c.z + Math.sin(o.a) * o.r;
@@ -309,7 +317,7 @@ export class World {
       }
       const fs = innerWidth > 900 ? this.frameShift : 0;
       if (Math.abs(fs - this.frameNow) > 0.0005) { this.frameNow += (fs - this.frameNow) * Math.min(1, dt * 3); const w = innerWidth, h = innerHeight; if (this.frameNow < 0.001) this.camera.clearViewOffset(); else this.camera.setViewOffset(w, h, this.frameNow * w, 0, w, h); }
-      if (this.launchT >= 0) { this.launchT = Math.min(1, this.launchT + dt / 16); this.outpost.launch(this.launchT); if (!c.orbit) c.look.y += dt * (this.launchT * 60); }
+      if (this.launchT >= 0) { this.launchT = Math.min(1, this.launchT + dt / 16); this.outpost.launch(this.launchT); if (!c.orbit) c.look.y = Math.max(c.look.y, this.outpost.ship.getWorldPosition(new THREE.Vector3()).y * 0.86 + 12); }
       if (this.pending) this.outpost.setState({ ...this.pending, night: this.nightAmount, dust: this.dust, storm: this.storm });
       this.outpost.update(this.time, this.earthDir);
       this.terrain.uniforms.uFrost.value += ((this.pending?.frost ? 1 : 0) - this.terrain.uniforms.uFrost.value) * 0.02;

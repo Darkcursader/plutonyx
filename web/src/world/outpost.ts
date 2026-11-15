@@ -6,6 +6,7 @@
  * vent plume = Air Maker, rover on its pad = Dil is home, dusty panels = less sunlight.
  */
 import * as THREE from 'three';
+import { hardwareMaterials, dress } from './hardware';
 
 export interface OutpostState {
   power: number; shield: number; plants: number; plantsDead: boolean;
@@ -147,7 +148,7 @@ export class Outpost {
     const cyl = (r1: number, r2: number, h: number, seg = 32) => new THREE.CylinderGeometry(r1, r2, h, seg);
 
     // ---------------- core habitat: two-storey drum on legs
-    const hab = new THREE.Group();
+    const hab = new THREE.Group(); this.habGroup = hab;
     hab.add(M(cyl(5.4, 5.4, 6.4, 64), hull, 0, 4.9, 0));
     hab.add(M(new THREE.SphereGeometry(5.4, 64, 16, 0, Math.PI * 2, 0, Math.PI / 2).scale(1, 0.32, 1), hull2, 0, 8.1, 0));
     hab.add(M(cyl(5.2, 4.4, 0.7, 64), dark, 0, 1.4, 0));
@@ -362,6 +363,25 @@ void main(){ float fres = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2)
   }
 
   private fallbackRocks: THREE.Object3D | null = null;
+  private habGroup!: THREE.Group;
+
+  /**
+   * Replace the stand-in habitat and rocket with the detailed Blender-built models (bevelled, panelled,
+   * riveted, with baked occlusion and wear). Windows keep the power-reactive emissive glass.
+   */
+  useHardware(habitat: THREE.Object3D | null, ascent: THREE.Object3D | null) {
+    if (habitat) {
+      for (const c of [...this.habGroup.children]) if (!(c as THREE.Light).isLight) this.habGroup.remove(c);
+      dress(habitat, hardwareMaterials(this.dustHull, this.habGroup.position.y, this.windows));
+      this.habGroup.add(habitat);
+    }
+    if (ascent) {
+      for (const c of [...this.ship.children]) if (c !== this.shipFlame) this.ship.remove(c);
+      const y = this.ship.getWorldPosition(new THREE.Vector3()).y;
+      dress(ascent, hardwareMaterials(this.dustHull, y, this.windows));
+      this.ship.add(ascent); this.shipFlame.position.y = -3.9;
+    }
+  }
 
   /** Keep-out circles [x, z, radius] so rocks never sit inside buildings, the pad or the solar field. */
   private static CLEAR: [number, number, number][] = [[0, -38, 13], [13, -39, 9], [-22, -44, 12], [20, -52, 15], [38, -8, 22], [-34, -14, 5], [10, -30, 6], [-8, -10, 7], [0, 60, 19], [-16, 0, 5]];

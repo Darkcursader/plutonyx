@@ -151,6 +151,7 @@ export class Screens {
       row('Text size', 'Bigger words for smaller readers.', seg('textSize', [[1, '100%'], [1.2, '120%'], [1.4, '140%']])),
       row('Reduced motion', 'Calmer camera, no particles on the interface.', seg('reducedMotion', [[false, 'Off'], [true, 'On']])),
       row('Colour-blind patterns', 'Adds patterns and underlines so colour is never the only signal.', seg('colorBlind', [[false, 'Off'], [true, 'On']])),
+      row('Play style', 'First person (beta): walk the outpost as an astronaut with a hand-held tablet. Needs a mouse and keyboard, or a gamepad.', seg('firstPerson', [[false, 'Command view'], [true, 'First person']])),
       row('Mission Planner view', 'Shows real units: kilowatt-hours, kilograms of oxygen, micrograys.', seg('planner', [[false, 'Off'], [true, 'On']])),
       extra ?? null,
       h('div', { class: 'actions' }, this.b('Done', 'primary', () => { scr.remove(); if (st.quality !== (this as any).q0) location.reload(); })));

@@ -45,6 +45,14 @@ if (want('rocks')) {
     console.log('rock', id, (fs.statSync(path.join(out, id + '.glb')).size / 1048576).toFixed(2), 'MB');
   }
 }
+if (want('hardware')) {
+  const out = path.join(WEB, 'public', 'models'); fs.mkdirSync(out, { recursive: true });
+  for (const f of ['habitat', 'ascent']) {
+    // meshopt only: a full "optimize" would merge our materials and drop the UVs and baked colours
+    gt(`meshopt "${path.join(CACHE, 'blender_out', f + '.glb')}" "${path.join(out, f + '.glb')}"`);
+    console.log('hardware', f, (fs.statSync(path.join(out, f + '.glb')).size / 1048576).toFixed(2), 'MB');
+  }
+}
 if (want('nasa')) {
   const out = path.join(WEB, 'public', 'models'); fs.mkdirSync(out, { recursive: true });
   for (const f of (process.env.NASA_MODELS || '').split(',').filter(Boolean)) {

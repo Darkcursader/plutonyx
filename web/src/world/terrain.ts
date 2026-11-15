@@ -38,6 +38,10 @@ const MAP = /* glsl */ `
   gP = vWPos.xz;
   gHero = uGround * uDetail * (1.0 - smoothstep(160.0, 1100.0, dist));
   gMix = 0.35 + 0.45 * smoothstep(12.0, 140.0, dist);
+#ifdef LITE
+  gWB = 0.0; gWC = 0.0;
+  if (gHero > 0.002) { vec3 a = texture2D(tAd, gP / 3.6).rgb / uAvgA; float rl = dot(a, vec3(0.3333)); tint *= mix(vec3(1.0), clamp(mix(vec3(rl), a, 0.22), 0.15, 2.4), gHero); }
+#else
   gWB = smoothstep(0.40, 0.62, fbm(gP * 0.013));
   gWC = smoothstep(0.58, 0.74, fbm(gP * 0.031 + 31.7)) * 0.85;
   float macro = 0.80 + 0.40 * fbm(gP * 0.0045 + 7.3);
@@ -54,23 +58,29 @@ const MAP = /* glsl */ `
     float near = uDetail * (1.0 - uGround) * (1.0 - smoothstep(60.0, 1400.0, dist));
     tint *= 1.0 + near * ((fbm(gP * 0.9) * 0.6 + fbm(gP * 0.11) * 0.4 - 0.5) * 0.55);
   }
+#endif
   // rover tracks and footprints stamped around the base
   vec2 tuv = (gP - uTrackRect.xy) / uTrackRect.zw;
   gTrack = (tuv.x > 0.0 && tuv.x < 1.0 && tuv.y > 0.0 && tuv.y < 1.0) ? texture2D(tTracks, tuv).r : 0.0;
   tint *= 1.0 - gTrack * 0.38;
   tint = mix(tint, vec3(0.52, 0.34, 0.22), uDust * 0.35);
-  tint = mix(tint, vec3(0.78, 0.84, 0.90), uFrost * smoothstep(0.35, 0.8, fbm(gP * 0.35)) * 0.55);
+  if (uFrost > 0.001) tint = mix(tint, vec3(0.78, 0.84, 0.90), uFrost * smoothstep(0.35, 0.8, fbm(gP * 0.35)) * 0.55);
   diffuseColor.rgb = tint;
 }`;
 
 const ROUGH = /* glsl */ `
+#ifndef LITE
 if (gHero > 0.002) {
   float ra = texture2D(tAr, gP / 3.6).g, rb = texture2D(tBr, gP / 4.4).g, rc = texture2D(tCr, gP / 6.5).g;
   roughnessFactor = mix(roughnessFactor, clamp(mix(mix(ra, rb, gWB), rc, gWC), 0.6, 1.0), gHero);
-}`;
+}
+#endif`;
 
 const NORMAL = /* glsl */ `
 { // scanned micro-relief in the hero zone, procedural grain elsewhere (neither is elevation data)
+#ifdef LITE
+  if (gHero > 0.002) { vec3 n = texture2D(tAn, gP / 3.6).xyz * 2.0 - 1.0; normal = normalize(normal + (viewMatrix * vec4(n.x * 1.5, 0.0, n.y * 1.5, 0.0)).xyz * gHero); }
+#else
   if (gHero > 0.002) {
     vec3 a = mix(texture2D(tAn, gP / 3.6).xyz, texture2D(tAn, gP / 21.0 + 0.37).xyz, gMix) * 2.0 - 1.0;
     vec3 b = mix(texture2D(tBn, gP / 4.4).xyz, texture2D(tBn, gP / 26.0 + 0.11).xyz, gMix) * 2.0 - 1.0;
@@ -88,6 +98,7 @@ const NORMAL = /* glsl */ `
     float hz = fbm((gP + vec2(0.0, e)) * 0.9) - fbm((gP - vec2(0.0, e)) * 0.9);
     normal = normalize((viewMatrix * vec4(-hx, 0.0, -hz, 0.0)).xyz * 2.2 * near + normal);
   }
+#endif
 }`;
 
 export class Terrain {
@@ -137,7 +148,7 @@ export class Terrain {
     }
   }
 
-  async load(base: string, segments: number, anisotropy: number): Promise<void> {
+  async load(base: string, segments: number, anisotropy: number, lite = false): Promise<void> {
     const [meta, blob] = await Promise.all([
       fetch(base + 'terrain/jezero.json').then((r) => r.json()),
       fetch(base + 'terrain/height.png').then((r) => r.blob()),
@@ -200,7 +211,7 @@ export class Terrain {
         .replace('#include <common>', '#include <common>\nvarying vec3 vWPos;')
         .replace('#include <begin_vertex>', '#include <begin_vertex>\nvWPos = position;');
       sh.fragmentShader = sh.fragmentShader
-        .replace('#include <common>', '#include <common>\n' + COMMON)
+        .replace('#include <common>', '#include <common>\n' + (lite ? '#define LITE\n' : '') + COMMON)
         .replace('#include <map_fragment>', '#include <map_fragment>\n' + MAP)
         .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\n' + ROUGH)
         .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>\n' + NORMAL);

@@ -64,6 +64,8 @@ export class UI {
   private modeEl = h('div', { class: 'badge' });
   private badgeEl = h('span', {});
   private sparkleOn = 0;
+  /** Where pop-up cards are attached: the page, or the tablet screen in first person. */
+  overlayRoot!: HTMLElement;
 
   constructor(public root: HTMLElement, public hooks: UIHooks) {
     const wrist = h('div', { class: 'wrist glass', role: 'group', 'aria-label': 'Outpost systems' });
@@ -75,6 +77,7 @@ export class UI {
     wrist.append(h('div', { class: 'mini' }, this.badgeEl));
     const menuBtn = h('button', { class: 'btn small glass', 'aria-label': 'Pause menu', html: icon('menu'), onclick: () => hooks.openMenu() });
     this.hud.append(h('div', { class: 'topbar' }, h('div', { class: 'row' }, this.solEl, this.modeEl), menuBtn), wrist);
+    this.overlayRoot = root;
     root.append(this.fx.frost, this.fx.sparkle, this.hud, this.layer);
     this.sparkLoop();
   }
@@ -141,7 +144,7 @@ export class UI {
       h('table', { class: 'data', html: rows.join('') }), h('h3', {}, 'Sources'), h('ul', { html: src }),
       h('p', { style: 'color:var(--ui-dim);font-size:.85em' }, m.cfg.live ? 'Mode: LIVE NASA space weather.' : 'Mode: ARCHIVED real NASA data (a saved snapshot, not live).'),
       h('div', { class: 'actions' }, this.btn('Close', 'primary', () => scr.remove()))));
-    this.root.append(scr); (scr.querySelector('button') as HTMLElement).focus();
+    this.overlayRoot.append(scr); (scr.querySelector('button') as HTMLElement).focus();
   }
 
   // ---------------------------------------------------------------- HUD
