@@ -15,6 +15,8 @@ namespace PlutonyX.Game
         public GameUI UI;
         public WorldDirector World;
         public AudioDirector Audio;
+        public ActorsDirector Actors;
+        public ExploreController Explore;
         public const string Version = "1.0.0";
 
         Design _design;
@@ -26,7 +28,7 @@ namespace PlutonyX.Game
             Application.targetFrameRate = 60;
             GameData.Load();
             _design = GameData.Design;
-            UI.Audio = Audio; UI.World = World; World.Audio = Audio;
+            UI.Audio = Audio; UI.World = World; World.Audio = Audio; if (Actors != null) Actors.Audio = Audio;
             UI.Init(_design);
             _difficulty = PlayerPrefs.GetString("difficulty", "cadet");
             string[] args = Environment.GetCommandLineArgs();
@@ -41,7 +43,7 @@ namespace PlutonyX.Game
             if (CaptureDirector.Wanted(out capDir, out capVideo))
             {
                 UI.ShowHud(false); UI.Letterbox(false); UI.Caption("");
-                var cap = gameObject.AddComponent<CaptureDirector>(); cap.World = World;
+                var cap = gameObject.AddComponent<CaptureDirector>(); cap.World = World; cap.Actors = Actors; cap.Explore = Explore;
                 yield return cap.Run(capDir, capVideo);
                 yield break;
             }
@@ -59,6 +61,7 @@ namespace PlutonyX.Game
         // ------------------------------------------------------------------ title
         IEnumerator TitleScreen()
         {
+            World.Track = null; if (Actors != null) Actors.ResetAll();
             World.SetDust(0); World.SetStorm(0); World.SetTime(7.2f, true); World.Shot("title", true);
             UI.ShowHud(false); UI.Letterbox(false);
             JsonValue terrainCaption = JsonValue.Null;
@@ -68,7 +71,7 @@ namespace PlutonyX.Game
             WeatherDay latest = recent.Days[recent.Days.Count - 1];
             string sunNow = "The Sun on " + latest.Date + ": " + (latest.FlareLevel >= 2 ? "storming" : latest.FlareLevel == 1 ? "active" : "calm") +
                             (string.IsNullOrEmpty(latest.FlareMax) ? "" : "  ·  biggest flare " + latest.FlareMax) + "  ·  " + GameData.Badge(recent, live);
-            var options = new List<string> { "Play  ·  " + _design.Window("may-2024")["menuTitle"].Str("Mission One"), "Today's real sky", "Replay history",
+            var options = new List<string> { "Play  ·  " + _design.Window("may-2024")["menuTitle"].Str("Mission One"), "Today's real sky", "Replay history", "Explore the outpost",
                                              "Difficulty:  " + _design.Balance["difficulty"][_difficulty]["name"].Str(_difficulty), "Ending gallery", "Mission Science Log", "Credits and data", "Quit" };
             int pick = 0;
             yield return UI.Title(_design.Title, _design.Game["subtitle"].Str(), _design.Game["tagline"].Str(), options, i => pick = i, sunNow, live,
@@ -79,11 +82,12 @@ namespace PlutonyX.Game
                 case 0: yield return PlayMission("may-2024"); break;
                 case 1: yield return PlayMission("live"); break;
                 case 2: yield return HistoryMenu(); break;
-                case 3: _difficulty = _difficulty == "cadet" ? "commander" : "cadet"; PlayerPrefs.SetString("difficulty", _difficulty); break;
-                case 4: yield return Gallery(); break;
-                case 5: yield return ScienceLog(); break;
-                case 6: yield return Credits(); break;
-                case 7: Application.Quit(); break;
+                case 3: yield return ExploreMode(); break;
+                case 4: _difficulty = _difficulty == "cadet" ? "commander" : "cadet"; PlayerPrefs.SetString("difficulty", _difficulty); break;
+                case 5: yield return Gallery(); break;
+                case 6: yield return ScienceLog(); break;
+                case 7: yield return Credits(); break;
+                case 8: Application.Quit(); break;
             }
         }
 
@@ -134,7 +138,14 @@ namespace PlutonyX.Game
                 yield return UI.Info("Sol " + m.Sol + " of " + m.MissionSols + "  ·  dawn", notes, "Continue",
                                      dawn.Day.FlareLevel >= 1 || dawn.Day.MarsArrivals.Count > 0 ? "REAL NASA DATA" : null, "chip-real");
                 foreach (List<Line> msg in dawn.EarthMessages) { World.Shot("dish"); yield return UI.Say(msg); }
-                foreach (EventView note in dawn.NoteEvents) { World.Shot(note.Scene); yield return UI.Say(note.Lines); }
+                bool departs = false; foreach (EventView note in dawn.NoteEvents) if (note.Id == "dil_departs") departs = true;
+                if (Actors != null) { Actors.CrewToShelter(false); if (!departs) Actors.SetDilAway(m.Flag("dilInField"), !m.Flag("dilInField") && m.Sol > 1); }
+                foreach (EventView note in dawn.NoteEvents)
+                {
+                    if (note.Id == "dil_departs") { World.Shot("garage"); if (Actors != null) Actors.SetDilAway(true, true); }
+                    else World.Shot(note.Scene);
+                    yield return UI.Say(note.Lines);
+                }
                 if (dawn.Says.Count > 0) yield return UI.Say(dawn.Says);
                 if (m.Sol == 1)
                 {
@@ -155,7 +166,7 @@ namespace PlutonyX.Game
                 for (EventView e = m.NextEvent(); e != null; e = m.NextEvent())
                 {
                     World.Shot(e.Scene);
-                    if (e.IsCrisis) { World.SetStorm(1f); World.SetTime(17.85f); if (Audio != null && e.StepIndex == 0) Audio.Alarm(); }
+                    if (e.IsCrisis) { World.SetStorm(1f); World.SetTime(17.85f); if (Audio != null && e.StepIndex == 0) Audio.Alarm(); if (Actors != null) Actors.CrewToShelter(true); }
                     float timer = e.IsCrisis && m.Timers ? (float)_design.Balance["storm"]["stepSeconds"].Num(30) : 0f;
                     string choice = null;
                     yield return UI.Event(e, timer, c => choice = c);
@@ -217,7 +228,11 @@ namespace PlutonyX.Game
             var epilogue = new List<Line>();
             foreach (JsonValue l in e["epilogue"].Items) epilogue.Add(new Line("narrator", l.Str()));
             yield return UI.Info(e["title"].Str(end.Id), new[] { e["oneLine"].Str() }, "Continue", e["secret"].Bool() ? "SECRET ENDING" : "ENDING", "chip-arch");
+            // every ending brings the crew home: the ascent ship launches while the epilogue is told
+            World.Shot("pad_sunset_launch");
+            if (Actors != null) { Actors.SetDilAway(false, false); Actors.Launch(); World.Track = Actors.Ship; }
             yield return UI.Say(epilogue);
+            World.Track = null;
             JsonValue sci = e["science"];
             if (sci.IsObject) yield return UI.Info(sci["title"].Str("The real science behind your ending"), new[] { sci["text"].Str() }, "Continue", "THE REAL SCIENCE BEHIND YOUR ENDING", "chip-real");
             UI.Letterbox(false);
@@ -240,6 +255,31 @@ namespace PlutonyX.Game
             yield return UI.Info(_design.Dialogue["debrief"]["title"].Str("Mission debrief"), debrief, "Back to the title", null, null, _design.Dialogue["debrief"]["tryAgain"].Str());
             PlayerPrefs.SetInt("ending_" + end.Id, 1); PlayerPrefs.Save();
             yield return UI.Fade(true, 0.5f);
+        }
+
+        // ------------------------------------------------------------------ explore the outpost on foot
+        IEnumerator ExploreMode()
+        {
+            if (Explore == null) yield break;
+            float[] hours = { 8.5f, 12.5f, 17.4f, 21f }; int hourIndex = 0;
+            World.SetTime(hours[0], true); World.ExternalCamera = true; World.SetGrowLights(0.8f);
+            Explore.Begin(); UI.ExploreHud(true); UI.Caption("This is the real terrain of Jezero Crater, from NASA Mars Reconnaissance Orbiter data.");
+            yield return null;
+            while (true)
+            {
+                var k = UnityEngine.InputSystem.Keyboard.current; var g = UnityEngine.InputSystem.Gamepad.current;
+                if (!UI.Paused && ((k != null && (k.backspaceKey.wasPressedThisFrame || k.tabKey.wasPressedThisFrame)) || (g != null && g.buttonEast.wasPressedThisFrame))) break;
+                if ((k != null && k.tKey.wasPressedThisFrame) || (g != null && g.buttonNorth.wasPressedThisFrame)) { hourIndex = (hourIndex + 1) % hours.Length; World.SetTime(hours[hourIndex]); }
+                ExploreController.Spot near = Explore.Near;
+                string jump = Explore.LastJumpHeight > 0.3f
+                    ? "Your last jump: " + Explore.LastJumpHeight.ToString("0.0", CultureInfo.InvariantCulture) + " m. The same push on Earth: " +
+                      (Explore.LastJumpHeight * ExploreController.MarsGravity / ExploreController.EarthGravity).ToString("0.0", CultureInfo.InvariantCulture) + " m. Mars gravity is 3.73 m/s², 38% of Earth's."
+                    : "Try a jump. Mars pulls on you with only 38% of Earth's gravity.";
+                UI.ExploreInfo(near != null ? near.Title : "Lakeshore Outpost  ·  " + World.CurrentHour, near != null ? near.Text : jump,
+                               "Move: WASD / left stick   ·   Run: Shift / RT   ·   Jump: Space / A   ·   Look: Q E, right mouse or right stick   ·   Time of day: T / Y   ·   Back: Tab / B");
+                yield return null;
+            }
+            Explore.End(); UI.ExploreHud(false); World.ExternalCamera = false; UI.Caption("");
         }
 
         IEnumerator Gallery()

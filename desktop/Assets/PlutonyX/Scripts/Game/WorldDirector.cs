@@ -16,6 +16,8 @@ namespace PlutonyX.Game
         public Transform ShotsRoot;
         public bool ReducedMotion;
         public Light NightFill;
+        public bool ExternalCamera;                 // true while Explore mode drives the camera
+        public Transform Track;                     // when set, the camera keeps looking at this (the launching ship)
         public ParticleSystem StormParticles, DustParticles;
         public AudioDirector Audio;
         public Light ShieldLight;
@@ -64,6 +66,7 @@ namespace PlutonyX.Game
             if (Sun != null) Sun.shadows = q >= 1 ? LightShadows.Soft : LightShadows.Hard;
         }
 
+        public string CurrentHour { get { return _targetEl > 35f ? "midday" : _targetEl > 4f ? (_targetAz < 180f ? "morning" : "afternoon") : _targetEl > -6f ? "sunset" : "night"; } }
         public void Shot(string name, bool cut = false)
         {
             Transform t;
@@ -92,7 +95,7 @@ namespace PlutonyX.Game
         {
             float dt = Time.deltaTime;
             // camera: eased blend to the shot, then a slow drift so nothing is ever frozen
-            if (_shot != null)
+            if (_shot != null && !ExternalCamera)
             {
                 _shotTime += dt; _blend = Mathf.Min(1f, _blend + dt / 2.2f);
                 float e = _blend * _blend * (3f - 2f * _blend);
@@ -100,6 +103,7 @@ namespace PlutonyX.Game
                 Vector3 drift = ReducedMotion ? Vector3.zero : _shot.right * Mathf.Sin(_shotTime * 0.07f) * _shot.localScale.x + Vector3.up * Mathf.Sin(_shotTime * 0.05f) * _shot.localScale.y;
                 Vector3 pos = _shot.position + drift;
                 Quaternion rot = look != null ? Quaternion.LookRotation(look.position - pos) : _shot.rotation;
+                if (Track != null && Track.gameObject.activeInHierarchy) rot = Quaternion.Slerp(Cam.transform.rotation, Quaternion.LookRotation(Track.position + Vector3.up * 8f - pos), Time.deltaTime * 2.5f);
                 Cam.transform.position = Vector3.Lerp(_fromPos, pos, e);
                 Cam.transform.rotation = Quaternion.Slerp(_fromRot, rot, e);
                 Cam.fieldOfView = Mathf.Lerp(_fromFov, _shot.localScale.z > 5f ? _shot.localScale.z : 45f, e);

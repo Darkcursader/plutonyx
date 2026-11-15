@@ -7,7 +7,8 @@ Unity 6 with the High Definition Render Pipeline. It reads the very same design 
 records as the browser edition, so every mechanic, event and ending is identical. What it adds is the place itself:
 the real terrain of Jezero Crater at true scale, built from NASA Mars Reconnaissance Orbiter Context Camera elevation
 (20 m per pixel) and imagery (6 m per pixel), under a physically based Mars sky with butterscotch days, blue-tinted
-sunsets and dust storms that visibly starve the solar panels. During the storm of Sol 8 a Geiger counter crackles
+sunsets and dust storms that visibly starve the solar panels. Players can also explore the outpost on foot in third
+person and jump under the real gravity of Mars, and every ending shows the ascent ship actually launching. During the storm of Sol 8 a Geiger counter crackles
 and the picture fills with white specks, as the Curiosity rover's cameras really did on 20 May 2024. The simulation
 core is plain C# with no engine dependency; a command-line harness plays thousands of seeded missions with bot
 strategies to check the balance and that the endings are reachable. Windows and macOS builds are portable ZIPs
@@ -26,6 +27,7 @@ terrain and data shown as real are real NASA products, never SI-generated.
 
 - Download link (goes in `shared/design/game.json → links.desktopDownload`): see the GitHub release `v1.0-desktop`.
 - Tested: macOS build, full mission in autoplay, no runtime errors. **Windows build is cross-compiled and untested on real hardware.**
-- Not in the desktop edition yet: live DONKI fetch (uses the archived snapshot, labelled as such), save/continue,
-  photo mode, achievements screen, SI art (portraits/postcards).
+- In the desktop edition: live DONKI fetch with LIVE/ARCHIVED badges, Explore mode (third-person walk with real Mars gravity),
+  rocket launch in every ending, badges from `achievements.json`, ending gallery, pause/settings, keyboard + gamepad.
+- Not in the desktop edition: save/continue, photo mode, SI art (portraits/postcards), NASA 3D models (the outpost is original geometry).
 - Captures for the demo: `desktop/Captures/stills/*.png` (3840×2160) and `desktop/Captures/video/*.mp4` on the builder's Mac.

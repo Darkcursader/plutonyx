@@ -10,7 +10,7 @@ namespace PlutonyX.Game
     {
         const int Rate = 44100;
         AudioSource _wind, _hum, _calm, _tense, _sfx, _geiger;
-        AudioClip _click, _confirm, _alarm, _tick, _message, _advance;
+        AudioClip _click, _confirm, _alarm, _tick, _message, _advance, _rumble;
         float _dust, _storm, _danger, _night;
         float _alarmTimer;
         System.Random _rnd = new System.Random(7);
@@ -31,6 +31,7 @@ namespace PlutonyX.Game
             _message = Blip(new[] { 659.25f, 987.77f, 1318.5f }, 0.14f, 0.22f);
             _alarm = Blip(new[] { 587.33f, 587.33f, 587.33f }, 0.22f, 0.3f, true);
             _tick = Tick();
+            _rumble = RumbleClip(14f);
         }
 
         AudioSource Source(string name)
@@ -51,6 +52,21 @@ namespace PlutonyX.Game
         public void Confirm() { _sfx.PlayOneShot(_confirm); }
         public void Message() { _sfx.PlayOneShot(_message); }
         public void Alarm() { _sfx.PlayOneShot(_alarm); }
+        public void Rumble() { _sfx.PlayOneShot(_rumble, 1f); }
+
+        /// <summary>Rocket engine: deep filtered noise that swells at ignition and fades as the ship climbs away.</summary>
+        AudioClip RumbleClip(float seconds)
+        {
+            int n = (int)(seconds * Rate); var d = new float[n]; float lp = 0f, lp2 = 0f;
+            for (int i = 0; i < n; i++)
+            {
+                float t = i / (float)Rate, white = (float)_rnd.NextDouble() * 2f - 1f;
+                lp += (white - lp) * 0.06f; lp2 += (lp - lp2) * 0.12f;
+                float env = Mathf.Clamp01(t / 2f) * Mathf.Clamp01((seconds - t) / 8f);
+                d[i] = Mathf.Clamp((lp2 * 9f + Mathf.Sin(2 * Mathf.PI * 38f * t) * 0.25f) * env, -1f, 1f) * 0.8f;
+            }
+            return Make("rumble", d);
+        }
 
         void Update()
         {

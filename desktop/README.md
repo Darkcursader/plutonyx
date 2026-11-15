@@ -37,6 +37,7 @@ About 300 MB of disk space.
 | Move between choices | Arrow keys or W/S, or number keys 1–6 | D-pad |
 | Power board | Up/Down choose a machine, Left/Right change its level | D-pad |
 | Pause, settings | Esc | Start |
+| Explore mode | WASD move, Shift run, Space jump, Q/E or right mouse look, T time of day, Tab back | Sticks, RT run, A jump, Y time, B back |
 
 Pause menu: text size, graphics preset (Low / Medium / High / Ultra), window or fullscreen, volume, less motion.
 
@@ -45,6 +46,10 @@ Pause menu: text size, graphics preset (Low / Medium / High / Ultra), window or 
 - The **real terrain of Jezero Crater** at true scale (30 × 30 km, 1,195 m of relief) from NASA Mars Reconnaissance
   Orbiter Context Camera data, lit by a physically based Mars sky: butterscotch days, blue-tinted sunsets, dust storms
   that thicken the air and starve the solar panels.
+- **Explore the outpost on foot**: walk and run as the Commander in third person, and jump under the real gravity of
+  Mars (3.73 m/s², 38% of Earth's). Each building tells you what it is and one sourced fact.
+- The world moves: the ascent ship really launches in every ending, the rover drives out when Dil leaves for the
+  delta, and the crew walk to the shelter when the storm hits.
 - A day–night cycle, a storm scene at dusk with a Geiger counter that follows the storm, and camera "snow" like the
   specks charged particles left in Curiosity's images in May 2024.
 - Sound and music synthesised in code, keyboard + gamepad + mouse, 1080p to 4K with vector UI.
@@ -60,8 +65,11 @@ Everything that is judged — mechanics, data, endings, story — is the shared 
 | JPL approximate planetary positions | The real Earth–Mars radio delay for the mission date | `Assets/PlutonyX/Scripts/Core/SpaceWeather.cs` |
 | MRO CTX elevation (20 m) + image mosaic (6 m), USGS Astrogeology / Mars 2020 | The game world | `TerrainData/`, `tools/terrain/` |
 
-The data is an **archived snapshot** and is labelled ARCHIVED in the game. This edition does not fetch live data yet;
-"Today's real sky" uses the bundled snapshot of the 30 days before the build and says so.
+Two clearly labelled modes. **LIVE:** at start-up the game asks NASA DONKI for the last 30 days of flares and CMEs
+(12-second timeout); "Today's real sky" then runs on them and the badge says LIVE with the fetch time. No rover
+radiation measurement exists for recent dates, so live missions use an estimate and say so; if the Sun was calm, the
+storm sols replay the archived 20 May 2024 storm, labelled ARCHIVED. **ARCHIVED:** without internet, or for the story
+and history missions, the bundled real records are used and labelled ARCHIVED.
 
 ## Build from source
 

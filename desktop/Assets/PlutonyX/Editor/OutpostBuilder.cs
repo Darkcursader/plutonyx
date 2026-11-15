@@ -84,6 +84,16 @@ namespace PlutonyX.EditorTools
             }
             Prim(PrimitiveType.Cube, "Stripe", hab, new Vector3(-7, gy + 3.4f, -2.62f), new Vector3(9f, 0.35f, 0.05f), Vector3.zero, orange);
 
+            // detail: hull rings, roof equipment, antenna, steps, cargo
+            for (int i = 0; i < 5; i++) Prim(PrimitiveType.Cylinder, "Hull ring", hab, new Vector3(-12.5f + i * 2.75f, gy + 3.4f, 0), new Vector3(5.32f, 0.07f, 5.32f), new Vector3(0, 0, 90), frame);
+            for (int i = 0; i < 4; i++) Prim(PrimitiveType.Cylinder, "Hull ring", hab, new Vector3(7, gy + 3.4f, 4) + Quaternion.Euler(0, 35, 0) * new Vector3(-3.6f + i * 2.4f, 0, 0), new Vector3(5.32f, 0.07f, 5.32f), new Vector3(0, 35, 90), frame);
+            Prim(PrimitiveType.Cube, "Roof radiator", hab, new Vector3(-8, gy + 6.25f, 0), new Vector3(6.5f, 0.12f, 1.6f), new Vector3(0, 0, 0), solar);
+            Prim(PrimitiveType.Cylinder, "Whip antenna", hab, new Vector3(-2.2f, gy + 7.6f, 0.6f), new Vector3(0.05f, 1.9f, 0.05f), Vector3.zero, frame);
+            Prim(PrimitiveType.Sphere, "Antenna beacon", hab, new Vector3(-2.2f, gy + 9.5f, 0.6f), new Vector3(0.18f, 0.18f, 0.18f), Vector3.zero, beacon);
+            Prim(PrimitiveType.Cube, "Airlock steps", hab, new Vector3(0.5f, gy + 0.45f, -5.2f), new Vector3(2.2f, 0.9f, 1.6f), new Vector3(-18, 0, 0), frame);
+            for (int i = 0; i < 5; i++) Prim(PrimitiveType.Cube, "Cargo crate", hab, On(4.5f + (i % 3) * 1.5f, -7.5f - (i / 3) * 1.5f, 0.55f + (i == 4 ? 1.1f : 0f)), new Vector3(1.2f, 1.1f, 1.2f), new Vector3(0, 8 * i, 0), i % 2 == 0 ? hullDark : orange);
+            for (int i = 0; i < 3; i++) Prim(PrimitiveType.Cylinder, "Cable conduit", hab, On(8f + i * 9f, -14f - i * 7.5f, 0.12f), new Vector3(0.14f, 6.2f, 0.14f), new Vector3(90, 50, 0), hullDark);
+
             // ---- greenhouse: a glowing grow tunnel ----
             Transform gh = new GameObject("Greenhouse").transform; gh.SetParent(root, false);
             float ggy = Ground(-18, 12);
@@ -132,19 +142,25 @@ namespace PlutonyX.EditorTools
             Prim(PrimitiveType.Sphere, "Dish beacon", dish, new Vector3(20, dgy + 6.3f, -14), new Vector3(0.35f, 0.35f, 0.35f), Vector3.zero, beacon);
 
             // ---- rover ----
-            BuildRover(root, On(-9, -19), 25f, hull, hullDark, frame, orange, window);
+            Transform rover = BuildRover(root, On(-9, -19), 25f, hull, hullDark, frame, orange, window);
 
             // ---- launch pad and ascent ship ----
             Transform lp = new GameObject("Launch pad").transform; lp.SetParent(root, false);
             Vector3 p = On(170, 130);
             Prim(PrimitiveType.Cylinder, "Pad", lp, p + Vector3.up * 0.1f, new Vector3(34f, 0.12f, 34f), Vector3.zero, pad);
-            Prim(PrimitiveType.Capsule, "Ascent ship", lp, p + Vector3.up * 9.5f, new Vector3(6.2f, 8.2f, 6.2f), Vector3.zero, hull);
-            Prim(PrimitiveType.Cylinder, "Engine skirt", lp, p + Vector3.up * 2.4f, new Vector3(5.2f, 1.2f, 5.2f), Vector3.zero, hullDark);
-            Prim(PrimitiveType.Cube, "Ship stripe", lp, p + new Vector3(0, 11f, -3.05f), new Vector3(2.4f, 0.5f, 0.1f), Vector3.zero, orange);
+            Transform ship = new GameObject("Ascent ship").transform; ship.SetParent(lp, false); ship.position = p;
+            Prim(PrimitiveType.Capsule, "Ship body", ship, p + Vector3.up * 9.5f, new Vector3(6.2f, 8.2f, 6.2f), Vector3.zero, hull);
+            Prim(PrimitiveType.Cylinder, "Engine skirt", ship, p + Vector3.up * 2.4f, new Vector3(5.2f, 1.2f, 5.2f), Vector3.zero, hullDark);
+            Prim(PrimitiveType.Cube, "Ship stripe", ship, p + new Vector3(0, 11f, -3.05f), new Vector3(2.4f, 0.5f, 0.1f), Vector3.zero, orange);
+            for (int i = 0; i < 3; i++) Prim(PrimitiveType.Cube, "Ship window", ship, p + new Vector3(-1f + i * 1f, 13.2f, -2.95f), new Vector3(0.6f, 0.6f, 0.1f), Vector3.zero, window);
+            var flameGo = new GameObject("Engine flame"); flameGo.transform.SetParent(ship, false); flameGo.transform.position = p + Vector3.up * 1.2f;
+            var flame = flameGo.AddComponent<Light>(); flame.type = LightType.Point; flame.color = new Color(1f, 0.72f, 0.42f); flame.range = 260f; flame.shadows = LightShadows.None; flameGo.AddComponent<HDAdditionalLightData>();
+            flame.lightUnit = LightUnit.Lumen; flame.intensity = 0f; flame.enabled = false;
+            ParticleSystem exhaust = Particles("Exhaust", ship, new Color(1f, 0.82f, 0.6f, 0.55f), new Vector3(0, 1.2f, 0), new Vector3(3.2f, 0.6f, 3.2f), new Vector3(0, -38f, 0), 4.5f, 1.5f, true);
             for (int i = 0; i < 4; i++)
             {
                 float a = i * Mathf.PI / 2f + 0.78f;
-                Prim(PrimitiveType.Cylinder, "Ship leg", lp, p + new Vector3(Mathf.Cos(a) * 4.2f, 1.6f, Mathf.Sin(a) * 4.2f), new Vector3(0.3f, 2.4f, 0.3f), new Vector3(Mathf.Sin(a) * 28f, 0, -Mathf.Cos(a) * 28f), frame);
+                Prim(PrimitiveType.Cylinder, "Ship leg", ship, p + new Vector3(Mathf.Cos(a) * 4.2f, 1.6f, Mathf.Sin(a) * 4.2f), new Vector3(0.3f, 2.4f, 0.3f), new Vector3(Mathf.Sin(a) * 28f, 0, -Mathf.Cos(a) * 28f), frame);
                 Prim(PrimitiveType.Sphere, "Pad beacon", lp, p + new Vector3(Mathf.Cos(a) * 16f, 0.5f, Mathf.Sin(a) * 16f), new Vector3(0.5f, 0.5f, 0.5f), Vector3.zero, beacon);
             }
 
@@ -172,12 +188,13 @@ namespace PlutonyX.EditorTools
             Material visor = Mat("Visor", new Color(0.05f, 0.06f, 0.08f), 0.9f, 0.95f);
             Color[] suitColors = { new Color(0.24f, 0.78f, 0.60f), new Color(0.96f, 0.95f, 0.91f), new Color(0.95f, 0.78f, 0.27f) };
             float[][] crewAt = { new[] { -12f, 7f, 150f }, new[] { -6.5f, -15.5f, 40f }, new[] { 14f, 10.5f, 250f } };
+            var crewRoots = new Transform[3];
             for (int i = 0; i < 3; i++)
             {
                 Material suit = Mat("Suit" + i, Color.Lerp(new Color(0.9f, 0.9f, 0.88f), suitColors[i], 0.35f), 0f, 0.35f);
                 Material stripe = Mat("SuitStripe" + i, suitColors[i], 0f, 0.4f);
                 Vector3 b = On(crewAt[i][0], crewAt[i][1]); float yaw = crewAt[i][2];
-                Transform c = new GameObject("Crew " + i).transform; c.SetParent(root, false);
+                Transform c = new GameObject("Crew " + i).transform; c.SetParent(root, false); c.position = b; c.rotation = Quaternion.Euler(0, yaw, 0); crewRoots[i] = c;
                 Prim(PrimitiveType.Capsule, "Body", c, b + Vector3.up * 1.05f, new Vector3(0.52f, 0.55f, 0.36f), new Vector3(0, yaw, 0), suit);
                 Prim(PrimitiveType.Sphere, "Helmet", c, b + Vector3.up * 1.72f, new Vector3(0.38f, 0.38f, 0.38f), Vector3.zero, suit);
                 Prim(PrimitiveType.Sphere, "Visor", c, b + Vector3.up * 1.73f + Quaternion.Euler(0, yaw, 0) * new Vector3(0, 0, 0.09f), new Vector3(0.28f, 0.24f, 0.26f), Vector3.zero, visor);
@@ -235,7 +252,7 @@ namespace PlutonyX.EditorTools
             Shot(shots, "dish", On(34, -30, 3f), On(20, -14, 6.5f), 40f);
             Shot(shots, "earthrise_dish", On(34, -30, 3f), On(20, -14, 9f), 40f);
             Shot(shots, "airmaker", On(26, 28, 3.5f), On(13, 14.5f, 2f), 40f);
-            Shot(shots, "garage", On(-22, -34, 3f), On(-9, -19, 1.5f), 40f);
+            Shot(shots, "garage", On(-17, -36, 3.2f), On(-9, -19, 1.5f), 40f);
             Shot(shots, "rover_storm_return", On(-22, -34, 3f), On(-9, -19, 1.5f), 40f);
             Shot(shots, "interior", On(16, -14, 2.4f), On(-4, 0, 3.6f), 38f, 0.6f, 0.15f);
             Shot(shots, "delta", forks + new Vector3(46, 14, -34), forks + Vector3.up * 2, 42f, 3f, 0.8f);
@@ -256,7 +273,29 @@ namespace PlutonyX.EditorTools
             world.Cam = cam; world.Sun = sun; world.SkyVolume = skyVolume; world.ShotsRoot = shots;
             world.GrowLights.Add(tunnel.GetComponent<Renderer>());
             var audio = game.AddComponent<AudioDirector>();
-            var director = game.AddComponent<GameDirector>(); director.UI = gameUi; director.World = world; director.Audio = audio;
+            // Dil's field camp at the delta (shown only while she is away)
+            var fieldSet = new GameObject("Field camp");
+            Transform fieldRover = BuildRover(fieldSet.transform, On(forks.x + 5f, forks.z - 4f), 200f, hull, hullDark, frame, orange, window);
+            Transform dilThere = Object.Instantiate(crewRoots[1].gameObject, fieldSet.transform).transform; dilThere.name = "Dil at the delta";
+            dilThere.position = On(forks.x - 1.5f, forks.z + 1.2f); dilThere.rotation = Quaternion.Euler(0, 120f, 0);
+            var actors = game.AddComponent<ActorsDirector>();
+            actors.Ship = ship; actors.ShipFlame = flame; actors.ShipExhaust = exhaust; actors.Rover = rover; actors.FieldSet = fieldSet; actors.Crew = crewRoots; actors.DilIndex = 1;
+            actors.ShelterDoor = On(-23.5f, -20.5f); actors.RoverExit = On(-150f, 40f);
+            var director = game.AddComponent<GameDirector>(); director.UI = gameUi; director.World = world; director.Audio = audio; director.Actors = actors;
+
+            // ---- Explore mode: the Commander on foot, and what each place is (every fact has a source in shared/references.md) ----
+            Transform player = Object.Instantiate(crewRoots[2].gameObject, root).transform; player.name = "Commander";
+            player.position = On(8f, -12f); player.rotation = Quaternion.Euler(0, 200f, 0); player.gameObject.SetActive(true);
+            var explore = game.AddComponent<ExploreController>(); explore.Player = player; explore.Cam = cam; director.Explore = explore;
+            System.Action<string, string, Vector3, float> spot = (title, text, c, r) => explore.Spots.Add(new ExploreController.Spot { Title = title, Text = text, Center = c, Radius = r });
+            spot("Habitat", "Home for four people. A sol, one day on Mars, is about 24.6 hours long, and nights can fall to about -153 degrees Celsius. (NASA Mars facts)", On(0, 1.5f), 9.5f);
+            spot("Greenhouse", "Astronauts really grow lettuce, kale and mizuna on the International Space Station under pink LED lights. Fresh food keeps its vitamins. (NASA Veggie)", On(-18, 12), 6.5f);
+            spot("Air Maker", "NASA's MOXIE experiment on the Perseverance rover made 122 grams of oxygen out of Mars air, up to 12 grams an hour. Each person needs about 0.84 kg a day. (NASA)", On(13, 14.5f), 5f);
+            spot("Solar field", "Mars is about 1.5 times farther from the Sun than Earth, so panels get less than half the sunlight. Dust makes it worse. (NASA Mars facts)", On(37.6f, -36.2f), 0f);
+            spot("Storm shelter", "On 20 May 2024 the Curiosity rover measured its biggest radiation surge in 12 years. NASA says cliffs or lava tubes would give astronauts extra shielding. The Storm Shield here is future technology. (NASA/JPL)", On(-32, -24), 9.5f);
+            spot("Radio dish", "A radio call between Mars and Earth takes roughly 3 to 22 minutes each way, depending on where the planets are. No live phone calls. (NASA)", On(20, -14), 2.2f);
+            spot("Rover garage", "The Perseverance rover landed in this crater on 18 February 2021. In 2024 it found a rock named Cheyava Falls, with leopard spots that need more study. (NASA)", On(-9, -19), 3.6f);
+            spot("Ascent ship", "A ship can only leave Mars for Earth when the two planets line up the right way. Miss the launch window and you wait a very long time. (NASA)", p, 7f);
 
             // night fill (starlight and dust-scattered glow), shield light, particles
             var nf = new GameObject("Night fill"); nf.transform.rotation = Quaternion.Euler(55, 20, 0);
@@ -330,7 +369,7 @@ namespace PlutonyX.EditorTools
             return ps;
         }
 
-        static void BuildRover(Transform root, Vector3 at, float yaw, Material hull, Material dark, Material frame, Material orange, Material window)
+        static Transform BuildRover(Transform root, Vector3 at, float yaw, Material hull, Material dark, Material frame, Material orange, Material window)
         {
             Transform r = new GameObject("Rover").transform; r.SetParent(root, false); r.position = at; r.rotation = Quaternion.Euler(0, yaw, 0);
             System.Func<Vector3, Vector3> W = v => at + Quaternion.Euler(0, yaw, 0) * v;
@@ -344,6 +383,7 @@ namespace PlutonyX.EditorTools
                 float x = (i % 2 == 0 ? -1.45f : 1.45f), z = -1.8f + (i / 2) * 1.8f;
                 Prim(PrimitiveType.Cylinder, "Wheel", r, W(new Vector3(x, 0.55f, z)), new Vector3(1.1f, 0.22f, 1.1f), new Vector3(0, yaw, 90), dark);
             }
+            return r;
         }
     }
 

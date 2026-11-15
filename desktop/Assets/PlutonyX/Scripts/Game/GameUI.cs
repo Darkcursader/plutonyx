@@ -178,6 +178,22 @@ namespace PlutonyX.Game
             return c.IsNull ? who.ToUpperInvariant() : (c["shortName"].Str(who) + "  ·  " + c["role"].Str()).ToUpperInvariant();
         }
 
+        // ------------------------------------------------------------------ explore mode overlay
+        VisualElement _explore; Label _exploreHint, _exploreTitle, _exploreText;
+        public void ExploreHud(bool on)
+        {
+            if (_explore == null)
+            {
+                _explore = Box("bottom"); _explore.pickingMode = PickingMode.Ignore;
+                VisualElement card = Box("panel", "dialogue");
+                _exploreTitle = Text("", "h2"); _exploreText = Text("", "body"); _exploreHint = Text("", "small");
+                card.Add(_exploreTitle); card.Add(_exploreText); card.Add(_exploreHint); _explore.Add(card);
+            }
+            if (on && _explore.parent == null) _root.Insert(_root.IndexOf(_center), _explore);
+            if (!on && _explore.parent != null) _root.Remove(_explore);
+        }
+        public void ExploreInfo(string title, string text, string hint) { _exploreTitle.text = title; _exploreText.text = text; _exploreHint.text = hint; }
+
         // ------------------------------------------------------------------ dialogue
         public IEnumerator Say(IList<Line> lines)
         {

@@ -38,6 +38,7 @@ namespace PlutonyX.Core
         readonly Rng _rng;
         readonly JsonValue _b, _diff;
         readonly HashSet<string> _used = new HashSet<string>();
+        readonly Dictionary<string, int> _lastFired = new Dictionary<string, int>();
         readonly List<JsonValue> _queue = new List<JsonValue>();     // today's choice events, in order
         int _stepIndex;                                              // inside the storm crisis
         readonly List<Line> _says = new List<Line>();
@@ -102,16 +103,10 @@ namespace PlutonyX.Core
         public double DoseRed { get { return _diff["dose"]["red"].Num(1700); } }
         public int CellPoints { get { return _b["cell"]["points"].Int(10); } }
 
-        public int GardenTier { get { return Flag("plantsDead") ? 0 : Get("plants") >= _b["endings"]["gardenThrivingPlants"].Num(75) ? 2 : 1; } }
-        public bool CrewFit
-        {
-            get
-            {
-                return Get("health") >= _b["endings"]["crewFitHealth"].Num(40) && !Flag("crewGrounded") && !Flag("dilGrounded")
-                       && !Flag("crewSentHome") && !Flag("dilSentHome");
-            }
-        }
-        public bool HighRisk { get { return Get("risk") >= _b["endings"]["highRiskCount"].Num(3) || Flag("shieldFailed"); } }
+        // Ending values, defined exactly as in the reference engine (web/src/sim/engine.ts → derived)
+        public int GardenTier { get { return Flag("plantsDead") ? 0 : (Get("harvests") >= 1 || Get("plants") >= _b["endings"]["gardenThrivingPlants"].Num(75)) ? 2 : 1; } }
+        public bool CrewFit { get { return !Flag("crewSentHome") && !Flag("dilSentHome") && Get("health") >= _b["endings"]["crewFitHealth"].Num(40); } }
+        public bool HighRisk { get { return Get("risk") >= _b["endings"]["highRiskCount"].Num(3) || Flag("shieldFailed") || Flag("dilGrounded") || Flag("anyAmber"); } }
         public bool Decoded { get { return Get("fragments") >= _b["endings"]["decodedFragments"].Num(3); } }
 
         void Add(string name, double delta) { V[name] = Get(name) + delta; Normalize(); }
@@ -331,7 +326,16 @@ namespace PlutonyX.Core
                 {
                     JsonValue msg = Design.Dialogue["earth"][Inbox[i].Key];
                     if (msg.IsNull) msg = Design.Dialogue["earth"]["earth.generic"];
-                    rep.EarthMessages.Add(Lines(msg));
+                    List<Line> lines = Lines(msg);
+                    // every answer from Earth carries one more piece of the broken message (shared/design/dialogue.json → fragments)
+                    JsonValue fr = Design.Dialogue["fragments"]; int need = _b["endings"]["decodedFragments"].Int(3), have = (int)Get("fragments");
+                    if (fr.IsObject && have < need)
+                    {
+                        lines.Add(new Line("pip", fr["intro"].Str() + " " + fr["pieces"][have].Str()));
+                        V["fragments"] = have + 1;
+                        if (have + 1 >= need) lines.Add(new Line("pip", fr["complete"].Str()));
+                    }
+                    rep.EarthMessages.Add(lines);
                     Inbox.RemoveAt(i);
                 }
                 else i++;
@@ -389,7 +393,9 @@ namespace PlutonyX.Core
             {
                 string kind = e["kind"].Str(), id = e["id"].Str();
                 if (kind == "deck") continue;
-                if (kind != "auto" && _used.Contains(id)) continue;
+                int cooldown = e["cooldownSols"].Int(0);
+                if (cooldown > 0) { int last; if (_lastFired.TryGetValue(id, out last) && Sol - last < cooldown) continue; }
+                else if (kind != "auto" && _used.Contains(id)) continue;
                 if (e["sol"].IsNumber && e["sol"].Int() != Sol) continue;
                 if (!Test(e["when"])) continue;
                 eligible.Add(e);
@@ -414,6 +420,7 @@ namespace PlutonyX.Core
                     continue;
                 }
                 if (exclusive || _queue.Count >= max) continue;
+                _lastFired[e["id"].Str()] = Sol;
                 if (e["exclusive"].Bool()) { _queue.Clear(); _queue.Add(e); exclusive = true; continue; }
                 _queue.Add(e);
             }
@@ -545,7 +552,7 @@ namespace PlutonyX.Core
             double solar = SolarToday, spent = BaseLoadToday + Cost(a);
             double net = Get("power") + solar - spent;
             rep.Solar = solar; rep.Spent = spent;
-            bool blackout = net <= 0;
+            bool blackout = Get("power") + solar - BaseLoadToday < 0;      // cannot even pay heat and lights (balance.health.coldNight)
             V["power"] = net;
             V["air"] = Get("air") + sys["life"]["air"][a.Life].Num()
                      + (Get("plants") >= sys["garden"]["airBonusNeedsPlants"].Num(60) ? sys["garden"]["airBonus"][a.Garden].Num() : 0) + ModSum("airDrift");
@@ -641,7 +648,7 @@ namespace PlutonyX.Core
             if (air < hp["veryThinAir"]["below"].Num(15)) health += hp["veryThinAir"]["delta"].Num(-15);
             else if (air < hp["thinAir"]["below"].Num(30)) health += hp["thinAir"]["delta"].Num(-8);
             if (air < hp["thinAir"]["below"].Num(30)) { _lowAirSols++; if (_lowAirSols == 2) rep.Because.Add(Because("lowAirTired")); } else _lowAirSols = 0;
-            if (blackout || Get("power") <= hp["coldNight"]["whenPowerAtOrBelow"].Num(0))
+            if (blackout || (hp["coldNight"].Has("whenPowerAtOrBelow") && Get("power") <= hp["coldNight"]["whenPowerAtOrBelow"].Num(0)))
             {
                 blackout = true; health += hp["coldNight"]["delta"].Num(-12);
                 if (!Flag("plantsDead")) V["plants"] = Get("plants") + hp["coldNight"]["plants"].Num(-10);
