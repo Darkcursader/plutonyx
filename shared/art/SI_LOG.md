@@ -6,6 +6,12 @@
 |---|---|---|---|---|
 | *(none yet — the Web edition currently ships with no SI-generated images, video or voices)* | | | | |
 
+## SI-assisted 3D (script-built, not from an image or 3D generator)
+
+| File | How it was made | Date | Used for |
+|---|---|---|---|
+| `shared/models/habitat.glb`, `shared/models/ascent.glb` | Built in Blender by a Python script written with SI assistance (`web/scripts/blender/build_hardware.py`); design reviewed by the team | 2026-11-15 | Habitat and ascent vehicle in both editions |
+
 ## Not SI-generated (for clarity)
 
 - All 3D scenes, cutscene footage and the demo video: the real-time game itself, captured frame by frame (`web/scripts/capture.mjs`).

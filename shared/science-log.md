@@ -82,6 +82,7 @@ If a live window is calm, Sols 8 and 9 replay the archived storm of 20–21 May 
 - **Plants grow faster** than in real life so a harvest fits in 10 sols.
 - **Dust storms, breakdowns, Isidis Camp and the crew** are fiction based on real Mars facts.
 - **The ground image is greyscale;** we tint it with Mars colours. Detail smaller than 20 m is not Mars data: the sand and stones near the outpost are scanned Earth ground and rocks (Poly Haven, CC0), tinted to match.
+- **The habitat and the rocket** are our own designs (built in Blender), not real hardware.
 - **The rover by the garage** is NASA's 3D model of Perseverance with logos removed. In our story it is a monument; the real rover is not parked there.
 - **Dust kicked up at launch** falls under Mars gravity, 3.73 m/s² (NASA Mars Fact Sheet), about 38 % of Earth's.
 - **The Leopard Core** is fiction inspired by the real Cheyava Falls rock. The game never says life was found.
