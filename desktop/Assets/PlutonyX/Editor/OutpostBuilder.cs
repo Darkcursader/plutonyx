@@ -168,6 +168,58 @@ namespace PlutonyX.EditorTools
             Prim(PrimitiveType.Cylinder, "Drill mast", site, forks + Vector3.up * 2f, new Vector3(0.25f, 2f, 0.25f), Vector3.zero, frame);
             Prim(PrimitiveType.Sphere, "Site beacon", site, forks + Vector3.up * 4.2f, new Vector3(0.5f, 0.5f, 0.5f), Vector3.zero, beacon);
 
+            // ---- crew in suits, for scale (no faces: visors only) ----
+            Material visor = Mat("Visor", new Color(0.05f, 0.06f, 0.08f), 0.9f, 0.95f);
+            Color[] suitColors = { new Color(0.24f, 0.78f, 0.60f), new Color(0.96f, 0.95f, 0.91f), new Color(0.95f, 0.78f, 0.27f) };
+            float[][] crewAt = { new[] { -12f, 7f, 150f }, new[] { -6.5f, -15.5f, 40f }, new[] { 14f, 10.5f, 250f } };
+            for (int i = 0; i < 3; i++)
+            {
+                Material suit = Mat("Suit" + i, Color.Lerp(new Color(0.9f, 0.9f, 0.88f), suitColors[i], 0.35f), 0f, 0.35f);
+                Material stripe = Mat("SuitStripe" + i, suitColors[i], 0f, 0.4f);
+                Vector3 b = On(crewAt[i][0], crewAt[i][1]); float yaw = crewAt[i][2];
+                Transform c = new GameObject("Crew " + i).transform; c.SetParent(root, false);
+                Prim(PrimitiveType.Capsule, "Body", c, b + Vector3.up * 1.05f, new Vector3(0.52f, 0.55f, 0.36f), new Vector3(0, yaw, 0), suit);
+                Prim(PrimitiveType.Sphere, "Helmet", c, b + Vector3.up * 1.72f, new Vector3(0.38f, 0.38f, 0.38f), Vector3.zero, suit);
+                Prim(PrimitiveType.Sphere, "Visor", c, b + Vector3.up * 1.73f + Quaternion.Euler(0, yaw, 0) * new Vector3(0, 0, 0.09f), new Vector3(0.28f, 0.24f, 0.26f), Vector3.zero, visor);
+                Prim(PrimitiveType.Cube, "Pack", c, b + Vector3.up * 1.2f + Quaternion.Euler(0, yaw, 0) * new Vector3(0, 0, -0.24f), new Vector3(0.4f, 0.55f, 0.2f), new Vector3(0, yaw, 0), stripe);
+                for (int s = -1; s <= 1; s += 2)
+                {
+                    Prim(PrimitiveType.Capsule, "Leg", c, b + Vector3.up * 0.42f + Quaternion.Euler(0, yaw, 0) * new Vector3(0.13f * s, 0, 0), new Vector3(0.2f, 0.42f, 0.2f), new Vector3(0, yaw, 0), suit);
+                    Prim(PrimitiveType.Capsule, "Arm", c, b + Vector3.up * 1.15f + Quaternion.Euler(0, yaw, 0) * new Vector3(0.34f * s, 0, 0.03f), new Vector3(0.15f, 0.36f, 0.15f), new Vector3(8, yaw, 8 * s), suit);
+                }
+            }
+
+            // ---- rocks: procedural meshes scattered near the outpost and the field site (artistic detail, not data) ----
+            Material rockMat = Mat("Rock", new Color(0.46f, 0.30f, 0.21f), 0f, 0.18f);
+            Texture2D rockAlbedo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/PlutonyX/Textures/PolyHaven/Layers/steep_rock_albedo.png");
+            Texture2D rockNormal = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/PlutonyX/Textures/PolyHaven/Layers/steep_rock_normal.png");
+            if (rockAlbedo != null) { rockMat.SetTexture("_BaseColorMap", rockAlbedo); rockMat.SetColor("_BaseColor", Color.white); }
+            if (rockNormal != null) { rockMat.SetTexture("_NormalMap", rockNormal); rockMat.EnableKeyword("_NORMALMAP"); }
+            rockMat.enableInstancing = true; HDMaterial.ValidateMaterial(rockMat);
+            var rockMeshes = new Mesh[5];
+            var rr = new System.Random(77);
+            for (int i = 0; i < rockMeshes.Length; i++) { rockMeshes[i] = RockMesh(rr, i); AssetDatabase.CreateAsset(rockMeshes[i], TerrainImporter.GeneratedDir + "/Rock" + i + ".asset"); }
+            Transform rocks = new GameObject("Rocks").transform; rocks.SetParent(root, false);
+            Vector3[] centers = { Vector3.zero, new Vector3(forks.x, 0, forks.z), new Vector3(170, 0, 130) };
+            int[] counts = { 520, 220, 90 }; float[] radii = { 190f, 110f, 80f };
+            for (int cIdx = 0; cIdx < centers.Length; cIdx++)
+                for (int i = 0; i < counts[cIdx]; i++)
+                {
+                    float ang = (float)rr.NextDouble() * Mathf.PI * 2f, rad = Mathf.Sqrt((float)rr.NextDouble()) * radii[cIdx];
+                    float x = centers[cIdx].x + Mathf.Cos(ang) * rad, z = centers[cIdx].z + Mathf.Sin(ang) * rad;
+                    float size = Mathf.Lerp(0.12f, 1.5f, Mathf.Pow((float)rr.NextDouble(), 3.2f));
+                    if (cIdx == 0 && Mathf.Abs(x) < 20 && Mathf.Abs(z) < 12 && size > 0.4f) continue;        // keep the habitat clear of boulders
+                    if (cIdx == 0 && x > 18 && x < 58 && z > -50 && z < -22) continue;                      // and the solar field
+                    var g = new GameObject("Rock"); g.transform.SetParent(rocks, false);
+                    g.transform.position = new Vector3(x, Ground(x, z) + size * 0.12f, z);
+                    g.transform.rotation = Quaternion.Euler((float)rr.NextDouble() * 30f, (float)rr.NextDouble() * 360f, (float)rr.NextDouble() * 30f);
+                    g.transform.localScale = new Vector3(size * (0.8f + (float)rr.NextDouble() * 0.6f), size * (0.5f + (float)rr.NextDouble() * 0.4f), size * (0.8f + (float)rr.NextDouble() * 0.6f));
+                    g.AddComponent<MeshFilter>().sharedMesh = rockMeshes[rr.Next(rockMeshes.Length)];
+                    var mr = g.AddComponent<MeshRenderer>(); mr.sharedMaterial = rockMat;
+                    mr.shadowCastingMode = size > 0.35f ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+                    g.isStatic = true;
+                }
+
             // ---- camera shots ----
             Transform shots = new GameObject("Shots").transform;
             Vector3 c0 = new Vector3(0, gy + 4, 0);
@@ -217,6 +269,33 @@ namespace PlutonyX.EditorTools
             // white specks, like the "snow" charged particles left in the Curiosity rover's camera images during the May 2024 storm
             world.StormParticles = Particles("Storm particles", cam.transform, new Color(1f, 1f, 1f, 0.9f), new Vector3(0, 0, 4), new Vector3(7f, 4f, 0.5f), new Vector3(0, 0, 0), 0.018f, 0.09f, true);
             world.DustParticles = Particles("Dust", cam.transform, new Color(0.80f, 0.56f, 0.38f, 0.035f), new Vector3(0, 8, 70), new Vector3(180, 16, 100), new Vector3(16, 0.5f, 3), 14f, 9f, false);
+        }
+
+        /// <summary>A rock: a subdivided cube pushed onto a sphere and roughened with a few random bumps.</summary>
+        static Mesh RockMesh(System.Random r, int seed)
+        {
+            const int n = 7; var verts = new List<Vector3>(); var tris = new List<int>(); var uvs = new List<Vector2>();
+            Vector3[] dirs = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+            var bumps = new Vector4[9];
+            for (int i = 0; i < bumps.Length; i++) { Vector3 d = new Vector3((float)r.NextDouble() - 0.5f, (float)r.NextDouble() - 0.5f, (float)r.NextDouble() - 0.5f).normalized; bumps[i] = new Vector4(d.x, d.y, d.z, ((float)r.NextDouble() - 0.35f) * 0.45f); }
+            foreach (Vector3 up in dirs)
+            {
+                Vector3 a = new Vector3(up.y, up.z, up.x), b = Vector3.Cross(up, a); int start = verts.Count;
+                for (int y = 0; y <= n; y++) for (int x = 0; x <= n; x++)
+                {
+                    Vector3 p = (up + (x / (float)n * 2f - 1f) * a + (y / (float)n * 2f - 1f) * b).normalized;
+                    float h = 1f;
+                    foreach (Vector4 bp in bumps) { float d = Vector3.Dot(p, new Vector3(bp.x, bp.y, bp.z)); if (d > 0.2f) h += bp.w * (d - 0.2f) * (d - 0.2f) * 2.2f; }
+                    verts.Add(p * h * 0.5f); uvs.Add(new Vector2(x / (float)n, y / (float)n) * 1.5f);
+                }
+                for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
+                {
+                    int i0 = start + y * (n + 1) + x;
+                    tris.Add(i0); tris.Add(i0 + n + 2); tris.Add(i0 + n + 1); tris.Add(i0); tris.Add(i0 + 1); tris.Add(i0 + n + 2);
+                }
+            }
+            var m = new Mesh { name = "Rock" + seed }; m.SetVertices(verts); m.SetUVs(0, uvs); m.SetTriangles(tris, 0); m.RecalculateNormals(); m.RecalculateTangents(); m.RecalculateBounds();
+            return m;
         }
 
         static Texture2D _soft;

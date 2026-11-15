@@ -36,6 +36,7 @@ namespace PlutonyX.Core
         // orbit
         public double LightMinutes, DistanceMillionKm, MarsAheadOfEarthDeg, EarthX, EarthY, MarsX, MarsY;
         public bool Injected;                 // true when this day was replayed from the archive into a calm live window
+        public WeatherDay Clone() { return (WeatherDay)MemberwiseClone(); }
 
         public static WeatherDay FromJson(JsonValue j)
         {

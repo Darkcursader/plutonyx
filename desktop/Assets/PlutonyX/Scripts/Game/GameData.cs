@@ -29,10 +29,21 @@ namespace PlutonyX.Game
             live = false;
             JsonValue def = Design.Window(windowDefId);
             string fileId = windowDefId == "live" ? "recent" : windowDefId;
-            JsonValue data = ReadWindowFile(fileId);
-            if (data.IsNull) { data = ReadWindowFile("may-2024"); def = Design.Window("may-2024"); }
-            MissionWindow w = MissionWindow.FromJson(data, def["sol1"].IsNull ? null : def["sol1"].Str());
+            MissionWindow w;
             int sols = Design.MissionSols;
+            if (windowDefId == "live" && LiveData.Window != null)
+            {   // a fresh copy each time: a mission may inject the archived storm into its window
+                MissionWindow src = LiveData.Window;
+                w = new MissionWindow { Id = src.Id, Label = src.Label, Mode = src.Mode, RetrievedUtc = src.RetrievedUtc, RadSource = src.RadSource, Sol1 = src.Sol1, CalmDose = src.CalmDose, Sol1Index = src.Sol1Index };
+                foreach (WeatherDay d in src.Days) w.Days.Add(d.Clone());
+                live = true;
+            }
+            else
+            {
+                JsonValue data = ReadWindowFile(fileId);
+                if (data.IsNull) { data = ReadWindowFile("may-2024"); def = Design.Window("may-2024"); }
+                w = MissionWindow.FromJson(data, def["sol1"].IsNull ? null : def["sol1"].Str());
+            }
             if (windowDefId == "live" && w.PeakStormLevel(sols) < 2)
             {   // GAME_BIBLE decision 8: a calm window replays the archived real storm, labelled ARCHIVED
                 JsonValue inj = Design.Balance["spaceWeather"]["calmWindowStorm"];

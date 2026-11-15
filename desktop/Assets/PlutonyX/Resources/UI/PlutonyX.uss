@@ -1,6 +1,6 @@
 /* PlutonyX UI — glass panels, large type, never colour alone (every meter has an icon letter and a label). */
 .root { flex-grow: 1; color: rgb(245, 241, 232); font-size: 22px; }
-.panel { background-color: rgba(10, 12, 18, 0.78); border-width: 1px; border-color: rgba(255, 255, 255, 0.14); border-radius: 16px; padding: 22px 28px; }
+.panel { background-color: rgba(10, 12, 18, 0.87); border-width: 1px; border-color: rgba(255, 255, 255, 0.14); border-radius: 16px; padding: 22px 28px; }
 .title { font-size: 84px; -unity-font-style: bold; letter-spacing: 14px; color: rgb(255, 244, 228); -unity-text-align: middle-center; text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8); }
 .subtitle { font-size: 26px; letter-spacing: 6px; color: rgb(242, 199, 68); -unity-text-align: middle-center; margin-bottom: 26px; }
 .tagline { font-size: 22px; color: rgba(245, 241, 232, 0.86); -unity-text-align: middle-center; white-space: normal; max-width: 900px; align-self: center; margin-bottom: 30px; }

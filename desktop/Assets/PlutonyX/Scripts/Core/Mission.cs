@@ -283,6 +283,8 @@ namespace PlutonyX.Core
             _day = Window.Day(Sol);
             string prevSky = _sky; _sky = SkyFor(Sol);
             var rep = new DawnReport { Sol = Sol, RealDate = _day.Date, Sky = _sky, Day = _day, DelayMinutes = _day.LightMinutes };
+            if (_day.FlareX > 0) Flags["sawXFlare"] = true;
+            if (Window.IsLive && !_day.Injected) Flags["liveData"] = true;
 
             // dust scenario flags
             Flags["dustStartsToday"] = Sol == DustStartSol;
@@ -571,6 +573,7 @@ namespace PlutonyX.Core
 
             // ---- 4. radiation: the real dose of this real day ----
             int level = _day.StormLevel; rep.StormLevel = level;
+            if (level >= 3) Flags["facedSevereStorm"] = true;
             double protection = 0;
             if (level >= 1)
             {
@@ -607,7 +610,7 @@ namespace PlutonyX.Core
                     else if (_dilCliffToday)
                     {
                         dilDose += _day.DoseStorm * rad["cliffStormFactor"].Num(0.4);
-                        V["science"] = 100; Flags["coreSealed"] = true; rep.CoreSealed = true;
+                        V["science"] = 100; Flags["coreSealed"] = true; rep.CoreSealed = true; Flags["dilShelteredAtCliff"] = true;
                         bool stranded = a.Rover < 2 && _rng.Next() < _b["storm"]["strandedChance"].Num(0.5);
                         if (stranded)
                         {
@@ -692,6 +695,7 @@ namespace PlutonyX.Core
         void CheckBadges(NightReport rep)
         {
             double amber = DoseAmber, red = DoseRed;
+            if (Get("dose") >= amber || Get("doseDil") >= amber) Flags["anyAmber"] = true;
             if (Get("doseDil") >= red && !Flag("dilSentHome"))
             {
                 Flags["dilSentHome"] = true; Flags["dilGrounded"] = true; V["morale"] = Get("morale") + _b["morale"]["sentHome"].Num(-10);
@@ -730,6 +734,23 @@ namespace PlutonyX.Core
                 if (match) { r.Id = e["id"].Str(); r.Data = e; return r; }
             }
             r.Id = "survival"; return r;
+        }
+
+        /// <summary>Badges earned by this mission (shared/design/achievements.json). Call after the mission is over.</summary>
+        public List<JsonValue> Achievements()
+        {
+            var list = new List<JsonValue>();
+            foreach (JsonValue a in Design.Achievements["achievements"].Items) if (Test(a["when"])) list.Add(a);
+            return list;
+        }
+
+        /// <summary>Real-unit view of the meters (Mission Planner): kWh, kilograms of oxygen, litres of water.</summary>
+        public string RealUnits()
+        {
+            JsonValue u = _b["units"];
+            return "Battery " + Whole(Get("power") * _b["cell"]["kWh"].Num(10) / _b["cell"]["points"].Num(10)) + " kWh  ·  oxygen reserve " +
+                   OneDecimal(Get("air") * u["airPointKgO2"].Num(0.168)) + " kg  ·  water in the loop " + Whole(Get("water") * u["waterPointLitres"].Num(3)) + " L  ·  crew dose " +
+                   Whole(Get("dose")) + " µGy  ·  Dil " + Whole(Get("doseDil")) + " µGy";
         }
 
         /// <summary>Chest X-ray comparison for kids, using NASA/JPL's own figure (balance.radiation.xrayNote).</summary>

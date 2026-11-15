@@ -380,6 +380,8 @@ namespace PlutonyX.Game
             Allocation a = m.Alloc.Clone();
             VisualElement card = Card("Power board  ·  Sol " + m.Sol, null, null);
             Label budget = Text("", "body"); card.Add(budget);
+            card.Add(Text("Water " + N(m.Get("water")) + "   ·   Food " + N(m.Get("food")) + "   ·   Plants " + N(m.Get("plants")) + "   ·   Science " + N(m.Get("science")) +
+                          "   ·   Crew health " + N(m.Get("health")) + "   ·   Morale " + N(m.Get("morale")), "small"));
             JsonValue sys = _design.Balance["systems"];
             string[] ids = { "life", "garden", "shield", "rover" };
             var levelLabels = new Label[4]; var effects = new Label[4]; var pips = new List<VisualElement>[4];

@@ -1,0 +1,15 @@
+#!/bin/bash
+# Encodes the PNG frame sequences written by `PlutonyX -record <dir>` into H.264 clips, plus a short montage.
+# Usage: tools/encode_clips.sh Captures/video
+set -e
+DIR="${1:-Captures/video}"; FF="${FFMPEG:-ffmpeg}"
+for d in "$DIR"/*/; do
+  n="$(basename "$d")"
+  "$FF" -y -loglevel error -framerate 30 -i "$d/%04d.png" -c:v libx264 -preset slow -crf 16 -pix_fmt yuv420p -movflags +faststart "$DIR/$n.mp4"
+  echo "$n.mp4 $(du -h "$DIR/$n.mp4" | cut -f1)"
+done
+# montage: first 3.5 s of each clip, hard cuts (the Web lead cuts the real 30 s demo)
+LIST="$DIR/montage.txt"; : > "$LIST"
+for f in "$DIR"/0*.mp4; do "$FF" -y -loglevel error -i "$f" -t 3.5 -c:v libx264 -crf 16 -pix_fmt yuv420p "${f%.mp4}_cut.mp4"; echo "file '$(basename "${f%.mp4}_cut.mp4")'" >> "$LIST"; done
+(cd "$DIR" && "$FF" -y -loglevel error -f concat -safe 0 -i montage.txt -c copy PlutonyX_desktop_montage.mp4 && rm -f *_cut.mp4 montage.txt)
+echo "montage: $(du -h "$DIR/PlutonyX_desktop_montage.mp4" | cut -f1)"

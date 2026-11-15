@@ -35,6 +35,7 @@ namespace PlutonyX.Game
                 if (args[i] == "-autoplay") { UI.Auto = true; if (i + 1 < args.Length) { UI.CaptureDir = args[i + 1]; System.IO.Directory.CreateDirectory(UI.CaptureDir); } }
                 if (args[i] == "-difficulty" && i + 1 < args.Length) _difficulty = args[i + 1];
             }
+            StartCoroutine(LiveData.Fetch(_design));
             yield return null;
             string capDir; bool capVideo;
             if (CaptureDirector.Wanted(out capDir, out capVideo))
@@ -44,6 +45,8 @@ namespace PlutonyX.Game
                 yield return cap.Run(capDir, capVideo);
                 yield break;
             }
+            // give the live NASA request a moment before the title appears (the game never waits long for the network)
+            for (float t = 0; t < 5f && !LiveData.Done && !UI.Auto; t += Time.unscaledDeltaTime) yield return null;
             int rounds = 0;
             while (true)
             {
@@ -104,6 +107,7 @@ namespace PlutonyX.Game
             uint seed = (uint)(DateTime.UtcNow.Ticks & 0x7FFFFFFF) % 2176782335u;
             _mission = new Mission(_design, _window, _difficulty, seed);
             Mission m = _mission;
+            if (_design.Window(windowDefId)["role"].Str() == "history") m.SetFlag("historyMission", true);
 
             // intro
             yield return UI.Fade(true, 0.5f);
@@ -175,6 +179,8 @@ namespace PlutonyX.Game
                 if (n.Harvest) lines.Add("The garden is ready to harvest.");
                 if (n.CoreSealed) lines.Add("The Leopard Core is sealed in its tube.");
                 lines.AddRange(n.Because);
+                lines.Add("Supplies: water " + N(m.Get("water")) + ", food " + N(m.Get("food")) + ". Crew health " + N(m.Get("health")) + ", morale " + N(m.Get("morale")) + ".");
+                lines.Add("Mission Planner: " + m.RealUnits());
                 yield return UI.Info("Sol " + m.Sol + "  ·  night", lines, m.Over ? "Finish the mission" : "Sleep until dawn",
                                      n.StormLevel >= 1 ? "REAL NASA DATA  ·  CURIOSITY RAD" : null, "chip-real");
                 if (n.Lines.Count > 0) yield return UI.Say(n.Lines);
@@ -222,6 +228,12 @@ namespace PlutonyX.Game
             debrief.Add("Crew dose badge: " + N(m.Get("dose")) + " micrograys, about " + m.ChestXrays(m.Get("dose")).ToString("0.0", CultureInfo.InvariantCulture) +
                         " chest X-rays. Standing outside the whole time: " + N(m.OutsideDoseTotal) + " micrograys.");
             foreach (LogEntry l in m.Log) debrief.Add("•  " + l.Text);
+            PlayerPrefs.SetInt("ending_" + end.Id, 1);
+            int seen = 0; foreach (JsonValue en in _design.Endings["endings"].Items) seen += PlayerPrefs.GetInt("ending_" + en["id"].Str(), 0);
+            m.V["endingsSeen"] = seen;
+            var badges = new List<string>();
+            foreach (JsonValue a in m.Achievements()) { badges.Add(a["title"].Str()); PlayerPrefs.SetInt("ach_" + a["id"].Str(), 1); }
+            if (badges.Count > 0) debrief.Add("Badges earned: " + string.Join("  ·  ", badges));
             JsonValue whatIf = e["whatIf"];
             if (whatIf.IsString) { debrief.Add(_design.Dialogue["debrief"]["tipTitle"].Str("One tip for next time") + ": " + whatIf.Str()); }
             else foreach (JsonValue w in whatIf.Items) debrief.Add(_design.Dialogue["debrief"]["tipTitle"].Str("One tip") + ": " + w.Str());
