@@ -25,7 +25,11 @@ store.load();
 const $ = (id: string) => document.getElementById(id)!;
 const sound = new Sound();
 const settings = store.data.settings;
-const world = new World($('stage') as HTMLCanvasElement, settings.quality === 'auto' ? undefined : (settings.quality as Quality));
+/** ?capture=1 — fixed-step mode used by scripts/capture.mjs to record cutscene and demo footage. ?q=low|high|ultra forces a preset. */
+const CAPTURE = /[?&]capture=1/.test(location.search);
+const forcedQ = /[?&]q=(low|high|ultra)/.exec(location.search)?.[1] as Quality | undefined;
+if (CAPTURE) { settings.volume = 0; settings.reducedMotion = false; }
+const world = new World($('stage') as HTMLCanvasElement, forcedQ ?? (settings.quality === 'auto' ? undefined : (settings.quality as Quality)));
 let mission: Mission | null = null;
 let runId = 0;
 
@@ -73,6 +77,7 @@ async function boot() {
   applySettings();
   world.start();
   showTitle();
+  if (CAPTURE) { world.manual = true; document.body.classList.add('capture'); (window as any).__cap = { ready: true, world, step: (dt: number) => world.step(dt) }; }
   $('boot').classList.add('done');
   setTimeout(() => $('boot').remove(), 1200);
 }

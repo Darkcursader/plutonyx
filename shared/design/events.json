@@ -89,6 +89,7 @@
     {
       "id": "forecast",
       "kind": "auto",
+      "cooldownSols": 2,
       "when": { "all": [ { "sw": "hasForecast", "eq": 1 }, { "v": "forecastsShown", "lt": 3 }, { "sol": { "gte": 2, "lte": 7 } } ] },
       "priority": 60,
       "title": "Space weather report",

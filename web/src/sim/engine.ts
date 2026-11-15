@@ -327,7 +327,8 @@ export function fitAlloc(m: Mission, want: Alloc, dropOrder: SystemId[] = ['rove
 export interface EventInst { def: any; lines: Line[]; learn?: string; note: boolean; steps?: any[] }
 
 const eligible = (m: Mission, e: any) => {
-  if (m.s.seen[e.id] && e.id !== 'forecast') return false;
+  if (m.s.seen[e.id] && !e.cooldownSols) return false;
+  if (e.cooldownSols && m.s.sol - ((m.s as any).lastFired?.[e.id] ?? -99) < e.cooldownSols) return false;
   if (e.sol !== undefined && e.sol !== null && e.sol !== m.s.sol) return false;
   return test(m, e.when);
 };
@@ -358,7 +359,7 @@ export function solEvents(m: Mission): EventInst[] {
       picked.push(d);
     }
   }
-  for (const e of picked) { s.seen[e.id] = true; out.push(inst(m, e)); }
+  for (const e of picked) { s.seen[e.id] = true; ((s as any).lastFired ??= {})[e.id] = s.sol; out.push(inst(m, e)); }
   return out;
 }
 

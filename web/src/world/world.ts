@@ -253,10 +253,14 @@ export class World {
 
   // ------------------------------------------------------------ frame
 
+  /** When true the world only advances through step(dt) — used to record cutscenes at an exact 30 fps. */
+  manual = false;
   start() {
-    const loop = () => {
-      requestAnimationFrame(loop);
-      const dt = Math.min(0.05, this.clock.getDelta());
+    const loop = () => { requestAnimationFrame(loop); const dt = Math.min(0.05, this.clock.getDelta()); if (!this.manual) this.step(dt); };
+    loop();
+  }
+  step(dt: number) {
+    {
       this.time += dt;
       if (this.todT < 1) { this.todT = Math.min(1, this.todT + dt / this.todDur); this.tod = this.todFrom + (this.todTo - this.todFrom) * ease(this.todT); if (this.todT >= 1) this.tod %= 1; }
       this.dust += (this.dustTo - this.dust) * Math.min(1, dt * 0.8);
@@ -292,8 +296,7 @@ export class World {
       this.terrain.uniforms.uFrost.value += ((this.pending?.frost ? 1 : 0) - this.terrain.uniforms.uFrost.value) * 0.02;
       this.onFrame?.(dt);
       this.composer.render(dt);
-    };
-    loop();
+    }
   }
 
   /** Full-resolution screenshot of the current frame (photo mode). */

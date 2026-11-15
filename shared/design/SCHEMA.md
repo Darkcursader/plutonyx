@@ -71,6 +71,7 @@ All meters are clamped to 0..100 after every change. `dose*` are never clamped.
   "sol": 3 | null,                         // fixed sol for story beats (optional)
   "weight": 10,                            // deck draw weight
   "once": true,
+  "cooldownSols": 2,                       // optional: the event may repeat, but not within this many sols
   "scene": "airmaker",                     // camera/scene tag: outpost | greenhouse | shelter | solar | dish | airmaker | delta | pad | sky | interior
   "lines": [ { "who": "kofi", "say": "…" } ],
   "realData": [ "source-id", … ],          // sources.json ids → shows the REAL DATA chip

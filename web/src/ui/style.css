@@ -167,6 +167,7 @@ table.data td, table.data th { text-align: left; padding: 7px 8px; border-top: 1
 canvas.chart { width: 100%; height: 220px; display: block; border-radius: 10px; background: rgba(255, 255, 255, .04); }
 .toast { position: absolute; left: 50%; top: 84px; transform: translateX(-50%); padding: 10px 16px; font-family: var(--font-d); letter-spacing: .1em; font-size: 13px; z-index: 40; animation: fadeIn .4s ease both; }
 
+body.capture * { animation-duration: .01s !important; cursor: none !important; }
 body.cb .gauge.danger svg, body.cb .choice .why { text-decoration: underline wavy; }
 body.cb .notes li.because { background-image: repeating-linear-gradient(45deg, rgba(255,176,92,.16) 0 6px, transparent 6px 12px); }
 body.rm *, body.rm *::before, body.rm *::after { animation-duration: .01s !important; transition-duration: .01s !important; }

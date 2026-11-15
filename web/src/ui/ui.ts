@@ -87,6 +87,7 @@ export class UI {
 
   line(l: Line, i = 0): HTMLElement {
     const c = CREW[l.who];
+    if (i < 4) setTimeout(() => this.hooks.sound(l.who === 'sam' ? 'message' : 'radio'), i * 280);
     const color = c?.color ?? '#cfd8e0';
     const face = h('div', { class: 'face', style: `color:${color}` }, c ? c.shortName.charAt(0) : '•');
     if (c?.portrait) {

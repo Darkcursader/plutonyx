@@ -94,6 +94,7 @@ export class Sound {
       case 'good': this.tone(523, 523, 0.14, 'sine', 0.1); this.tone(659, 659, 0.14, 'sine', 0.1, 0.12); this.tone(784, 784, 0.3, 'sine', 0.1, 0.24); break;
       case 'dawn': this.tone(294, 294, 0.5, 'sine', 0.06); this.tone(440, 440, 0.7, 'sine', 0.05, 0.25); break;
       case 'message': this.tone(1320, 1320, 0.06, 'sine', 0.07); this.tone(1320, 1320, 0.06, 'sine', 0.07, 0.12); this.tone(1760, 1760, 0.12, 'sine', 0.07, 0.24); break;
+      case 'radio': this.tone(2400, 1800, 0.035, 'square', 0.025); this.tone(1200, 1200, 0.05, 'sine', 0.03, 0.04); break;
       case 'rumble': this.tone(60, 28, 2.4, 'sawtooth', 0.2); break;
     }
   }
