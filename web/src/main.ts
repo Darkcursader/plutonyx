@@ -81,8 +81,8 @@ function idleOutpost() { world.setOutpost({ power: 70, shield: 30, plants: 45, p
 
 function showTitle() {
   runId++; mission = null;
-  ui.showHud(false); ui.setSparkle(0); world.resetLaunch(); world.setLook('default');
-  idleOutpost(); world.setWeather(0, 0); world.setPhase('dawn', 2); world.orbit([0, -30], 300, 52, 0.02);
+  ui.showHud(false); ui.setSparkle(0); world.resetLaunch(); world.setLook('default'); world.frameShift = 0;
+  idleOutpost(); world.setWeather(0, 0); world.setPhase('dawn', 2); world.jump('title');
   sound.setScene({ power: 70, dust: 0, tension: 0, doseRate: 0 });
   screens.title({
     start: (d) => begin({ kind: 'story', difficulty: d }),
@@ -142,7 +142,7 @@ async function runMission(cfg: MissionConfig, launch: Launch) {
     await ui.cinematic((DLG.intro as any[]).map((l) => l.say), first ? 4.6 : 3.2);
     if (!alive()) return;
   }
-  ui.showHud(true);
+  ui.showHud(true); world.frameShift = 0.17;
   while (alive() && !m.s.ended) {
     // dawn
     const dawn = startSol(m);
@@ -243,7 +243,7 @@ const ENDING_SHOTS: Record<string, { phase: any; shot?: string; orbit?: [number,
 async function runEnding(m: Mission, launch: Launch) {
   const my = runId, alive = () => my === runId;
   const e = ENDINGS.find((x) => x.id === m.s.ended)!;
-  ui.showHud(false); ui.setSparkle(0);
+  ui.showHud(false); ui.setSparkle(0); world.frameShift = 0;
   store.data.endings[e.id] = true; store.data.missions++; store.save();
   const earned = earnAchievements(m);
   sound.setScene({ power: 60, dust: 0, tension: e.id === 'evac' ? 0.5 : 0, doseRate: 0 }); world.setWeather(0, e.id === 'secret' ? 0.5 : 0);

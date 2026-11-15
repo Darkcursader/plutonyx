@@ -13,6 +13,7 @@ export class Sky {
     uDust: { value: 0 },
     uStorm: { value: 0 },
     uTime: { value: 0 },
+    uDisc: { value: 1 },
     uEarth: { value: new THREE.Vector3(0.4, 0.25, -0.88).normalize() },
   };
   horizon = new THREE.Color();
@@ -22,7 +23,7 @@ export class Sky {
       uniforms: this.u, side: THREE.BackSide, depthWrite: false, depthTest: false, fog: false,
       vertexShader: `varying vec3 vDir; void main(){ vDir = position; vec4 p = modelViewMatrix * vec4(position, 0.0); gl_Position = projectionMatrix * vec4(p.xyz, 1.0); gl_Position.z = gl_Position.w; }`,
       fragmentShader: `
-varying vec3 vDir; uniform vec3 uSun; uniform vec3 uEarth; uniform float uDust; uniform float uStorm; uniform float uTime;
+varying vec3 vDir; uniform vec3 uSun; uniform vec3 uEarth; uniform float uDust; uniform float uStorm; uniform float uTime; uniform float uDisc;
 float h31(vec3 p){ p = fract(p * 0.1031); p += dot(p, p.yzx + 33.33); return fract((p.x + p.y) * p.z); }
 float n2(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
   float a = h31(vec3(i,1.0)), b = h31(vec3(i+vec2(1,0),1.0)), c = h31(vec3(i+vec2(0,1),1.0)), d = h31(vec3(i+vec2(1,1),1.0));
@@ -47,11 +48,11 @@ void main(){
   // night: deep blue-black, stars, Earth as a bright evening star
   float night = 1.0 - day;
   col += vec3(0.010, 0.013, 0.024) * night;
-  vec3 sp = d * 220.0; vec3 cell = floor(sp);
-  float star = step(0.9965, h31(cell)) * smoothstep(0.55, 0.0, length(fract(sp) - 0.5)) * (0.4 + 0.6 * h31(cell + 7.0));
+  vec3 sp = d * 340.0; vec3 cell = floor(sp);
+  float star = step(0.9972, h31(cell)) * smoothstep(0.32, 0.0, length(fract(sp) - 0.5)) * (0.35 + 0.65 * h31(cell + 7.0));
   col += vec3(0.9, 0.93, 1.0) * star * night * smoothstep(0.0, 0.25, d.y) * (1.0 - uDust) * 1.6;
   float ed = max(dot(d, normalize(uEarth)), 0.0);
-  col += vec3(0.55, 0.75, 1.0) * (smoothstep(0.999985, 0.999997, ed) * 6.0 + pow(ed, 9000.0) * 1.2) * (0.25 + 0.75 * night) * (1.0 - uDust);
+  col += vec3(0.55, 0.75, 1.0) * (smoothstep(0.9999930, 0.9999985, ed) * 9.0 + pow(ed, 60000.0) * 0.5) * (0.25 + 0.75 * night) * (1.0 - uDust);
   // solar storm: faint violet-green curtains high in the sky
   if (uStorm > 0.001) {
     float az = atan(d.z, d.x);
@@ -60,7 +61,7 @@ void main(){
     col += mix(vec3(0.55, 0.30, 0.95), vec3(0.30, 0.95, 0.60), n2(vec2(az * 2.0, uTime * 0.04))) * curtain * uStorm * (0.35 + 0.65 * night) * 0.6;
   }
   // the Sun's disc (about two thirds of its size from Earth)
-  col += vec3(1.0, 0.94, 0.86) * smoothstep(0.999955, 0.999985, sd) * 40.0 * (1.0 - uDust * 0.93) * smoothstep(-0.02, 0.02, d.y);
+  col += vec3(1.0, 0.94, 0.86) * smoothstep(0.999955, 0.999985, sd) * 40.0 * uDisc * (1.0 - uDust * 0.93) * smoothstep(-0.02, 0.02, d.y);
   col = mix(col, col * 0.55, smoothstep(0.0, -0.2, d.y));
   gl_FragColor = vec4(col, 1.0);
 }`,

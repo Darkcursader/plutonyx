@@ -34,13 +34,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
 
 /* ---- title */
-.title { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: clamp(18px, 5vh, 56px) clamp(18px, 6vw, 80px); background: linear-gradient(180deg, rgba(5, 8, 12, .28) 0%, rgba(5, 8, 12, 0) 30%, rgba(5, 8, 12, 0) 45%, rgba(5, 8, 12, .78) 100%); }
+.title { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: clamp(18px, 5vh, 56px) clamp(18px, 6vw, 80px); background: linear-gradient(90deg, rgba(5, 8, 12, .5) 0%, rgba(5, 8, 12, .16) 46%, rgba(5, 8, 12, 0) 62%), linear-gradient(180deg, rgba(5, 8, 12, .22) 0%, rgba(5, 8, 12, 0) 26%, rgba(5, 8, 12, 0) 60%, rgba(5, 8, 12, .6) 100%); }
 .title .top { position: absolute; top: clamp(14px, 3vh, 32px); left: clamp(18px, 6vw, 80px); right: clamp(18px, 6vw, 80px); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 .wordmark { font-family: var(--font-d); font-weight: 700; letter-spacing: .22em; font-size: clamp(34px, 6.4vw, 92px); line-height: 1; text-shadow: 0 6px 40px rgba(0, 0, 0, .55); }
 .wordmark::after { content: ''; display: block; height: 2px; margin-top: .22em; width: min(520px, 70%); background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0)); }
-.title .tag { max-width: 720px; margin: 18px 0 26px; font-size: clamp(16px, 1.5vw, 22px); color: #e8edf2; text-shadow: 0 2px 14px rgba(0, 0, 0, .7); }
+.title .tag { max-width: min(640px, 52vw); margin: 18px 0 26px; font-size: clamp(16px, 1.5vw, 22px); color: #e8edf2; text-shadow: 0 2px 14px rgba(0, 0, 0, .7); }
 .title .sub { font-family: var(--font-d); letter-spacing: .28em; text-transform: uppercase; font-size: 12px; color: var(--ui-dim); margin-bottom: 14px; }
-.menu { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.menu { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; max-width: min(760px, 56vw); }
+@media (max-width: 900px) { .menu { max-width: none; } }
 .title .foot { margin-top: 22px; font-size: 12.5px; color: var(--ui-dim); display: flex; flex-wrap: wrap; gap: 6px 18px; }
 .badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; font-family: var(--font-d); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; background: var(--ui-glass2); border: 1px solid var(--ui-line); }
 .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ui-ok); box-shadow: 0 0 10px currentColor; }
@@ -60,7 +61,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .sol .pips i.storm { background: var(--ui-shield); }
 .wrist { position: absolute; left: var(--safe); bottom: 16px; display: flex; gap: 10px; padding: 10px 12px; align-items: center; }
 .gauge { width: 76px; text-align: center; position: relative; }
-.gauge svg { width: 64px; height: 64px; display: block; margin: 0 auto; }
+.gauge > svg { width: 64px; height: 64px; display: block; margin: 0 auto; }
 .gauge .lab { font-family: var(--font-d); font-size: 10.5px; letter-spacing: .16em; color: var(--ui-dim); margin-top: 2px; }
 .gauge .val { position: absolute; top: 22px; left: 0; right: 0; font-family: var(--font-d); font-weight: 700; font-size: 17px; }
 .gauge.warn .val { color: var(--ui-warn); } .gauge.danger .val { color: var(--ui-danger); animation: pulse 1s infinite; }
