@@ -9,7 +9,14 @@ import glossaryJson from '@shared/design/glossary.json';
 import { BAL, DLG, allocCost, available, preview, canAfford, choiceState, tokens, fill, dayOf, shieldNeed, type Mission, type Alloc, type SystemId, type DawnReport, type NightReport, type EventInst, type Line, type ChoiceResult } from '../sim/engine';
 
 export const CREW: Record<string, any> = Object.fromEntries((crewJson as any).crew.map((c: any) => [c.id, c]));
-export const SOURCES: Record<string, any> = Object.fromEntries((sourcesJson as any).sources.map((s: any) => [s.id, s]));
+/** The challenge allows no agency branding in the game, so source names are shown without it (full credits stay in shared/references.md). */
+export const noBrand = (t: string) => String(t ?? '')
+  .replace(/NASA Watches Mars Light Up/g, 'Mars Lights Up').replace(/NASA (Says|Achieves) /g, '').replace(/NASA's /g, '')
+  .replace(/^NASA \(NTRS\)$/, 'Technical Reports Server (NTRS)').replace(/^NASA analysis/, 'An analysis').replace(/^NASA$/, 'Space agency news').replace(/^NASA Science$/, 'Planetary science explainers')
+  .replace(/ESA\/NASA mission/g, 'joint ESA mission').replace(/NASA\/JPL\/MSSS/g, 'JPL/MSSS').replace(/NASA\/(USGS|JPL)/g, '$1')
+  .replace(/NASA 3D Resources/g, 'Public 3D Resources').replace(/NASA (Images and )?Media Usage Guidelines/g, 'the media usage guidelines')
+  .replace(/\bfor NASA /g, 'for ').replace(/\bNASA\s*/g, '').replace(/\s{2,}/g, ' ').trim();
+export const SOURCES: Record<string, any> = Object.fromEntries((sourcesJson as any).sources.map((s: any) => [s.id, { ...s, org: noBrand(s.org), title: noBrand(s.title), use: noBrand(s.use), license: noBrand(s.license) }]));
 export const GLOSSARY: any[] = (glossaryJson as any).terms;
 
 type Child = Node | string | null | undefined | false;
@@ -127,7 +134,7 @@ export class UI {
     if (ids.includes('donki')) {
       rows.push(`<tr><th>Biggest solar flare</th><td>${d.flares.max ?? 'none'} (${d.flares.count} flares that day)</td></tr>`);
       if (d.cmes.fastest) rows.push(`<tr><th>Fastest solar cloud (CME)</th><td>${d.cmes.fastest} km/s</td></tr>`);
-      if (d.marsArrivals?.length) rows.push(`<tr><th>NASA model: clouds reaching Mars</th><td>${d.marsArrivals.length}</td></tr>`);
+      if (d.marsArrivals?.length) rows.push(`<tr><th>Forecast model: clouds reaching Mars</th><td>${d.marsArrivals.length}</td></tr>`);
       if (d.earth.kpMax) rows.push(`<tr><th>Earth storm index (Kp)</th><td>${d.earth.kpMax} out of 9</td></tr>`);
     }
     if (ids.includes('radlab-msl')) {
@@ -142,7 +149,7 @@ export class UI {
       h('div', { class: 'eyebrow', html: `${icon('dish')} Real data — not invented` }), h('h1', {}, 'What really happened'),
       h('p', {}, `Sol ${m.s.sol} of this mission is ${date}.`), extra ? h('p', {}, extra) : null,
       h('table', { class: 'data', html: rows.join('') }), h('h3', {}, 'Sources'), h('ul', { html: src }),
-      h('p', { style: 'color:var(--ui-dim);font-size:.85em' }, m.cfg.live ? 'Mode: LIVE NASA space weather.' : 'Mode: ARCHIVED real NASA data (a saved snapshot, not live).'),
+      h('p', { style: 'color:var(--ui-dim);font-size:.85em' }, m.cfg.live ? 'Mode: LIVE space weather.' : 'Mode: ARCHIVED real data (a saved snapshot, not live).'),
       h('div', { class: 'actions' }, this.btn('Close', 'primary', () => scr.remove()))));
     this.overlayRoot.append(scr); (scr.querySelector('button') as HTMLElement).focus();
   }
@@ -162,7 +169,7 @@ export class UI {
     const days = m.cfg.days;
     this.solEl.innerHTML = `SOL <b>${s.sol}</b> / ${BAL.missionSols}<div class="pips">${days.map((d: any, i: number) => `<i class="${i < s.sol ? 'on' : ''} ${i < s.sol - 1 && d.game.stormLevel >= 2 ? 'storm' : ''}"></i>`).join('')}</div>`;
     this.modeEl.className = `badge ${m.cfg.live ? 'live' : ''}`;
-    this.modeEl.innerHTML = `<span class="dot"></span>${m.cfg.live ? 'Live NASA space weather' : 'Real NASA data · archived'}`;
+    this.modeEl.innerHTML = `<span class="dot"></span>${m.cfg.live ? 'Live space weather' : 'Real data · archived'}`;
     const lim = m.diff.dose, pct = Math.min(100, Math.round((Math.max(s.dose, s.doseDil) / lim.red) * 100));
     this.badgeEl.innerHTML = `${icon('badge', pct >= 100 * lim.amber / lim.red ? 'var(--ui-warn)' : 'var(--ui-ok)')} Radiation badge ${pct}%${planner ? ` · ${Math.round(s.dose)} µGy` : ''}`;
     this.fx.frost.style.opacity = s.flags.coldNight ? '1' : '0';
@@ -310,7 +317,7 @@ export class UI {
       const st = r.storm;
       const stormBox = st ? h('div', { class: 'learn', style: 'border-color:rgba(183,156,255,.5);background:rgba(183,156,255,.1)' },
         h('div', { class: 't', style: 'color:var(--ui-shield)', html: `${icon('shield', 'var(--ui-shield)')} Solar storm · level ${st.level} of 3` }),
-        h('div', {}, `Shelter protection: ${Math.round(st.protection * 100)}%. Outside, the day's radiation was ${Math.round(st.doseOutside)} µGy${st.measured ? ', as measured on Mars by NASA\'s Curiosity rover' : ' (estimated)'}. A calm day is about ${Math.round(dayData.game.doseCalm)}.`),
+        h('div', {}, `Shelter protection: ${Math.round(st.protection * 100)}%. Outside, the day's radiation was ${Math.round(st.doseOutside)} µGy${st.measured ? ', as measured on Mars by the Curiosity rover' : ' (estimated)'}. A calm day is about ${Math.round(dayData.game.doseCalm)}.`),
         st.peakRate ? h('div', {}, `Highest reading: ${st.peakRate} µGy per hour at ${st.peakTime?.slice(11, 16)} UTC.`) : null,
         h('div', { style: 'margin-top:8px' }, this.dataChip(m, ['radlab-msl', 'donki']))) : null;
       this.panel('center',

@@ -104,7 +104,7 @@ Produced by `scripts/fetch-spaceweather.mjs` from DONKI + RadLab. Both editions 
   "date": "2024-05-20",
   "flares":      { "count", "C", "M", "X", "max": "X1.2" | null, "maxPeakTime", "maxRegion", "maxLink" },
   "cmes":        { "count", "fastest": km/s | null, "fastestType", "fastestLink", "fastestLongitude", "fastestHalfAngle" },
-  "marsArrivals":  [ { "arrival", "glancing", "cmeStart", "cmeSpeed", "link" } ],   // NASA WSA-ENLIL predicted arrival AT MARS on this day
+  "marsArrivals":  [ { "arrival", "glancing", "cmeStart", "cmeSpeed", "link" } ],   // WSA-ENLIL predicted arrival AT MARS on this day
   "marsForecasts": [ { "issued", "arrival", "glancing", "cmeSpeed", "link" } ],     // predictions PUBLISHED on this day about a later arrival at Mars
   "earth":       { "kpMax": number | null, "gst": bool, "shockArrivals": [ … ] },
   "sep":         [ { "time", "instruments": [ … ], "link" } ],

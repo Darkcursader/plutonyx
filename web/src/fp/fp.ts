@@ -1,7 +1,7 @@
 // Portions of this code were generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.
 /**
  * fp.ts — first-person astronaut. Mouse look (pointer lock) + WASD or gamepad, Mars gravity for jumps
- * (3.73 m/s², NASA Mars Fact Sheet), helmet visor, suit oxygen, footprints, stations you walk up to and
+ * (3.73 m/s², Mars Fact Sheet), helmet visor, suit oxygen, footprints, stations you walk up to and
  * use with [E], guidance for younger players, and the hand-held tablet that carries every decision.
  * The mission rules are unchanged: this file only changes HOW the player reaches each decision.
  */
@@ -14,7 +14,7 @@ interface Zone { id: string; cx: number; cz: number; floor: number; radius?: num
 
 const MARS_G = 3.73, EYE = 1.68, WALK = 3.1, RUN = 5.2, JUMP = 2.6;
 /** Buildings you cannot walk through, as circles [x, z, radius]. */
-const SOLID: [number, number, number][] = [[0, -38, 6.4], [0, -31.6, 2.2], [9.6, -39, 2.6], [12.5, -39, 2.8], [15.6, -39, 2.8], [20, -52, 7.6], [-34, -14, 1.7], [10, -30, 3.2], [-8, -10, 2.6], [0, 60, 4.2], [-17, 1, 1.9]];
+export const SOLID: [number, number, number][] = [[0, -38, 6.4], [0, -31.6, 2.2], [9.6, -39, 2.6], [12.5, -39, 2.8], [15.6, -39, 2.8], [20, -52, 7.6], [-34, -14, 1.7], [10, -30, 3.2], [-8, -10, 2.6], [0, 60, 4.2], [-17, 1, 1.9]];
 
 export class FirstPerson {
   active = false;
@@ -34,6 +34,11 @@ export class FirstPerson {
   onO2Empty: () => void = () => {};
   onPause: () => void = () => {};
   dose = 0; storm = 0; doseRate = 0;
+  /** Set by the rover while you drive: it moves the camera instead of the walking code. */
+  driver: ((dt: number) => void) | null = null;
+  beforeTeleport: (() => void) | null = null;
+  drivePrompt = '';
+  extraPrompt: () => string = () => '';
 
   constructor(private world: World, private host: HTMLElement, private play: (sound: string) => void, hands: THREE.Object3D | null) {
     const mk = (cls: string) => { const d = document.createElement('div'); d.className = cls; host.append(d); return d; };
@@ -49,7 +54,7 @@ export class FirstPerson {
     ring.position.y = 0.06; this.beacon.add(ring); this.beacon.visible = false; world.scene.add(this.beacon);
     for (const el of Object.values(this.el)) el.style.display = 'none';
 
-    addEventListener('keydown', (e) => { if (!this.active) return; this.keys[e.code] = true; if (e.code === 'Tab') { e.preventDefault(); this.toggleTablet(); } if (e.code === 'KeyE' && !this.tablet.raised) this.use(); if (e.code === 'Space' && !this.tablet.raised) { e.preventDefault(); this.jump(); } });
+    addEventListener('keydown', (e) => { if (!this.active) return; this.keys[e.code] = true; if (e.code === 'Tab') { e.preventDefault(); this.toggleTablet(); } if (e.code === 'KeyE' && !this.tablet.raised && !this.driver) this.use(); if (e.code === 'Space' && !this.tablet.raised && !this.driver) { e.preventDefault(); this.jump(); } });
     addEventListener('keyup', (e) => { this.keys[e.code] = false; });
     addEventListener('blur', () => { this.keys = {}; });
     document.addEventListener('pointerlockchange', () => { this.locked = document.pointerLockElement === world.renderer.domElement; });
@@ -85,6 +90,7 @@ export class FirstPerson {
 
   /** Move instantly (used for doors and waking up), with a short fade. */
   async teleport(x: number, z: number, yaw: number, zone = 'outside') {
+    this.beforeTeleport?.();
     this.el.fade.classList.add('on'); await new Promise((r) => setTimeout(r, 380));
     this.zone = zone; this.pos.set(x, 0, z); this.pos.y = this.floorY(); this.yaw = yaw; this.pitch = 0; this.vy = 0;
     this.el.fade.classList.remove('on');
@@ -120,9 +126,11 @@ export class FirstPerson {
   update(dt: number) {
     if (!this.active) return;
     const w = this.world, cam = w.camera, tablet = this.tablet;
+    let run = false, moved = 0;
+    if (this.driver) this.driver(dt); else {
     // gamepad
     const gp = (navigator.getGamepads?.() ?? []).find((p) => p && p.connected);
-    let mx = 0, mz = 0, run = !!this.keys.ShiftLeft || !!this.keys.ShiftRight;
+    let mx = 0, mz = 0; run = !!this.keys.ShiftLeft || !!this.keys.ShiftRight;
     if (!tablet.raised) {
       if (this.keys.KeyW || this.keys.ArrowUp) mz -= 1; if (this.keys.KeyS || this.keys.ArrowDown) mz += 1;
       if (this.keys.KeyA || this.keys.ArrowLeft) mx -= 1; if (this.keys.KeyD || this.keys.ArrowRight) mx += 1;
@@ -152,7 +160,7 @@ export class FirstPerson {
       // solar panel rows and their posts
       const lim = 480; if (Math.hypot(nx, nz + 20) > lim) { const d = Math.hypot(nx, nz + 20); nx = (nx / d) * lim; nz = ((nz + 20) / d) * lim - 20; }
     }
-    const moved = Math.hypot(nx - this.pos.x, nz - this.pos.z);
+    moved = Math.hypot(nx - this.pos.x, nz - this.pos.z);
     this.pos.x = nx; this.pos.z = nz;
     // gravity: a jump on Mars lasts much longer than on Earth
     const floor = this.floorY();
@@ -165,10 +173,11 @@ export class FirstPerson {
     }
     cam.position.set(this.pos.x, this.pos.y + EYE + Math.sin(this.bob) * 0.028 * (w.reducedMotion ? 0 : 1), this.pos.z);
     cam.rotation.set(this.pitch, this.yaw, 0, 'YXZ');
+    }
     tablet.update(dt, w.time);
 
     // suit oxygen: drains outside, refills in pressurised rooms
-    const outside = this.zone === 'outside';
+    const outside = this.zone === 'outside' && !this.driver; // the rover cabin is pressurised
     if (outside) this.o2 = Math.max(0, this.o2 - dt * (this.cadet ? 0.11 : 0.24) * (run && moved > 0 ? 1.6 : 1)); else this.o2 = Math.min(100, this.o2 + dt * 14);
     if (this.o2 <= 0 && outside) { this.o2 = 35; this.onO2Empty(); }
     this.breathT -= dt; if (this.breathT <= 0) { this.breathT = this.o2 < 25 ? 1.5 : run && moved > 0 ? 2.1 : 3.6; if (outside) this.play('breath'); }
@@ -181,7 +190,7 @@ export class FirstPerson {
       const gy = same && t.y !== undefined ? t.y : this.zones[goal.zone ?? '']?.floor ?? w.terrain.heightAt(goal.x, goal.z);
       this.beacon.visible = true; this.beacon.position.set(goal.x, gy, goal.z);
       const dist = Math.hypot(goal.x - this.pos.x, goal.z - this.pos.z);
-      if (same && this.near(t)) {
+      if (same && this.near(t) && !this.driver) {
         if (this.hold) {
           if (this.keys.KeyE || this.keys.PadE) { this.hold.done += dt; this.el.ring.classList.add('on'); this.el.ring.style.setProperty('--p', String(Math.min(1, this.hold.done / this.hold.need))); if (this.hold.done >= this.hold.need) this.hold.cb(); }
           else this.el.ring.classList.remove('on');
@@ -196,10 +205,13 @@ export class FirstPerson {
         this.el.guide.dataset.d = `${Math.round(dist)} m`;
       } else this.el.guide.style.display = 'none';
     } else { this.el.guide.style.display = 'none'; this.el.ring.classList.remove('on'); }
-    if (!prompt && !this.tablet.raised) { const door = this.stations.find((s) => s.id.startsWith('door:') && this.near(s)); if (door) prompt = `[E] ${door.label}`; }
+    if (this.driver) prompt = this.drivePrompt;
+    else if (!prompt && !this.tablet.raised) prompt = this.extraPrompt();
+    if (!prompt && !this.tablet.raised && !this.driver) { const door = this.stations.find((s) => s.id.startsWith('door:') && this.near(s)); if (door) prompt = `[E] ${door.label}`; }
     this.el.prompt.textContent = this.tablet.raised ? '' : prompt; this.el.prompt.classList.toggle('on', !!prompt && !this.tablet.raised);
 
     // wrist display: only when it matters
+    (this.el.visor as HTMLElement).style.display = this.driver ? 'none' : '';
     const show = outside && (this.o2 < 70 || this.storm > 0.2 || !!this.hold);
     this.el.wrist.classList.toggle('on', show);
     if (show) this.el.wrist.innerHTML = `<b>SUIT O₂</b><i style="--v:${this.o2}%" class="${this.o2 < 25 ? 'low' : ''}"></i><span>${Math.round(this.o2)}%</span><b>RADIATION</b><span>${this.doseRate.toFixed(0)} µGy/h</span>`;

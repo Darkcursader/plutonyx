@@ -118,7 +118,8 @@ export class Outpost {
   private plumeU = { uTime: { value: 0 }, uLevel: { value: 0.5 } };
   private dish = new THREE.Group();
   private dishLamp: THREE.MeshStandardMaterial;
-  private rover = new THREE.Group();
+  /** The crew rover on its pad (driven in first person by fp/rover.ts). */
+  rover = new THREE.Group();
   fieldRover = new THREE.Group();
   ship = new THREE.Group();
   private shipFlame: THREE.Mesh;
@@ -327,7 +328,7 @@ void main(){ float fres = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2)
     this.shipFlame = new THREE.Mesh(new THREE.ConeGeometry(1.3, 9, 24, 1, true).rotateX(Math.PI), new THREE.MeshBasicMaterial({ color: 0xcfe6ff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
     this.shipFlame.position.y = -3.6; s.add(this.shipFlame);
     lp.add(s);
-    { // regolith kicked up by the engines: ballistic particles under Mars gravity, 3.73 m/s² mean (NASA Mars Fact Sheet)
+    { // regolith kicked up by the engines: ballistic particles under Mars gravity, 3.73 m/s² mean (Mars Fact Sheet)
       const N = 2600, p0 = new Float32Array(N * 3), v = new Float32Array(N * 3);
       for (let i = 0; i < N; i++) { const a = Math.random() * 6.283, r = 2 + Math.random() * 7, sp = 6 + Math.random() * 20; p0[i * 3] = Math.cos(a) * r; p0[i * 3 + 1] = 0.2; p0[i * 3 + 2] = Math.sin(a) * r; v[i * 3] = Math.cos(a) * sp; v[i * 3 + 1] = 2 + Math.random() * 14; v[i * 3 + 2] = Math.sin(a) * sp; }
       const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(p0, 3)); g.setAttribute('aVel', new THREE.BufferAttribute(v, 3));
@@ -421,7 +422,7 @@ void main(){ float fres = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2)
     });
   }
 
-  /** The real Perseverance rover model (NASA 3D Resources; logos removed), parked by the garage as the "old explorer". */
+  /** The real Perseverance rover model (public 3D Resources; logos removed), parked by the garage as the "old explorer". */
   addExplorer(model: THREE.Object3D) {
     const x = -17, z = 1;
     model.position.set(x, this.ground(x, z) + 0.02, z); model.rotation.y = 2.3; model.scale.setScalar(1.0);

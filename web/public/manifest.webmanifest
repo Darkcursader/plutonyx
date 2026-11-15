@@ -1,7 +1,7 @@
 {
  "name": "PROJECT JEZERO - A Junior Astronaut Mission Trainer",
  "short_name": "Jezero",
- "description": "Keep your crew alive on Mars. Built on real NASA data by Team PlutonyX.",
+ "description": "Keep your crew alive on Mars. Built on real space data by Team PlutonyX.",
  "start_url": "./",
  "scope": "./",
  "display": "fullscreen",

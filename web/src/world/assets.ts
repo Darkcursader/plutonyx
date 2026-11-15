@@ -2,7 +2,7 @@
 /**
  * assets.ts — loads the real, third-party assets (all listed in shared/references.md):
  *   ground/  Poly Haven CC0 PBR ground sets (red_sand, red_laterite_soil_stones, rocky_terrain_02)
- *   models/  Poly Haven CC0 scanned rocks; NASA 3D Resources "Mars 2020 Perseverance Rover"
+ *   models/  Poly Haven CC0 scanned rocks; public 3D Resources "Mars 2020 Perseverance Rover"
  *            (agency logos, flag and nameplate removed from its textures by scripts/strip-insignia.mjs)
  */
 import * as THREE from 'three';
@@ -63,7 +63,7 @@ export async function loadHardware(base: string): Promise<{ habitat: THREE.Objec
 
 export async function loadRover(base: string): Promise<THREE.Group | null> {
   try {
-    const g = await gltf.loadAsync(`${base}models/nasa_perseverance.glb`);
+    const g = await gltf.loadAsync(`${base}models/perseverance.glb`);
     g.scene.traverse((o) => { const m = o as THREE.Mesh; if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; const mt = m.material as THREE.MeshStandardMaterial; if (mt.transparent) mt.depthWrite = true; } });
     return g.scene;
   } catch (e) { console.warn('rover model missing', e); return null; }

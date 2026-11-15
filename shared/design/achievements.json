@@ -16,7 +16,7 @@
     { "id": "birthday", "title": "Many Happy Returns", "text": "Make sure Kofi's birthday message arrives.", "icon": "cake", "when": { "flag": "kofiMessage" } },
     { "id": "chief_engineer", "title": "Chief Engineer", "text": "Finish with Air, Power and Shield all above 50.", "icon": "gauge", "when": { "all": [ { "v": "air", "gte": 50 }, { "v": "power", "gte": 50 }, { "v": "shield", "gte": 50 }, { "flag": "evac", "is": false } ] } },
     { "id": "clean_badge", "title": "As Low As You Can", "text": "Finish with every radiation badge in the green.", "icon": "badge", "when": { "all": [ { "flag": "anyAmber", "is": false }, { "flag": "evac", "is": false } ] } },
-    { "id": "todays_sun", "title": "Today's Sun", "text": "Fly a mission on live NASA space weather.", "icon": "sun", "when": { "flag": "liveData" }, "sources": ["donki"] },
+    { "id": "todays_sun", "title": "Today's Sun", "text": "Fly a mission on live space weather.", "icon": "sun", "when": { "flag": "liveData" }, "sources": ["donki"] },
     { "id": "historian", "title": "Historian", "text": "Fly a Replay History mission.", "icon": "book", "when": { "flag": "historyMission" }, "sources": ["donki", "radlab-msl"] },
     { "id": "commander", "title": "Commander", "text": "Reach any ending except Abort to Orbit on Commander difficulty.", "icon": "star", "when": { "all": [ { "mode": "commander" }, { "flag": "evac", "is": false } ] } },
     { "id": "no_gambles", "title": "By the Book", "text": "Bring the core home without taking a single gamble.", "icon": "book", "when": { "all": [ { "flag": "sampleSecured" }, { "v": "risk", "eq": 0 } ] } },

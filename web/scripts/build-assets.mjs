@@ -56,7 +56,7 @@ if (want('hardware')) {
 if (want('nasa')) {
   const out = path.join(WEB, 'public', 'models'); fs.mkdirSync(out, { recursive: true });
   for (const f of (process.env.NASA_MODELS || '').split(',').filter(Boolean)) {
-    gt(`optimize "${path.join(CACHE, 'nasa', f + '.glb')}" "${path.join(out, 'nasa_' + f.toLowerCase() + '.glb')}" --texture-compress webp --texture-size 2048 --compress meshopt`);
-    console.log('nasa', f, (fs.statSync(path.join(out, 'nasa_' + f.toLowerCase() + '.glb')).size / 1048576).toFixed(2), 'MB');
+    gt(`optimize "${path.join(CACHE, 'nasa', f + '.glb')}" "${path.join(out, f.toLowerCase() + '.glb')}" --texture-compress webp --texture-size 2048 --compress meshopt`);
+    console.log('nasa', f, (fs.statSync(path.join(out, f.toLowerCase() + '.glb')).size / 1048576).toFixed(2), 'MB');
   }
 }

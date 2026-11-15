@@ -31,13 +31,13 @@
     "deepDust": "The dust is thick as night. Almost no sunlight reaches the panels.",
     "dustEnds": "The dust is settling. You can see the crater rim again.",
     "panelsDusty": "A layer of dust is still on the panels. They make a little less power.",
-    "flare1": "The Sun is active today: a class {flareMax} flare in NASA's record.",
+    "flare1": "The Sun is active today: a class {flareMax} flare in the space-weather record.",
     "flare2": "Strong solar flare today: class {flareMax}. X is the strongest kind.",
     "flare3": "Huge solar flare today: class {flareMax}. One of the biggest of this solar cycle.",
     "radio1": "Solar static on the radio. Messages from Earth may be noisy.",
     "radio2": "Earth is having its own storm today. Mission Control is hard to reach.",
     "earthAurora": "Tonight people on Earth are seeing auroras. The same Sun is busy for both planets. Earth's storm index hit {kp} out of 9.",
-    "cloudArrives": "The solar cloud that NASA's model predicted has reached Mars. On the ground, the radiation counter reads {doseToday} micrograys for the day. A calm day is about {calmDose}.",
+    "cloudArrives": "The solar cloud that the forecast model predicted has reached Mars. On the ground, the radiation counter reads {doseToday} micrograys for the day. A calm day is about {calmDose}.",
     "cloudDip": "Odd. Since the solar clouds started passing, the radiation counter has gone down a little. Scientists have a name for that dip. Open the Science Log to learn why.",
     "stormContinues": "The storm is not over. Radiation is still {ratio} times a calm day. Shield charge still matters tonight.",
     "stormOver": "The radiation counter is back to normal. The storm has passed.",
@@ -105,9 +105,9 @@
   "reveal": {
     "title": "It really happened.",
     "lead": "Every solar storm in this mission was real. One sol in the game was one real day.",
-    "footer": "Space weather: NASA DONKI. Radiation on Mars: NASA's Curiosity rover (RAD), from NASA's RadLab. Dust, breakdowns and the crew are our story.",
-    "live": "This mission ran on live NASA space weather from {window}.",
-    "injected": "The Sun was calm in those days, so the storm on Sol 8 replayed the real storm of 20 May 2024 from NASA's archive."
+    "footer": "Space weather: DONKI. Radiation on Mars: the Curiosity rover (RAD), from the RadLab archive. Dust, breakdowns and the crew are our story.",
+    "live": "This mission ran on live space weather from {window}.",
+    "injected": "The Sun was calm in those days, so the storm on Sol 8 replayed the real storm of 20 May 2024 from the real archive."
   },
   "debrief": {
     "title": "Mission debrief",

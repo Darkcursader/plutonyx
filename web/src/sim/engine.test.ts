@@ -71,7 +71,7 @@ describe('rng', () => {
   });
 });
 
-describe('story mission data (real NASA records)', () => {
+describe('story mission data (real space-agency records)', () => {
   const days = storyDays();
   it('is 13-22 May 2024 with the storm on sol 8', () => {
     expect(days).toHaveLength(10);

@@ -1,8 +1,8 @@
 // Portions of this code were generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.
 /**
- * live.ts — LIVE NASA space weather. Fetches the last 30 days of DONKI records straight from NASA
+ * live.ts — LIVE space weather. Fetches the last 30 days of DONKI records straight from the CCMC service
  * (CCMC endpoint: no key, browser requests allowed; api.nasa.gov as second choice) and reduces them with
- * the SAME code that built the archived files. If NASA cannot be reached, the game falls back to the
+ * the SAME code that built the archived files. If the service cannot be reached, the game falls back to the
  * archived snapshot and says so. Live data is never faked and archived data is never called live.
  */
 // @ts-ignore — plain JS module shared with the Node archive script
@@ -22,7 +22,7 @@ export interface LiveState {
 
 const CACHE_KEY = 'plutonyx.live.v1';
 const SOLS = (balance as any).missionSols;
-export const live: LiveState = { mode: 'loading', days: [], start: '', end: '', fetchedAt: null, headline: '', detail: 'Asking NASA about the Sun…' };
+export const live: LiveState = { mode: 'loading', days: [], start: '', end: '', fetchedAt: null, headline: '', detail: 'Asking the space-weather service about the Sun…' };
 
 async function getJson(type: string, start: string, end: string): Promise<any[]> {
   let last: unknown;
@@ -60,12 +60,12 @@ export async function initLive(): Promise<LiveState> {
     const { days } = SW.deriveGame(SW.buildDays({ start, end, donki }), (balance as any).spaceWeather);
     const { headline, what } = describe(days);
     const at = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    Object.assign(live, { mode: 'live', days, start, end, fetchedAt: at, headline, detail: `Live NASA space weather · fetched ${at} · ${what}. Radiation on Mars is estimated in live missions (rover data arrives months later).` });
+    Object.assign(live, { mode: 'live', days, start, end, fetchedAt: at, headline, detail: `Live space weather · fetched ${at} · ${what}. Radiation on Mars is estimated in live missions (rover data arrives months later).` });
     try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), live })); } catch { /* ignore */ }
   } catch (e) {
     const file = await loadArchive('recent');
     const { headline, what } = describe(file.days);
-    Object.assign(live, { mode: 'archived', days: file.days, start: file.meta.start, end: file.meta.end, fetchedAt: null, headline, error: String(e), detail: `NASA could not be reached, so this is real NASA data from ${file.meta.start} to ${file.meta.end} (archived) · ${what}.` });
+    Object.assign(live, { mode: 'archived', days: file.days, start: file.meta.start, end: file.meta.end, fetchedAt: null, headline, error: String(e), detail: `The live service could not be reached, so this is real archived data from ${file.meta.start} to ${file.meta.end} (archived) · ${what}.` });
   }
   return live;
 }

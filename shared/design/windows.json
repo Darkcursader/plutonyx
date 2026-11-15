@@ -13,10 +13,10 @@
       "reveal": [
         "Sol 1 was 13 May 2024. Earth was still glowing: days before, people had seen auroras far from the poles. Earth's storm index had reached 9 out of 9.",
         "Sol 2 was 14 May 2024. The Sun fired an X8.7 flare, the biggest flare in this whole mission. That is why your radio was full of static.",
-        "On Sols 1 to 7, NASA's computer model predicted solar clouds reaching Mars again and again. On the ground, Curiosity's radiation counter barely moved. It even dipped.",
+        "On Sols 1 to 7, a space-weather computer model predicted solar clouds reaching Mars again and again. On the ground, Curiosity's radiation counter barely moved. It even dipped.",
         "Sol 8 was 20 May 2024. At {cmeTime} UTC a cloud left the far side of the Sun at {cmeSpeed} kilometres per second. No forecast had it. Earth could not see that side of the Sun.",
-        "About 40 minutes later, NASA's Curiosity rover measured radiation on Mars {peakRatio} times higher than a calm hour. It was the biggest surge of its 12 years on Mars.",
-        "NASA said an astronaut standing beside the rover would have received 8,100 micrograys, like 30 chest X-rays. Not deadly. But you would want a shelter.",
+        "About 40 minutes later, the Curiosity rover measured radiation on Mars {peakRatio} times higher than a calm hour. It was the biggest surge of its 12 years on Mars.",
+        "Scientists said an astronaut standing beside the rover would have received 8,100 micrograys, like 30 chest X-rays. Not deadly. But you would want a shelter.",
         "A radio call to Earth took {delayMin} minutes that day, so a question and its answer needed {roundTripMin} minutes of travel alone. The radiation peaked 39 minutes after the cloud was first seen. A real crew would have decided alone, exactly as you did."
       ],
       "sources": ["donki", "radlab-msl", "jpl-may2024-storm", "jpl-approx-pos"]
@@ -33,7 +33,7 @@
         "Sol 3 was 6 September 2017. The Sun fired an X9.3 flare, the biggest flare in this whole mission.",
         "Sol 7 was 10 September 2017. Another giant flare, X8.2, threw a cloud into space at {cmeSpeed} kilometres per second.",
         "Sol 8 was 11 September 2017. Curiosity measured radiation on the ground more than double a calm day, and it stayed high for more than two days.",
-        "Above the rover, NASA's MAVEN orbiter saw an aurora around the whole planet, more than 25 times brighter than any it had seen before.",
+        "Above the rover, the MAVEN orbiter saw an aurora around the whole planet, more than 25 times brighter than any it had seen before.",
         "Mars was almost on the far side of the Sun from Earth. A radio call took {delayMin} minutes each way, close to the longest it can ever be."
       ],
       "sources": ["donki", "radlab-msl", "jpl-sep2017-storm", "jpl-approx-pos"]
@@ -75,9 +75,9 @@
       "menuBlurb": "A mission built from the last 30 days of the real Sun. Different every day, because the Sun is.",
       "hiddenUntilEnding": false,
       "sol1": null,
-      "realTitle": "Live NASA space weather",
+      "realTitle": "Live space weather",
       "reveal": [
-        "This mission ran on NASA's live space-weather record for {window}.",
+        "This mission ran on the live space-weather record for {window}.",
         "The biggest flare in those days was class {flareMax}. A radio call to Earth takes {delayMin} minutes each way right now."
       ],
       "sources": ["donki", "jpl-approx-pos"]
