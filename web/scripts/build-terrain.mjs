@@ -33,9 +33,9 @@ const OUT_SHARED = path.join(REPO, 'shared', 'data', 'terrain');
 
 // --- the crop: a square of real Mars, centred between the delta front and the Perseverance landing site
 const MARS_RADIUS = 3396190; // metres, the sphere used by this map projection
-const CENTER = { lat: Number(process.env.T_LAT ?? 18.47), lon: Number(process.env.T_LON ?? 77.40) };
-const SIZE_M = Number(process.env.T_SIZE ?? 20480); // map metres per side
-const HEIGHT_PX = 1024; // elevation samples per side (20 m each)
+const CENTER = { lat: Number(process.env.T_LAT ?? 18.466), lon: Number(process.env.T_LON ?? 77.4295) };
+const SIZE_M = Number(process.env.T_SIZE ?? 30000); // map metres per side
+const HEIGHT_PX = 1536; // elevation samples per side (about 20 m each)
 const NORMAL_PX = 2048;
 const ALBEDO_PX = 4096;
 const OUTPOST = { lat: 18.4447, lon: 77.4508, name: 'near the Perseverance landing site (Octavia E. Butler Landing)' };
