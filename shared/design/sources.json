@@ -378,7 +378,16 @@
       "title": "Blender",
       "url": "https://www.blender.org/",
       "license": "GPL",
-      "use": "Installed for asset preparation."
+      "use": "Building the habitat and ascent-vehicle models by script (web/scripts/blender/build_hardware.py), including baked occlusion and wear."
+    },
+    {
+      "id": "plutonyx-hardware",
+      "kind": "asset",
+      "org": "Team PlutonyX",
+      "title": "Habitat and ascent vehicle 3D models (shared/models/)",
+      "url": "https://github.com/Darkcursader/plutonyx/tree/main/shared/models",
+      "license": "MIT (original work)",
+      "use": "Our own designs, built in Blender by an SI-assisted script. No agency insignia; markings are our own (PLUTONYX, LS-01, AV-01)."
     }
   ]
 }

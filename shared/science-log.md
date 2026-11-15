@@ -1,19 +1,19 @@
 # Mission Science Log
 
-> Which NASA data this game uses, why, how each dataset becomes a game rule, and where we simplified.
+> Which real data this game uses, why, how each dataset becomes a game rule, and where we simplified.
 > Shown in-game (Science Log screen) and used in the README. Every source is listed under References.
 
 ## The short version
 
-- **Space weather is real.** One sol in the game is one real day in NASA's DONKI record.
-- **Radiation is real.** The dose each sol is what NASA's Curiosity rover measured on the surface of Mars that day.
+- **Space weather is real.** One sol in the game is one real day in the DONKI record.
+- **Radiation is real.** The dose each sol is what the Curiosity rover measured on the surface of Mars that day.
 - **The ground is real.** The terrain is Jezero Crater, built from Mars Reconnaissance Orbiter elevation data.
 - **The radio delay is real.** It is computed from the true positions of Earth and Mars on the mission date.
 - **The story is ours.** The crew, the outpost, dust storms and breakdowns are fiction based on real Mars facts.
 
-## Dataset 1 — DONKI (NASA Goddard, CCMC)
+## Dataset 1 — DONKI (Goddard CCMC)
 
-**What it is:** NASA's database of space-weather events: solar flares, coronal mass ejections (CMEs), solar particle events, geomagnetic storms at Earth, and runs of the WSA-ENLIL model that predict where a CME will go.
+**What it is:** the database of space-weather events: solar flares, coronal mass ejections (CMEs), solar particle events, geomagnetic storms at Earth, and runs of the WSA-ENLIL model that predict where a CME will go.
 
 **Why we use it:** It is the challenge's suggested source for real space weather, and it includes something special: predicted CME arrival times **at Mars**.
 
@@ -22,15 +22,15 @@
 | DONKI record | In the game |
 |---|---|
 | Solar flares (class and time) | The morning report. Big flares put static on the radio link and break up messages from Earth. |
-| WSA-ENLIL "impact at Mars" predictions | Forecast cards: "NASA's model says a cloud from the Sun will reach Mars on Sol N." Shown on the sol the real model run was finished. |
+| WSA-ENLIL "impact at Mars" predictions | Forecast cards: "the forecast model says a cloud from the Sun will reach Mars on Sol N." Shown on the sol the real model run was finished. |
 | CME speed and direction | Shown in real-data cards and in the ending reveal. Used to estimate storms when no rover measurement exists. |
 | Earth's Kp index | "Earth is having its own storm today" notes, and the Same Sun ending. |
 
-**What we learned from the data:** in May 2024 NASA's model predicted many solar clouds reaching Mars. On the ground, Curiosity's radiation reading barely changed, and even dipped by about a fifth (scientists call such a dip a Forbush decrease). The dangerous event came from a different eruption that no forecast listed. The game keeps that exactly as it happened, so forecasts in the game can be wrong the same way real ones were.
+**What we learned from the data:** in May 2024 the forecast model predicted many solar clouds reaching Mars. On the ground, Curiosity's radiation reading barely changed, and even dipped by about a fifth (scientists call such a dip a Forbush decrease). The dangerous event came from a different eruption that no forecast listed. The game keeps that exactly as it happened, so forecasts in the game can be wrong the same way real ones were.
 
-## Dataset 2 — RadLab, instrument MSL-RAD-Surface (NASA Open Science Data Repository)
+## Dataset 2 — RadLab, instrument MSL-RAD-Surface (Open Science Data Repository)
 
-**What it is:** RadLab is NASA's portal for radiation measurements. `MSL-RAD-Surface` is the Radiation Assessment Detector on the Curiosity rover, measuring absorbed dose rate on the surface of Mars in micrograys per hour (µGy/h). We downloaded the full record available: January 2015 to June 2024.
+**What it is:** RadLab is the portal for radiation measurements. `MSL-RAD-Surface` is the Radiation Assessment Detector on the Curiosity rover, measuring absorbed dose rate on the surface of Mars in micrograys per hour (µGy/h). We downloaded the full record available: January 2015 to June 2024.
 
 **Why we use it:** It is real radiation measured where our crew would stand.
 
@@ -52,19 +52,19 @@
 
 DONKI lists the eruption's CME at 05:36 UTC, leaving the Sun at 2,678 km/s on the side Earth could not see. The rover's reading peaked 39 minutes later.
 
-**An honest note about two numbers.** NASA/JPL's news release says a person next to the rover would have received 8,100 µGy, "equivalent to 30 chest X-rays". The RadLab series we use adds up to about 1,700 µGy for the same event. We do not know exactly how the news figure was calculated, so the game uses the RadLab series for its rules and quotes the NASA/JPL sentence separately, as NASA's own summary. We chose to show both instead of hiding the difference.
+**An honest note about two numbers.** JPL's news release says a person next to the rover would have received 8,100 µGy, "equivalent to 30 chest X-rays". The RadLab series we use adds up to about 1,700 µGy for the same event. We do not know exactly how the news figure was calculated, so the game uses the RadLab series for its rules and quotes the JPL sentence separately, as the mission team's own summary. We chose to show both instead of hiding the difference.
 
 ## Dataset 3 — JPL planetary positions
 
-We compute where Earth and Mars were on each mission day from JPL's published orbit elements, then the distance and the one-way radio delay (distance ÷ speed of light). We checked three dates against NASA's JPL Horizons system and agreed within 0.01 minute. On 20 May 2024 the delay was 15.8 minutes each way, so a question and its answer needed about 32 minutes of travel. The radiation peaked 39 minutes after the eruption was first seen. That is why the player decides alone.
+We compute where Earth and Mars were on each mission day from JPL's published orbit elements, then the distance and the one-way radio delay (distance ÷ speed of light). We checked three dates against JPL Horizons system and agreed within 0.01 minute. On 20 May 2024 the delay was 15.8 minutes each way, so a question and its answer needed about 32 minutes of travel. The radiation peaked 39 minutes after the eruption was first seen. That is why the player decides alone.
 
-## Dataset 4 — Jezero Crater terrain (Mars Reconnaissance Orbiter CTX, USGS for NASA Mars 2020)
+## Dataset 4 — Jezero Crater terrain (Mars Reconnaissance Orbiter CTX, USGS for Mars 2020)
 
 The game world is a 30 km square of the real crater: a 20-metre elevation model and a 6-metre image mosaic made from Context Camera pictures. Heights are shown at true scale. The outpost stands near the place where the Perseverance rover landed.
 
 ## Dataset 5 — OSDR plant studies and the CSA food toolkit
 
-The greenhouse grows crops that really grew on the International Space Station (lettuce, mizuna, kale, tomatoes, zinnias) under magenta LED light, as in NASA's Veggie system. OSDR studies OSD-268, OSD-269 and OSD-766 are the open datasets from those harvests. The Canadian Space Agency's "Food production on the Moon and in remote areas" toolkit shaped how we explain it to students.
+The greenhouse grows crops that really grew on the International Space Station (lettuce, mizuna, kale, tomatoes, zinnias) under magenta LED light, as in the Veggie system on the Space Station. OSDR studies OSD-268, OSD-269 and OSD-766 are the open datasets from those harvests. The Canadian Space Agency's "Food production on the Moon and in remote areas" toolkit shaped how we explain it to students.
 
 ## How the storm estimate works when there is no rover data
 
@@ -75,13 +75,14 @@ If a live window is calm, Sols 8 and 9 replay the archived storm of 20–21 May 
 ## Simplifications (things we changed on purpose)
 
 - **Dose limits are scaled.** Real limits cover a whole career and are far higher than a 10-sol mission could reach. We scaled the badge limits so players feel the real rule: keep dose as low as you reasonably can. Radiation never makes a character sick in the game.
-- **The Storm Shield is future technology.** Powered shields are a research idea, not flight hardware. The water wall and sheltering under a cliff are real, practical ideas (NASA/JPL: "Cliffsides or lava tubes would provide additional shielding").
+- **The Storm Shield is future technology.** Powered shields are a research idea, not flight hardware. The water wall and sheltering under a cliff are real, practical ideas (JPL: "Cliffsides or lava tubes would provide additional shielding").
 - **One sol = one day.** A sol is about 24.6 hours; we pair each sol with one 24-hour day of data.
 - **Flare classes are measured near Earth.** Mars often faces a different side of the Sun. The game says so.
-- **Power, air, water and food use game units** tied to real anchors: 0.84 kg of oxygen per person per day, about a gallon of water per person per day with 98 % recycling, sunlight about 43 % as strong as at Earth (586 against 1,361 watts per square metre, NASA Mars Fact Sheet).
+- **Power, air, water and food use game units** tied to real anchors: 0.84 kg of oxygen per person per day, about a gallon of water per person per day with 98 % recycling, sunlight about 43 % as strong as at Earth (586 against 1,361 watts per square metre, Mars Fact Sheet).
 - **Plants grow faster** than in real life so a harvest fits in 10 sols.
 - **Dust storms, breakdowns, Isidis Camp and the crew** are fiction based on real Mars facts.
 - **The ground image is greyscale;** we tint it with Mars colours. Detail smaller than 20 m is not Mars data: the sand and stones near the outpost are scanned Earth ground and rocks (Poly Haven, CC0), tinted to match.
-- **The rover by the garage** is NASA's 3D model of Perseverance with logos removed. In our story it is a monument; the real rover is not parked there.
-- **Dust kicked up at launch** falls under Mars gravity, 3.73 m/s² (NASA Mars Fact Sheet), about 38 % of Earth's.
+- **The habitat and the rocket** are our own designs (built in Blender), not real hardware.
+- **The rover by the garage** is a public 3D model of Perseverance with logos removed. In our story it is a monument; the real rover is not parked there.
+- **Dust kicked up at launch** falls under Mars gravity, 3.73 m/s² (Mars Fact Sheet), about 38 % of Earth's.
 - **The Leopard Core** is fiction inspired by the real Cheyava Falls rock. The game never says life was found.

@@ -1,6 +1,6 @@
 # PROGRESS — every feature and deliverable from the briefs
 
-`[x]` done · `[~]` partly · `[ ]` not done (updated Sun 15 Nov, ~09:15 Tashkent)
+`[x]` done · `[~]` partly · `[ ]` not done (updated Sun 15 Nov, 18:25 Tashkent)
 
 ## Foundation (/shared)
 - [x] Game Bible, style guide, design JSON (game, balance, crew, events, endings, dialogue, achievements, glossary, windows, sources) + SCHEMA.md
@@ -34,10 +34,19 @@
 - [x] Rover tracks + footprints, dust accumulation tied to gameplay, dust-storm wall, launch dust at Mars gravity
 - [x] Night sky: stars, Earth as an evening star, aurora in solar storms, shield dome
 - [x] Film-poster title framing; panel-aware camera framing
-- [~] Habitat/greenhouse/dish/crew rover: procedural with normal maps and dust (no Blender bakes)
+- [x] Habitat and ascent vehicle rebuilt in Blender (bevels, panels, rivets, hatches, struts, markings, baked AO/wear) → shared/models
+- [~] Greenhouse, shelter, solar panels, dish, Air Maker, crew rover, pad, room interiors: still simple procedural shapes
 - [ ] WebGPURenderer (WebGL 2 only) · [ ] KTX2 textures (WebP used) · [ ] LODs · [ ] Phobos/Deimos
 - [ ] Pre-rendered backgrounds for Low preset (Low just reduces effects)
 - [ ] Per-ending LUTs (per-ending grade via saturation/contrast instead)
+
+## First person (beta, Settings → Play style or ?fp=1)
+- [x] Astronaut controller: WASD + mouse look, Mars gravity jump, visor, suit oxygen, footprints, gamepad mapping
+- [x] Walk-in command deck, storm shelter, greenhouse (doors are fade-teleports); live wall screens
+- [x] Hand-held 3D tablet carrying all mission panels + 7 status tabs; objective beacons and guidance arrow
+- [x] Physical jobs (hold E): brush panels, swap filter, throw breaker, load drone, aim dish, run to shelter
+- [x] Scripted full mission passes; light Low preset default on integrated GPUs
+- [ ] Mouse look verified by a human · [ ] collision with small objects and interior furniture · [ ] rover driving · [ ] walk-through airlock
 
 ## Cinematics and dialogue
 - [x] Real-time cinematics: letterbox, captions, skippable; intro, reveal, endings with launch
@@ -47,7 +56,7 @@
 
 ## Submission
 - [x] README, LICENSE, docs/submission.md, docs/demo-script.md, docs/checklist.md, docs/lesson-guide.md
-- [~] Demo video `docs/demo/plutonyx-demo-30s.mp4` (pipeline works; re-recording footage)
+- [x] Demo video `docs/demo/plutonyx-demo-30s.mp4` (29.8 s, 24.8 MB, real game footage)
 - [x] Deploy workflow → `gh-pages` branch · [ ] **GitHub Pages switched on by the owner**
 - [ ] Demo uploaded publicly · [ ] team names in README · [ ] Desktop link · [ ] Submit for Judging
 - [ ] Device tests (Chromebook, tablet, phone, Firefox, Safari) · [ ] playtest with 2 adults + 2 kids

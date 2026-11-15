@@ -1,8 +1,8 @@
 // Portions of this code were generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.
 /**
  * terrain.ts — the REAL terrain of Jezero Crater.
- * Elevation: NASA Mars Reconnaissance Orbiter CTX stereo model (20 m/pixel), image: CTX mosaic (6 m/pixel),
- * processed by USGS Astrogeology for NASA Mars 2020. Built by web/scripts/build-terrain.mjs. Vertical scale 1:1.
+ * Elevation: Mars Reconnaissance Orbiter CTX stereo model (20 m/pixel), image: CTX mosaic (6 m/pixel),
+ * processed by USGS Astrogeology for Mars 2020. Built by web/scripts/build-terrain.mjs. Vertical scale 1:1.
  *
  * "Hero zone": within about a kilometre of the outpost the surface is dressed with real scanned ground
  * (Poly Haven, CC0) blended by noise at two scales so tiling never shows, then tinted by the real orbital

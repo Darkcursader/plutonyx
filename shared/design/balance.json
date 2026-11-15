@@ -100,7 +100,7 @@
     "sentHome": -10
   },
   "radiation": {
-    "_comment": "Dose is in micrograys (µGy), the unit of NASA RadLab's MSL-RAD-Surface record. Radiation at these levels never makes a character sick; it fills a dose badge and triggers flight rules.",
+    "_comment": "Dose is in micrograys (µGy), the unit of RadLab's MSL-RAD-Surface record. Radiation at these levels never makes a character sick; it fills a dose badge and triggers flight rules.",
     "habCalmFactor": 0.85,
     "habCalmNote": "(game) Cosmic rays are very hard to stop; a habitat wall removes only a little.",
     "habStormFactor": 0.6,
@@ -113,13 +113,13 @@
     "waterWallCost": 25,
     "maxProtection": 0.95,
     "cliffStormFactor": 0.25,
-    "cliffNote": "(real idea, game number) NASA/JPL: 'Cliffsides or lava tubes would provide additional shielding' (source: jpl-may2024-storm).",
+    "cliffNote": "(real idea, game number) JPL: 'Cliffsides or lava tubes would provide additional shielding' (source: jpl-may2024-storm).",
     "outsideFactor": 1.0,
     "fieldCalmFactor": 1.0,
     "runHomeOutsideShare": 0.2,
     "limitsNote": "(game) Badge limits are scaled to a 10-sol mission so players can feel the trade-off. Real astronaut limits are far higher and cover a whole career; real crews keep dose 'as low as reasonably achievable'.",
     "xrayEquivalentMicroGray": 270,
-    "xrayNote": "(real) NASA/JPL compared 8,100 µGy to 30 chest X-rays for the 20 May 2024 storm, i.e. 270 µGy each (source: jpl-may2024-storm). Used only for kid-friendly comparisons."
+    "xrayNote": "(real) JPL compared 8,100 µGy to 30 chest X-rays for the 20 May 2024 storm, i.e. 270 µGy each (source: jpl-may2024-storm). Used only for kid-friendly comparisons."
   },
   "spaceWeather": {
     "_comment": "Rules that turn a real day summary into game values. Implemented in shared/scripts/lib/spaceweather.mjs (deriveGame). Calibration is explained in shared/science-log.md.",

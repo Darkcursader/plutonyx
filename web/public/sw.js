@@ -1,5 +1,5 @@
 // Portions of this code were generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.
-// Service worker: after the first visit the game works offline (with the archived NASA data).
+// Service worker: after the first visit the game works offline (with the archived data).
 // Big static files are served from the cache first; the page itself is fetched fresh when online.
 const CACHE = 'plutonyx-v2';
 self.addEventListener('install', () => self.skipWaiting());
@@ -9,7 +9,7 @@ self.addEventListener('activate', (e) => e.waitUntil((async () => {
 })()));
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  if (e.request.method !== 'GET' || url.origin !== location.origin) return; // NASA requests always go to the network
+  if (e.request.method !== 'GET' || url.origin !== location.origin) return; // live data requests always go to the network
   e.respondWith((async () => {
     const cache = await caches.open(CACHE);
     const hit = await cache.match(e.request);

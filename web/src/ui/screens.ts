@@ -51,8 +51,8 @@ export class Screens {
         h('div', { class: 'actions' }, this.b('Back', 'ghost', () => scr.remove())));
     };
     const historyMenu = () => {
-      const scr = this.open(h('div', { class: 'eyebrow' }, 'Replay history · real archived NASA data'), h('h1', {}, 'Storms that really happened'),
-        h('p', {}, 'Fly the same outpost through other real solar storms. Radiation on the ground is what NASA\'s Curiosity rover measured on those days.'),
+      const scr = this.open(h('div', { class: 'eyebrow' }, 'Replay history · real archived data'), h('h1', {}, 'Storms that really happened'),
+        h('p', {}, 'Fly the same outpost through other real solar storms. Radiation on the ground is what the Curiosity rover measured on those days.'),
         h('div', { class: 'grid', style: 'margin-top:14px' }, WIN.filter((w) => w.role === 'history' || (w.role === 'story' && store.data.missions > 0)).map((w) => h('button', { class: 'card choice', style: 'grid-template-columns:1fr', onclick: () => { scr.remove(); pickDiff((d) => actions.history(w.id, d)); } }, h('span', {}, h('b', {}, w.role === 'story' ? 'May 2024' : w.menuTitle), h('small', {}, w.role === 'story' ? 'Mission One again, with the dates shown.' : w.menuBlurb))))),
         h('h3', {}, 'Have a mission code?'),
         h('div', { class: 'row' }, h('input', { id: 'codein', class: 'btn', style: 'text-transform:uppercase;min-width:240px;cursor:text', placeholder: 'MAY-2024-1A2B3C', 'aria-label': 'Mission code', maxlength: '32' }), this.b('Fly this code', '', () => { const v = (scr.querySelector('#codein') as HTMLInputElement).value.trim(); if (v) { scr.remove(); pickDiff((d) => actions.code(v, d)); } })),
@@ -72,7 +72,7 @@ export class Screens {
         this.b('Science log', 'ghost', () => this.scienceLog()),
         this.b('Settings', 'ghost', () => this.settings()),
         desktop),
-      h('div', { class: 'foot' }, h('span', {}, 'This is the real terrain of Jezero Crater, from NASA Mars Reconnaissance Orbiter (CTX) data.'), detail, h('span', {}, GAME.disclaimers.noEndorsement)));
+      h('div', { class: 'foot' }, h('span', {}, 'This is the real terrain of Jezero Crater, from Mars Reconnaissance Orbiter (CTX) data.'), detail, h('span', {}, GAME.disclaimers.noEndorsement)));
     this.ui.layer.replaceChildren(el);
     paint();
     const iv = setInterval(() => (el.isConnected ? paint() : clearInterval(iv)), 1500);
@@ -96,7 +96,7 @@ export class Screens {
       h('div', { class: 'grid' },
         ...[['Air', `${Math.round(s.air)}%`, `${(s.air * BAL.units.airPointKgO2).toFixed(1)} kg of oxygen in reserve`], ['Power', `${Math.round(s.power / 10)} cells`, `${Math.round(s.power)} kWh in the battery`], ['Shield', `${Math.round(s.shield)}%`, s.flags.shieldFailed ? 'It ran dry during the storm' : 'It never failed'],
           ['Garden', s.flags.plantsDead ? 'Lost' : `${Math.round(s.plants)}%`, `${s.harvests} harvest${s.harvests === 1 ? '' : 's'}`], ['Leopard Core', s.flags.sampleSecured ? 'Aboard' : `${Math.round(s.science)}%`, s.flags.sampleSecured ? 'On its way to Earth' : 'Still on Mars'],
-          ['Crew radiation badge', `${Math.round(s.dose)} µGy`, `about ${(s.dose / x).toFixed(1)} chest X-rays (NASA/JPL comparison)`], ["Dil's badge", `${Math.round(s.doseDil)} µGy`, s.flags.dilGrounded ? 'Over the mission limit' : 'Under the mission limit'], ['Gambles taken', String(s.risk), d.highRisk ? 'A risky mission' : 'A careful mission'], ['Message from Earth', `${Math.min(3, s.fragments)} of 3 pieces`, d.decoded ? 'Decoded' : 'Still broken'],
+          ['Crew radiation badge', `${Math.round(s.dose)} µGy`, `about ${(s.dose / x).toFixed(1)} chest X-rays (JPL comparison)`], ["Dil's badge", `${Math.round(s.doseDil)} µGy`, s.flags.dilGrounded ? 'Over the mission limit' : 'Under the mission limit'], ['Gambles taken', String(s.risk), d.highRisk ? 'A risky mission' : 'A careful mission'], ['Message from Earth', `${Math.min(3, s.fragments)} of 3 pieces`, d.decoded ? 'Decoded' : 'Still broken'],
         ].map(([t, v, sub]) => h('div', { class: 'card' }, h('div', { class: 't' }, t), h('div', { class: 'd', style: 'font-size:1.5em' }, v), h('small', {}, sub)))),
       h('h3', {}, 'How your systems changed (dashed line = real radiation outside)'), chart,
       h('h3', {}, 'Turning points'),
@@ -129,7 +129,7 @@ export class Screens {
   }
 
   scienceLog() {
-    const groups: [string, string][] = [['data', 'NASA data that drives the game'], ['partner', 'Space agency partner resources'], ['fact', 'Facts we checked'], ['asset', 'Models, textures, code libraries and fonts'], ['tool', 'Tools used to build the game'], ['si', 'SI tools']];
+    const groups: [string, string][] = [['data', 'Real data that drives the game'], ['partner', 'Space agency partner resources'], ['fact', 'Facts we checked'], ['asset', 'Models, textures, code libraries and fonts'], ['tool', 'Tools used to build the game'], ['si', 'SI tools']];
     const refs = groups.map(([k, t]) => `<h3>${t}</h3><ul>` + Object.values(SOURCES).filter((s: any) => s.kind === k).map((s: any) => `<li><b>${s.org}</b> — <a href="${s.url}" target="_blank" rel="noopener">${s.title}</a><br><small style="color:var(--ui-dim)">${s.use}</small></li>`).join('') + '</ul>').join('');
     const scr = this.open(h('div', { class: 'eyebrow' }, 'Mission science log · credits and data'),
       h('div', { html: mdToHtml(scienceLog) }),

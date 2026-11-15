@@ -8,7 +8,7 @@
   "tagline": "Keep your crew alive on Mars, where every choice costs something precious and the real Sun decides how hard it gets.",
   "team": "PlutonyX",
   "teamCredit": "A PlutonyX game",
-  "event": "NASA Space Apps Challenge 2026",
+  "event": "Space Apps Challenge 2026",
   "challenge": "Build a Junior Astronaut Mission Trainer",
   "outpostName": "Lakeshore Outpost",
   "siteName": "Jezero Crater, Mars",
@@ -21,9 +21,9 @@
     "demo": ""
   },
   "disclaimers": {
-    "noEndorsement": "This is a student hackathon project. It uses public NASA data and models. NASA does not endorse this game.",
+    "noEndorsement": "This is a student hackathon project. It uses public space-agency data and models. No space agency endorses this game.",
     "si": "Portions of the code, text and audio were generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX. SI-generated images and video carry a visible 'SI-generated' mark.",
-    "data": "Space weather and radiation values are real NASA records. Dust storms, machine faults and the story are fiction based on real Mars facts."
+    "data": "Space weather and radiation values are real space-agency records. Dust storms, machine faults and the story are fiction based on real Mars facts."
   },
   "storyMission": {
     "windowId": "may-2024",

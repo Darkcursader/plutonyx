@@ -33,6 +33,8 @@ You command **Lakeshore Outpost**, four people on the floor of Jezero Crater, fo
 - At the end the game tells you: **it really happened.** Sol 8 was 20 May 2024, the biggest radiation surge Curiosity has recorded on Mars.
 - **Seven endings** (one secret), each with the real science behind it. Failure never kills anyone: it costs the garden, the sample, a message from home.
 
+Two ways to play: the default **command view**, and **first person (beta)**, where you walk the outpost as an astronaut and every decision is made on a hand-held tablet or at a console (Settings → Play style, or add `?fp=1` to the address; needs a mouse and keyboard or a gamepad).
+
 Modes: **Cadet** (ages 7–9), **Commander** (10–12 and adults), **Classroom** (pause-and-discuss cards, a shared mission code, [lesson guide](docs/lesson-guide.md)), **Today's real sky** (a mission built from the last 30 days of live NASA data), **Replay history** (other real storms), and a **Mission Planner view** with real units.
 
 ## How to play
@@ -77,9 +79,10 @@ Two data modes, always labelled: **LIVE** ("Live NASA space weather · fetched 0
 web/src/sim/      pure simulation, no rendering; reads shared/design/*.json; unit-tested (npm test)
 web/src/data/     live DONKI fetch + archived fallback; builds the 10 real days of a mission
 web/src/world/    Three.js scene: real terrain, Mars sky, outpost, weather, cameras
+web/src/fp/       first-person mode: astronaut controller, 3D tablet, walk-in rooms, tasks
 web/src/ui/       HTML/CSS interface: gauges, power board, events, storm, debrief
 web/src/audio.ts  every sound is generated in code (Web Audio)
-shared/           one source of truth for both editions: game bible, style guide, design JSON, real data, scripts
+shared/           one source of truth for both editions: game bible, style guide, design JSON, real data, scripts, models
 docs/             submission texts, demo script, checklist, lesson guide
 ```
 
@@ -87,12 +90,13 @@ docs/             submission texts, demo script, checklist, lesson guide
 - Strategy bots play hundreds of missions in the test suite to prove that **every ending is reachable** and that different strategies reach different endings.
 - Run it locally: `cd web && npm install && npm run dev` · tests: `npm test` · build: `npm run build`.
 
-Tech: TypeScript, Three.js (WebGL 2), pmndrs postprocessing, n8ao, Vite, Vitest. Static site on GitHub Pages; no backend, no login, no tracking, no personal data.
+Tech: TypeScript, Three.js (WebGL 2), pmndrs postprocessing, n8ao, Vite, Vitest; Blender (scripted) for the hero models. Static site on GitHub Pages; no backend, no login, no tracking, no personal data.
 
 ## SI (AI) disclosure
 
 - **Code, in-game text, documentation and the code-generated sound design** were produced with the assistance of an SI tool (**Claude**, Anthropic) and reviewed by Team PlutonyX. Source files carry a header saying so.
 - **The game concept is the team's own:** Mars and Jezero, the three-plus-two resource structure, the storm dilemma, the crew stakes and the tone. SI drafted wording options that the team chose from, then built the result.
+- **3D models:** the habitat and the ascent vehicle are our own designs, built in Blender by a script written with SI assistance (`web/scripts/blender/build_hardware.py`). No image- or 3D-generating SI tool was used.
 - **No SI-generated images or video** are in the Web edition at the time of writing. All visuals are the real-time game, real NASA data and openly licensed assets. If SI portraits or clips are added they carry a visible "SI-generated" mark and are listed in [`shared/art/SI_LOG.md`](shared/art/SI_LOG.md).
 - **Voices:** none recorded. Optional read-aloud uses the browser's built-in synthetic speech.
 - No NASA logos, flags or mission insignia are shown. Logos were removed from the NASA rover model's textures before use.

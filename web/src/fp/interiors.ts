@@ -95,7 +95,7 @@ export class Interiors {
       c.fillStyle = hot ? '#ff6b4a' : '#8be0b0'; font(c, 84); c.fillText(d.doseRate.toFixed(d.doseRate < 20 ? 1 : 0), 44, 176); font(c, 22, false); c.fillStyle = '#9fb0bf'; c.fillText('µGy per hour outside', 44, 208); c.fillText(`a calm hour: ${d.calmRate.toFixed(1)}`, 44, 236);
       c.fillStyle = '#e6e1d6'; font(c, 20); c.fillText('CREW BADGE', 44, 284); bar(c, 220, 268, 356, 20, d.dose / d.limit, d.dose / d.limit > 0.75 ? '#ffb05c' : '#8be0b0');
       c.fillText('SHIELD', 44, 324); bar(c, 220, 308, 356, 20, d.shield / 100, '#b79cff'); c.fillStyle = '#fff'; c.fillRect(220 + 356 * (d.need / 100), 302, 3, 32);
-      font(c, 15, false); c.fillStyle = '#6f8090'; c.fillText(d.live ? 'LIVE NASA SPACE WEATHER' : 'REAL NASA DATA · ARCHIVED', 44, Hh - 14);
+      font(c, 15, false); c.fillStyle = '#6f8090'; c.fillText(d.live ? 'LIVE SPACE WEATHER' : 'REAL DATA · ARCHIVED', 44, Hh - 14);
     }), 'radmon', 'Check the radiation monitor');
     consoleAt(Math.PI, new Screen(2.05, 1.12, (c, d, W) => {
       head(c, 'COMMS · EARTH', W); c.fillStyle = '#5cc8f0'; font(c, 72); c.fillText(`${d.delay.toFixed(1)} min`, 44, 168); font(c, 22, false); c.fillStyle = '#9fb0bf'; c.fillText('radio delay, one way', 44, 200);

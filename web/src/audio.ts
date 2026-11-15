@@ -36,6 +36,23 @@ export class Sound {
     } catch { this.ctx = null; }
   }
 
+  private eng: { g: GainNode; o: OscillatorNode[]; f: BiquadFilterNode; rg: GainNode } | null = null;
+  /** Rover electric drive: a whine that rises with speed plus gravel rumble. on=false fades it out. */
+  engine(on: boolean, speed = 0, rough = 0) {
+    const ctx = this.ctx; if (!ctx) return; const t = ctx.currentTime;
+    if (!this.eng) {
+      const g = ctx.createGain(); g.gain.value = 0; const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 600; f.connect(g).connect(this.master);
+      const o = [70, 140.5, 211].map((fr, i) => { const x = ctx.createOscillator(); x.type = i ? 'triangle' : 'sawtooth'; x.frequency.value = fr; x.connect(f); x.start(); return x; });
+      const rs = ctx.createBufferSource(); rs.buffer = this.noise; rs.loop = true; const rf = ctx.createBiquadFilter(); rf.type = 'lowpass'; rf.frequency.value = 260; const rg = ctx.createGain(); rg.gain.value = 0; rs.connect(rf).connect(rg).connect(this.master); rs.start();
+      this.eng = { g, o, f, rg };
+    }
+    const e = this.eng, s = Math.min(1, Math.abs(speed));
+    e.g.gain.setTargetAtTime(on ? 0.035 + s * 0.06 : 0, t, 0.15);
+    e.o.forEach((o, i) => o.frequency.setTargetAtTime([70, 140.5, 211][i] * (0.8 + s * 1.9), t, 0.12));
+    e.f.frequency.setTargetAtTime(500 + s * 1800, t, 0.2);
+    e.rg.gain.setTargetAtTime(on ? Math.min(0.5, s * 0.16 + rough * 0.5) : 0, t, 0.1);
+  }
+
   setVolume(v: number) { this.volume = v; if (this.ctx) this.master.gain.setTargetAtTime(v, this.ctx.currentTime, 0.1); if (v === 0) speechSynthesis?.cancel(); }
   /** power 0..100, dust 0..1, tension 0..1, doseRate in µGy/h (real), night 0..1 */
   setScene(p: { power: number; dust: number; tension: number; doseRate: number; inside?: boolean }) {

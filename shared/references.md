@@ -60,6 +60,7 @@
 | **Poly Haven** — [Scanned rock models: Namaqualand Boulder 02, 03, 05; Moon Rock 01, 03; Namaqualand Stones 01](https://polyhaven.com/models) · CC0 | Rocks and gravel scattered around the outpost (Earth rocks, tinted; not Mars data). |
 | **N8 Programs** — [n8ao (screen-space ambient occlusion)](https://github.com/N8python/n8ao) · ISC | Soft contact shadows. |
 | **Fontsource** — [Fontsource font packages (Oxanium, Atkinson Hyperlegible)](https://fontsource.org/) · SIL OFL fonts, MIT packaging | Self-hosted fonts so the game works offline. |
+| **Team PlutonyX** — [Habitat and ascent vehicle 3D models (shared/models/)](https://github.com/Darkcursader/plutonyx/tree/main/shared/models) · MIT (original work) | Our own designs, built in Blender by an SI-assisted script. No agency insignia; markings are our own (PLUTONYX, LS-01, AV-01). |
 
 ## Tools used to build the project (not shipped in the game)
 
@@ -70,7 +71,7 @@
 | **Don McCurdy** — [glTF Transform](https://gltf-transform.dev/) · MIT | Compressing 3D models (meshopt, WebP). |
 | **Microsoft** — [Playwright](https://playwright.dev/) · Apache-2.0 | Frame-by-frame capture of the real game for the demo video. |
 | **FFmpeg project** — [FFmpeg](https://ffmpeg.org/) · LGPL/GPL | Encoding the demo video. |
-| **Blender Foundation** — [Blender](https://www.blender.org/) · GPL | Installed for asset preparation. |
+| **Blender Foundation** — [Blender](https://www.blender.org/) · GPL | Building the habitat and ascent-vehicle models by script (web/scripts/blender/build_hardware.py), including baked occlusion and wear. |
 
 ## SI (AI) tools
 

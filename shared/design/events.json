@@ -17,7 +17,7 @@
       ],
       "realData": ["donki"],
       "sources": ["donki", "nasa-comm-delay"],
-      "learn": "Radio from Earth took {delayMin} minutes to reach Mars today. Big solar flares can fill radio links with static. Today's biggest flare in NASA's record was class {flareMax}.",
+      "learn": "Radio from Earth took {delayMin} minutes to reach Mars today. Big solar flares can fill radio links with static. Today's biggest flare in the space-weather record was class {flareMax}.",
       "choices": [
         {
           "id": "ask_again",
@@ -61,7 +61,7 @@
         { "who": "ana", "say": "And I need light for the seedlings. Amu and Syr just grew their first real leaves." }
       ],
       "sources": ["nasa-cheyava", "nasa-jezero"],
-      "learn": "In 2024 NASA's Perseverance rover found a rock here called Cheyava Falls. It has spots like a leopard's coat. Scientists call it a 'potential biosignature': a clue that needs much more study before anyone can say what made it.",
+      "learn": "In 2024 the Perseverance rover found a rock here called Cheyava Falls. It has spots like a leopard's coat. Scientists call it a 'potential biosignature': a clue that needs much more study before anyone can say what made it.",
       "choices": [
         {
           "id": "rover_first",
@@ -95,12 +95,12 @@
       "title": "Space weather report",
       "scene": "sky",
       "lines": [
-        { "who": "pip", "say": "Space weather report. NASA's computer model says a cloud from the Sun will reach Mars on Sol {fcSol}. It left the Sun at {fcSpeed} kilometres per second. The model calls it {fcKind}." },
+        { "who": "pip", "say": "Space weather report. a space-weather computer model says a cloud from the Sun will reach Mars on Sol {fcSol}. It left the Sun at {fcSpeed} kilometres per second. The model calls it {fcKind}." },
         { "who": "kofi", "say": "Models have been wrong before. Charging the shield for nothing costs real power." }
       ],
       "realData": ["donki"],
       "sources": ["donki"],
-      "learn": "This forecast is real. It comes from WSA-ENLIL, a NASA model that tracks clouds of solar gas (called CMEs) across the solar system. A forecast is a best guess, not a promise.",
+      "learn": "This forecast is real. It comes from WSA-ENLIL, a space-weather model that tracks clouds of solar gas (called CMEs) across the solar system. A forecast is a best guess, not a promise.",
       "choices": [
         {
           "id": "charge_now",
@@ -140,7 +140,7 @@
         { "who": "kofi", "say": "Two sols. Maybe three. Mars doesn't tell." }
       ],
       "sources": ["jpl-dust-2018"],
-      "learn": "Dust storms on Mars can block most sunlight. In 2018 a storm grew to cover a quarter of the planet. Scientists measured how thick the dust was with a number called tau. It reached 10.8, about twice as thick as the big storm of 2007. NASA's solar-powered Opportunity rover could not get enough sunlight to charge its batteries.",
+      "learn": "Dust storms on Mars can block most sunlight. In 2018 a storm grew to cover a quarter of the planet. Scientists measured how thick the dust was with a number called tau. It reached 10.8, about twice as thick as the big storm of 2007. The solar-powered Opportunity rover could not get enough sunlight to charge its batteries.",
       "choices": [
         {
           "id": "cover_panels",
@@ -372,7 +372,7 @@
             { "who": "dil", "say": "I see it too. My camera is full of white sparks. The core is half out of the rock." },
             { "who": "dil", "say": "Twenty more minutes and it's sealed. Or I drop the drill and run. Tell me which." }
           ],
-          "learn": "Those white sparks are real. During the May 2024 storm, the cameras on NASA's Curiosity rover filled with streaks and specks as charged particles hit them.",
+          "learn": "Those white sparks are real. During the May 2024 storm, the cameras on the Curiosity rover filled with streaks and specks as charged particles hit them.",
           "defaultChoice": "trust",
           "choices": [
             {
@@ -628,7 +628,7 @@
         { "who": "pip", "say": "Tonight will be much colder than usual. The heaters will want more power." }
       ],
       "sources": ["nasa-mars-facts"],
-      "learn": "Mars has thin air that cannot hold heat. NASA says temperatures there can reach 20 degrees Celsius and fall as low as about minus 153.",
+      "learn": "Mars has thin air that cannot hold heat. Scientists say temperatures there can reach 20 degrees Celsius and fall as low as about minus 153.",
       "choices": [
         {
           "id": "heaters",
@@ -665,7 +665,7 @@
         { "who": "kofi", "say": "The storm left a blanket of dust on the solar panels. We're losing a cell of power every sol." }
       ],
       "sources": ["jpl-dust-2018"],
-      "learn": "Dust is a real problem for solar power on Mars. In the 2018 dust storm, so little sunlight reached NASA's Opportunity rover that it could not recharge.",
+      "learn": "Dust is a real problem for solar power on Mars. In the 2018 dust storm, so little sunlight reached the Opportunity rover that it could not recharge.",
       "choices": [
         {
           "id": "brush",
@@ -697,7 +697,7 @@
         { "who": "ana", "say": "I want to try a new light recipe. More red, longer days. The tomatoes could grow much faster. It uses more power." }
       ],
       "sources": ["osdr-766", "nasa-veggie"],
-      "learn": "Scientists really test different light 'recipes' on space plants. One study in NASA's open science library grew tomatoes on the Space Station under different lighting to see what changed.",
+      "learn": "Scientists really test different light 'recipes' on space plants. One study in an open science library grew tomatoes on the Space Station under different lighting to see what changed.",
       "choices": [
         {
           "id": "try_it",
@@ -953,7 +953,7 @@
       ],
       "realData": ["radlab-msl"],
       "sources": ["radlab-msl"],
-      "learn": "Scientists never trust one instrument alone. The real radiation today, measured on Mars by NASA's Curiosity rover, was {doseToday} micrograys: a normal, calm day.",
+      "learn": "Scientists never trust one instrument alone. The real radiation today, measured on Mars by the Curiosity rover, was {doseToday} micrograys: a normal, calm day.",
       "choices": [
         {
           "id": "shelter_anyway",
@@ -991,7 +991,7 @@
         { "who": "sam", "say": "Lakeshore, about yesterday. We would have chosen differently. But we were not there, and you were. Tell us what you saw." }
       ],
       "sources": ["nasa-comm-crewed"],
-      "learn": "Because of the radio delay, a Mars crew will have to make many decisions on its own. NASA studies how to give crews that independence safely.",
+      "learn": "Because of the radio delay, a Mars crew will have to make many decisions on its own. Space agencies study how to give crews that independence safely.",
       "choices": [
         {
           "id": "own_it",

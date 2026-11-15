@@ -60,12 +60,12 @@ function applySettings() {
 // ------------------------------------------------------------------ boot
 
 const FACTS: [string, string][] = [
-  ['Jezero Crater was a lake about 3.5 billion years ago. The ground you are about to see is its real shape, measured from orbit.', 'Terrain: NASA Mars Reconnaissance Orbiter (CTX)'],
-  ['A radio message between Earth and Mars takes between about 3 and 22 minutes, depending on where the two planets are.', 'NASA Science'],
-  ['Every person needs about 0.84 kilograms of oxygen a day. On Mars, a machine has to make it.', 'NASA life-support research'],
-  ['On Mars the daytime sky is butterscotch and the sunset is blue.', 'NASA Science'],
-  ['NASA\'s MOXIE experiment made 122 grams of oxygen out of Martian air.', 'NASA'],
-  ['Mars has no global magnetic field today, so its surface gets more radiation than Earth\'s.', 'NASA Science'],
+  ['Jezero Crater was a lake about 3.5 billion years ago. The ground you are about to see is its real shape, measured from orbit.', 'Terrain: Mars Reconnaissance Orbiter (CTX)'],
+  ['A radio message between Earth and Mars takes between about 3 and 22 minutes, depending on where the two planets are.', 'Planetary science facts'],
+  ['Every person needs about 0.84 kilograms of oxygen a day. On Mars, a machine has to make it.', 'life-support research'],
+  ['On Mars the daytime sky is butterscotch and the sunset is blue.', 'Planetary science facts'],
+  ['The MOXIE experiment made 122 grams of oxygen out of Martian air.', 'Mars 2020 mission'],
+  ['Mars has no global magnetic field today, so its surface gets more radiation than Earth\'s.', 'Planetary science facts'],
 ];
 let factI = 0;
 const factTimer = setInterval(() => { factI = (factI + 1) % FACTS.length; $('boot-fact').textContent = FACTS[factI][0]; $('boot-src').textContent = FACTS[factI][1]; }, 5200);
@@ -81,6 +81,7 @@ async function boot() {
   clearInterval(factTimer);
   applySettings();
   fpm = new FPMode(world, ui, (n) => sound.play(n));
+  fpm.drive.engine = (on, s, r) => sound.engine(on, s, r);
   fpm.onLog = () => screens.scienceLog();
   world.onFrame = (dt) => { if (fpm?.on) fpm.frame(dt); };
   world.start();
