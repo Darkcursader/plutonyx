@@ -1,6 +1,13 @@
 # HANDOFF — where we left off
 
-**Last updated:** Sun 15 Nov 2026, 21:05 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
+**Last updated:** Sun 15 Nov 2026, 21:30 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
+
+## RELEASED — Sun 15 Nov 21:28
+**https://github.com/Darkcursader/plutonyx/releases/tag/v1.0-desktop** (tag on `main` 31d6e7c). Both ZIPs and `SHA256SUMS.txt`
+download without signing in (HTTP 200, sizes match the local files). Give this URL to the Web lead for `game.json → links.desktopDownload`.
+GitHub login on this Mac is now a browser (OAuth) token with `repo` scope, so pushing works.
+Note: at 20:49 someone switched this checkout to branch `feat/cinematic-site` (untracked `site/` folder). Desktop work was pushed to
+`main` from it as a fast-forward; that branch and `site/` were left alone.
 
 ## State right now
 - **Playable, built, tested, packaged with the new realistic look.** `Build/mac/PlutonyX.app`, `Build/win/PlutonyX/PlutonyX.exe`;
@@ -58,10 +65,8 @@ tools/out/final.sh               # the whole chain above in one go (local file, 
 into `Captures/c_*.png` (fast look-check without a player build; emissive windows look brighter there than in the game).
 
 ## Next 3 steps
-1. **Release** (blocked: the logged-in token is fine-grained and is refused on push): `~/.local/bin/gh auth login -h github.com -p https`
-   (browser, or a classic token with `repo` scope), then `git push origin main` and
-   `gh release create v1.0-desktop Build/release/*.zip Build/release/SHA256SUMS.txt --title "Desktop Ultra edition v1.0" --notes-file docs/RELEASE_NOTES.md`
-   (run from `desktop/`). Then give the Web lead the URL for `shared/design/game.json → links.desktopDownload`.
+1. Key test on the Mac (`tools/keytest.command`), then read `Logs/player-keys.log`; fix and re-upload the ZIPs if needed
+   (`gh release upload v1.0-desktop Build/release/*.zip Build/release/SHA256SUMS.txt --clobber -R Darkcursader/plutonyx`).
 2. Get the Windows ZIP run once on a real PC; fix whatever it shows.
 3. Have two or three kids/adults play; note where they stall (nobody but the autoplay bot has played it).
 
@@ -85,7 +90,7 @@ into `Captures/c_*.png` (fast look-check without a player build; emissive window
 - DONKI host: `https://ccmc.gsfc.nasa.gov/DONKI/WS/get/<TYPE>` (no key).
 
 ## Waiting on team
-- **Builder:** GitHub login that can push; send captures to the Web lead; Windows PC test.
+- **Builder:** key test; send captures to the Web lead; Windows PC test.
 - **Web lead:** put the release URL in `game.json`; merge `desktop/docs/references-desktop.md` rows into `shared/references.md`.
 
 ## Do NOT redo

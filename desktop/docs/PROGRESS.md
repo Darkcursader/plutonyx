@@ -19,7 +19,7 @@ Tick items as they are finished. `[x]` done · `[~]` in progress · `[ ]` not st
 - [x] Optional read-aloud narrator (computer's own voice; macOS tested, Windows not)
 
 ## Not done
-- [!] GitHub push and release (needs `gh auth login`)
+- [x] GitHub release v1.0-desktop published Sun 21:28: https://github.com/Darkcursader/plutonyx/releases/tag/v1.0-desktop
 - [!] Windows build tested on a real PC
 - [ ] Human playtest (2 adults, 2 kids)
 - [ ] NASA 3D models in the scene; SI portraits/postcards; save/continue; photo mode; read-aloud; classroom UI

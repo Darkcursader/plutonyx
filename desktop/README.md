@@ -10,7 +10,7 @@ from [`/shared`](../shared/) — rendered in Unity 6 with the High Definition Re
 
 ## Download
 
-Releases: https://github.com/Darkcursader/plutonyx/releases (tag `v1.0-desktop`)
+**Download:** https://github.com/Darkcursader/plutonyx/releases/tag/v1.0-desktop
 
 | File | Platform | Notes |
 |---|---|---|

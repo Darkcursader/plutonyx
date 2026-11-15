@@ -29,7 +29,7 @@ terrain and data shown as real are real NASA products, never SI-generated.
 
 ## Facts the Web lead may want
 
-- Download link (goes in `shared/design/game.json → links.desktopDownload`): see the GitHub release `v1.0-desktop`.
+- Download link (goes in `shared/design/game.json → links.desktopDownload`): https://github.com/Darkcursader/plutonyx/releases/tag/v1.0-desktop
 - Tested (Sun 15 Nov 17:30): macOS build, full mission in autoplay (68 screens), no errors in the player log. **Windows build is cross-compiled and untested on real hardware.**
 - In the desktop edition: live DONKI fetch with LIVE/ARCHIVED badges, Explore mode (third-person walk with real Mars gravity),
   rocket launch in every ending, badges from `achievements.json`, ending gallery, pause/settings, keyboard + gamepad.
