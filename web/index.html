@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0b0d14" />
+  <meta name="description" content="Keep your crew alive on Mars, where every choice costs something precious and the real Sun decides how hard it gets. A Junior Astronaut Mission Trainer built on real NASA data." />
+  <meta name="generator" content="Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX" />
+  <title>PROJECT JEZERO - A Junior Astronaut Mission Trainer</title>
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <style>
+    html, body { margin: 0; height: 100%; background: #0b0d14; overflow: hidden; }
+    #boot { position: fixed; inset: 0; display: grid; place-items: center; background: #0b0d14; color: #9fb0bf; font: 500 14px/1.5 system-ui, sans-serif; letter-spacing: .12em; z-index: 100; transition: opacity .9s ease; }
+    #boot.done { opacity: 0; pointer-events: none; }
+    #boot .in { width: min(520px, 82vw); text-align: center; }
+    #boot .bar { height: 2px; background: rgba(255,255,255,.12); margin: 22px 0 16px; overflow: hidden; border-radius: 2px; }
+    #boot .bar i { display: block; height: 100%; width: 4%; background: #5cc8f0; transition: width .5s ease; }
+    #boot .fact { letter-spacing: .02em; color: #d6dee6; font-size: 16px; min-height: 4.5em; }
+    #boot .src { font-size: 11px; opacity: .7; margin-top: 8px; letter-spacing: .08em; }
+  </style>
+</head>
+<body>
+  <canvas id="stage" aria-label="3D view of Lakeshore Outpost in Jezero Crater, Mars"></canvas>
+  <div id="ui"></div>
+  <div id="boot" role="status" aria-live="polite">
+    <div class="in">
+      <div id="boot-label">WAKING THE OUTPOST</div>
+      <div class="bar"><i id="boot-bar"></i></div>
+      <div class="fact" id="boot-fact">Jezero Crater was a lake about 3.5 billion years ago. The ground you are about to see is its real shape, measured from orbit.</div>
+      <div class="src" id="boot-src">Terrain: NASA Mars Reconnaissance Orbiter (CTX)</div>
+    </div>
+  </div>
+  <noscript>This game needs JavaScript and WebGL 2.</noscript>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

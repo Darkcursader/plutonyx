@@ -1,47 +1,55 @@
 # HANDOFF — where we left off (rewrite this file, do not append)
 
-**Last updated:** Sat 14 Nov 2026, ~18:05 Tashkent · **Phase 1 (shared foundation) — nearly done**
+**Last updated:** Sun 15 Nov 2026, ~09:00 Tashkent · **Ultra-realism pass (Part A) done · Part B capture done · Part C documents written**
 
 ## State right now
 
-- **Works:** `/shared` design foundation is written and committed: Game Bible, style guide, all design JSON (parse-checked), the space-weather archive script, and five archived real NASA windows.
-- **Deployed:** nothing yet. No web app exists yet (`web/` has only docs).
-- **Broken / missing:** `shared/design/sources.json`, `facts.json`, `shared/science-log.md`, `shared/references.md`, `shared/art/PROMPTS.md` are not written yet. Several source ids used in `events.json`/`endings.json` still need their URL verified (list below).
+- **Works:** the full game, title to ending, on real NASA data. A scripted playthrough of all 10 sols (storm, reveal, debrief) ran with no errors. 7 unit tests pass; bots reach all 7 endings.
+- **Looks:** hero-zone pass is in: scanned Poly Haven ground and rocks, NASA Perseverance model (logos stripped), sky-based image lighting, N8AO, rover tracks and footprints, dust accumulation tied to gameplay, dust-storm wall, launch dust at Mars gravity, film-poster title.
+- **Deployed:** every push to `main` builds and publishes to the **`gh-pages` branch** (GitHub Actions, `.github/workflows/deploy.yml`). **The public URL still returns 404 until the repo owner switches GitHub Pages on** (Settings → Pages → Deploy from a branch → `gh-pages` / root). Check: `curl -I https://darkcursader.github.io/plutonyx/`.
+- **Not done / honest gaps:**
+  - No Blender bakes. Blender is installed at `D:\Tools\Blender` but unused; habitat, greenhouse, dish and crew rover are still procedural geometry (with normal maps, dust and AO).
+  - No in-game video cutscenes. Cinematics are real-time (letterbox, captions, skippable). Recorded footage is used for the demo video only.
+  - No SI portraits, postcards or voices (prompt pack is ready in `shared/art/PROMPTS.md`).
+  - WebGPURenderer not attempted (WebGL 2 only). Low preset lowers effects, not a pre-rendered background.
+  - Save/continue mid-mission is not implemented. Gamepad is implemented but untested on hardware.
+  - Not tested on a real Chromebook, tablet, phone, Firefox or Safari. No playtest with kids or adults yet.
 
 ## In progress
 
-Finishing Phase 1: verify remaining facts → write `sources.json` → generate `references.md` → `science-log.md` → `art/PROMPTS.md`.
+Demo video: `node scripts/make-video.mjs` (from `web/`) builds `docs/demo/plutonyx-demo-30s.mp4` (29.8 s) from footage in `D:\PlutonyX-assets\cap\`. Re-record footage with `node scripts/capture.mjs` against a **built** site (`npx vite build && npx vite preview --port 4173`, then `CAPTURE_URL=http://localhost:4173/plutonyx/`). Do not edit source files while the dev server is being captured: it reloads the page.
 
 ## Next 3 steps
 
-1. **Verify + write `shared/design/sources.json`.** Ids already used: `donki, radlab-msl, jpl-may2024-storm, jpl-sep2017-storm, nasa-cheyava, nasa-jezero, nasa-mars-facts, nasa-moxie, nasa-water-98, nasa-o2-084, nasa-veggie, osdr-268, osdr-766, jpl-dust-2018, nasa-oppy-end, nasa-sunset, nasa-comm-delay, nasa-comm-crewed, nasa-launch-window, nasa-insight-dust, nasa-mars-relay, nasa-hrp-sleep, nasa-phobos-eclipse, nasa-flight-rules, nasa-sol, jpl-approx-pos, csa-food`. Unverified so far: the last 9 NASA ids from `nasa-comm-crewed` on, `csa-food` (page fetch kept resetting), and the claim that the 20 May 2024 eruption came from the same sunspot group as the 10–11 May Earth auroras (used in `endings.json` → `secret`, `dialogue.json` → decoded message). If a claim cannot be verified, soften the sentence.
-2. **Scaffold `web/`** (Vite + TS + Three.js + Vitest), port the rules in `shared/GAME_BIBLE.md` §15 + `shared/design/SCHEMA.md` into `web/src/sim/` with tests, and a bot that plays many seeded runs to prove every ending is reachable.
-3. **Terrain:** write `shared/scripts/fetch-terrain.mjs` (Node + `geotiff`) to crop `.cache/terrain/JEZ_ctx_B_soc_008_DTM_…20m….tif` (9.6 MB, complete) and `…orthoMosaic_6m….tif` (36.3 MB; was re-downloading — check size is 36,269,402 bytes) into a heightmap + albedo + normal map, then build the Three.js scene.
+1. Confirm the public link works once Pages is switched on; play one mission on it in a private window.
+2. Team: upload the demo video (YouTube **Public**), add member names to `README.md`, paste `docs/submission.md` fields, run `docs/checklist.md`.
+3. If time remains (freeze 17:00): test Low preset on a weak laptop; add the Desktop download URL to `shared/design/game.json` → `links.desktopDownload` (the title button turns into a link automatically).
 
 ## Known bugs / gotchas
 
-- `api.nasa.gov/DONKI/*` returns 404 (14 Nov 2026). Use `https://ccmc.gsfc.nasa.gov/DONKI-API/get/<TYPE>?startDate=&endDate=` (no key, CORS `*`, **max 60 days per request**).
-- RadLab `MSL-RAD-Surface` has data only 2015-01-01 → 2024-06-03 and no `dose_equivalent_rate`.
-- RadLab's absorbed-dose series integrates to ~1,500–1,700 µGy for 20–21 May 2024; NASA/JPL's news figure is 8,100 µGy. We show both, use RadLab for mechanics, and say so in the Science Log.
-- USGS terrain downloads are slow (~25 kB/s). Raw files live in `.cache/` (git-ignored).
-- C: drive has ~2 GB free. Work on D:. Use `npm_config_cache=D:/npm-cache`.
-- `gh` CLI is not installed. Git Credential Manager is. First push needs a browser sign-in by the repo owner.
-- Web tools hit a usage limit once this session; keep fetches batched.
+- Bash heredocs with back-ticks or `${` break in this shell: write patch scripts with the Write tool into `.cache/` and run them with node.
+- The preview pane throttles animation when hidden, so screenshots can catch fades and day/night transitions half-way. Not a game bug.
+- Playwright capture crashes Chromium on the Ultra preset at 1080p; use `q=high`.
+- DONKI: use `https://ccmc.gsfc.nasa.gov/DONKI-API/get/<TYPE>` (no key, CORS open, max 60 days). `api.nasa.gov/DONKI` returned 404 on 14 Nov.
+- NASA Mars Fact Sheet gives mean surface gravity **3.73 m/s²** (the brief said 3.71); the game uses 3.73 and cites the fact sheet.
+- gyan.dev ffmpeg download stalls; ffmpeg came from the BtbN GitHub builds → `D:\Tools\ffmpeg\bin`.
+- C: drive is almost full. Keep caches on D: (`npm_config_cache=D:/npm-cache`, `PLAYWRIGHT_BROWSERS_PATH=D:/PlutonyX-assets/ms-playwright`).
+- Vitest's balance test needs a long timeout on a busy machine (set to 120 s).
 
 ## Waiting on team
 
-- GitHub sign-in on first `git push` (owner account **Darkcursader**).
-- Final game title (placeholder "PROJECT JEZERO" in `shared/design/game.json`).
-- Desktop release URL (goes in `game.json` → `links.desktopDownload`) by Sun 17:00.
-- SI portraits/postcards once `shared/art/PROMPTS.md` exists.
-- Optional: a free api.nasa.gov key (fallback only).
+- **Switch on GitHub Pages** (one setting, see above).
+- Team member names for the README.
+- Final title (placeholder "PROJECT JEZERO" in `shared/design/game.json`).
+- Desktop release URL by 17:00, and one sentence on SI use in the Unity edition.
+- Upload of the demo video and the submission itself.
 
 ## Do NOT redo
 
-- Game Bible, style guide, the design JSON structure and the event/ending text (edit, don't rewrite).
-- The space-weather archive pipeline and its calibration (see DECISIONS #5–#8).
-- The Earth–Mars delay maths (validated against JPL Horizons).
+- The simulation, balance and event/ending text. The space-weather archive and its calibration.
+- The terrain pipeline (`scripts/build-terrain.mjs`) and asset pipeline (`fetch-assets.mjs`, `build-assets.mjs`, `strip-insignia.mjs`).
+- The submission texts, README, lesson guide and checklist (edit, don't rewrite).
 
-## Self-grade (end of Phase 1; no game yet)
+## Self-grade (honest)
 
-Impact 2 · Creativity 3 · Validity 2 · Relevance 3 · Presentation 1 — everything depends on shipping the playable slice next.
+Impact 4 · Creativity 4 · Validity 4 · Relevance 5 · Presentation 3–4. Weakest: Presentation (hardware models are still simple; no device testing, no playtest). Fix first: public link live + demo uploaded; then device test.

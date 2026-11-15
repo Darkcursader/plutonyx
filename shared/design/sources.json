@@ -1,0 +1,384 @@
+{
+  "_comment": "Machine-readable reference list. Every id used in events/endings/facts/glossary/windows must exist here. 'kind': data = drives a mechanic · fact = verified statement · asset = 3D/texture/font/library · partner = space-agency partner. shared/references.md is generated from this file by shared/scripts/build-references.mjs. Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.",
+  "schemaVersion": 1,
+  "retrieved": "2026-11-15",
+  "sources": [
+    {
+      "id": "donki",
+      "kind": "data",
+      "org": "NASA Goddard / CCMC",
+      "title": "DONKI - Space Weather Database Of Notifications, Knowledge, Information",
+      "url": "https://ccmc.gsfc.nasa.gov/tools/DONKI/",
+      "api": "https://ccmc.gsfc.nasa.gov/DONKI-API/get/{FLR|CME|SEP|GST|IPS|WSAEnlilSimulations}?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD",
+      "use": "Solar flares, CMEs, particle events, Earth geomagnetic storms and WSA-ENLIL predicted arrivals at Mars. Drives the space-weather timeline of every mission, live or archived.",
+      "note": "Research-quality data; NOAA SWPC is the official forecast source. Also reachable through api.nasa.gov/DONKI."
+    },
+    {
+      "id": "radlab-msl",
+      "kind": "data",
+      "org": "NASA Open Science Data Repository (OSDR)",
+      "title": "RadLab radiation dosimetry portal - instrument MSL-RAD-Surface (Curiosity rover Radiation Assessment Detector, Mars surface)",
+      "url": "https://visualization.osdr.nasa.gov/radlab/gui/",
+      "api": "https://visualization.osdr.nasa.gov/radlab/api/?instrument_id=MSL-RAD-Surface&absorbed_dose_rate&format=csv",
+      "use": "Absorbed dose rate (µGy/h) measured on the surface of Mars. Sets the radiation dose of every sol and the minute-by-minute storm curve."
+    },
+    {
+      "id": "jpl-approx-pos",
+      "kind": "data",
+      "org": "NASA JPL Solar System Dynamics",
+      "title": "Approximate Positions of the Planets (Keplerian elements, 1800-2050)",
+      "url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+      "use": "Earth and Mars positions for the mission date: real distance and one-way radio delay; the mini solar-system map."
+    },
+    {
+      "id": "jpl-horizons",
+      "kind": "data",
+      "org": "NASA JPL Solar System Dynamics",
+      "title": "Horizons System API",
+      "url": "https://ssd.jpl.nasa.gov/horizons/",
+      "use": "Used only to check our radio-delay maths (agreement within 0.01 minute on three dates)."
+    },
+    {
+      "id": "usgs-ctx-dtm",
+      "kind": "data",
+      "org": "USGS Astrogeology Science Center for NASA Mars 2020 · NASA/JPL/MSSS",
+      "title": "Mars 2020 Terrain Relative Navigation CTX DTM Mosaic (Jezero Crater, 20 m/pixel)",
+      "url": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_ctx_dtm_mosaic",
+      "use": "Real elevation of Jezero Crater from Mars Reconnaissance Orbiter Context Camera stereo images. The game terrain."
+    },
+    {
+      "id": "usgs-ctx-ortho",
+      "kind": "data",
+      "org": "USGS Astrogeology Science Center for NASA Mars 2020 · NASA/JPL/MSSS",
+      "title": "Mars 2020 Terrain Relative Navigation CTX Orthorectified Image Mosaic (Jezero Crater, 6 m/pixel)",
+      "url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0.tif",
+      "use": "Real orbital image of Jezero Crater. The ground texture (greyscale image, tinted with Mars colours by us)."
+    },
+    {
+      "id": "mars-trek",
+      "kind": "data",
+      "org": "NASA Solar System Treks (JPL / SSERVI)",
+      "title": "Mars Trek",
+      "url": "https://trek.nasa.gov/mars/",
+      "use": "Used to find and check the Jezero site, landing location and map layers."
+    },
+    {
+      "id": "osdr-268",
+      "kind": "data",
+      "org": "NASA OSDR",
+      "title": "OSD-268: Microbiological and nutritional analysis of lettuce crops grown on the International Space Station - VEG-01B",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-268",
+      "use": "Evidence that lettuce grown in space was analysed as food. Basis for the greenhouse crops."
+    },
+    {
+      "id": "osdr-269",
+      "kind": "data",
+      "org": "NASA OSDR",
+      "title": "OSD-269: Microbiological and nutritional analysis of lettuce crops grown on the International Space Station - VEG-03A",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-269",
+      "use": "Second Veggie lettuce harvest study."
+    },
+    {
+      "id": "osdr-766",
+      "kind": "data",
+      "org": "NASA OSDR",
+      "title": "OSD-766: The microbial communities of a tomato crop grown in Veggie under different lighting regimes on the International Space Station",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-766",
+      "use": "Tomatoes and light 'recipes' in the greenhouse."
+    },
+    {
+      "id": "csa-food",
+      "kind": "partner",
+      "org": "Canadian Space Agency",
+      "title": "Toolkit for educators and youth - Food production on the Moon and in remote areas",
+      "url": "https://www.asc-csa.gc.ca/eng/youth-educators/toolkits/food-production/",
+      "use": "Framing for the greenhouse and the classroom guide: food production in space, astronaut nutrition, benefits on Earth."
+    },
+    {
+      "id": "esa-solo-ar3664",
+      "kind": "partner",
+      "org": "European Space Agency (Solar Orbiter is an ESA/NASA mission)",
+      "title": "Can't stop won't stop: Solar Orbiter shows the Sun raging on",
+      "url": "https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter/Can_t_stop_won_t_stop_Solar_Orbiter_shows_the_Sun_raging_on",
+      "use": "Sunspot region AR3664 stayed active on the far side of the Sun; on 20 May 2024 Solar Orbiter's STIX saw a flare with an estimated class of X12."
+    },
+    {
+      "id": "jpl-may2024-storm",
+      "kind": "fact",
+      "org": "NASA JPL",
+      "title": "NASA Watches Mars Light Up During Epic Solar Storm (10 June 2024)",
+      "url": "https://www.jpl.nasa.gov/news/nasa-watches-mars-light-up-during-epic-solar-storm/",
+      "use": "20 May 2024: X12 flare estimate; 8,100 micrograys = about 30 chest X-rays; biggest surge RAD has measured; cliffsides or lava tubes give extra shielding; camera 'snow'; MAVEN auroras."
+    },
+    {
+      "id": "jpl-sep2017-storm",
+      "kind": "fact",
+      "org": "NASA JPL",
+      "title": "Large Solar Storm Sparks Global Aurora and Doubles Radiation Levels on the Martian Surface (29 Sept 2017)",
+      "url": "https://www.jpl.nasa.gov/news/large-solar-storm-sparks-global-aurora-and-doubles-radiation-levels-on-the-martian-surface/",
+      "use": "11 Sept 2017 event: radiation more than double any earlier RAD reading for more than two days; aurora 25 times brighter; 'you would definitely want to take shelter'."
+    },
+    {
+      "id": "nasa-cheyava",
+      "kind": "fact",
+      "org": "NASA",
+      "title": "NASA Says Mars Rover Discovered Potential Biosignature Last Year (10 Sept 2025)",
+      "url": "https://www.nasa.gov/news-release/nasa-says-mars-rover-discovered-potential-biosignature-last-year/",
+      "use": "Cheyava Falls rock, Sapphire Canyon core, Bright Angel formation in Neretva Vallis, leopard spots, vivianite and greigite, 'potential biosignature', non-biological explanations not ruled out."
+    },
+    {
+      "id": "nasa-jezero",
+      "kind": "fact",
+      "org": "NASA JPL",
+      "title": "Mars 2020 Perseverance Landing Press Kit - Landing Site",
+      "url": "https://www.jpl.nasa.gov/news/press_kits/mars_2020/landing/mission/landing_site/",
+      "use": "Jezero Crater: 28 miles (45 km) wide, lake about 3.5 billion years ago, river delta, Isidis Planitia."
+    },
+    {
+      "id": "nasa-mars-facts",
+      "kind": "fact",
+      "org": "NASA Science",
+      "title": "Mars: Facts",
+      "url": "https://science.nasa.gov/mars/facts/",
+      "use": "Day length 24.6 hours; year 687 Earth days; sunlight takes 13 minutes; thin CO2 atmosphere; temperatures 20 C to about -153 C; no global magnetic field today; moons Phobos and Deimos; dust storms."
+    },
+    {
+      "id": "nasa-moxie",
+      "kind": "fact",
+      "org": "NASA",
+      "title": "NASA's Oxygen-Generating Experiment MOXIE Completes Mars Mission (6 Sept 2023)",
+      "url": "https://www.nasa.gov/missions/mars-2020-perseverance/perseverance-rover/nasas-oxygen-generating-experiment-moxie-completes-mars-mission/",
+      "use": "MOXIE made 122 g of oxygen from Mars air in 16 runs, up to 12 g per hour, 98 % pure or better."
+    },
+    {
+      "id": "nasa-water-98",
+      "kind": "fact",
+      "org": "NASA",
+      "title": "NASA Achieves Water Recovery Milestone on International Space Station (20 June 2023)",
+      "url": "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/",
+      "use": "98 % water recovery; about a gallon per crew member per day."
+    },
+    {
+      "id": "nasa-o2-084",
+      "kind": "fact",
+      "org": "NASA (NTRS)",
+      "title": "ICES-2017-87, 47th International Conference on Environmental Systems (oxygen requirement 0.84 kg per crew member per day)",
+      "url": "https://ntrs.nasa.gov/api/citations/20170010337/downloads/20170010337.pdf",
+      "use": "Oxygen need per person per day."
+    },
+    {
+      "id": "nasa-veggie",
+      "kind": "fact",
+      "org": "NASA",
+      "title": "Growing Plants in Space",
+      "url": "https://www.nasa.gov/exploration-research-and-technology/growing-plants-in-space/",
+      "use": "Veggie garden on the ISS: lettuce, mizuna, kale, zinnias; LEDs glow magenta pink; vitamins in packed food break down; plants help well-being."
+    },
+    {
+      "id": "jpl-dust-2018",
+      "kind": "fact",
+      "org": "NASA JPL",
+      "title": "Opportunity Hunkers Down During Dust Storm (June 2018)",
+      "url": "https://www.jpl.nasa.gov/news/opportunity-hunkers-down-during-dust-storm/",
+      "use": "2018 dust storm: tau 10.8 (2007 storm: above 5.5); a quarter of the planet; rover could not charge; low-power fault mode."
+    },
+    {
+      "id": "nasa-sunset",
+      "kind": "fact",
+      "org": "NASA Science",
+      "title": "What Do Sunrises and Sunsets Look Like on Mars?",
+      "url": "https://science.nasa.gov/solar-system/planets/mars/what-does-a-sunrise-sunset-look-like-on-mars/",
+      "use": "Blue Martian sunset: fine dust scatters blue light forward."
+    },
+    {
+      "id": "nasa-comm-delay",
+      "kind": "fact",
+      "org": "NASA Science",
+      "title": "Speaking Percy's Language: How to Talk so Perseverance Will Listen",
+      "url": "https://science.nasa.gov/blog/speaking-percys-language-how-to-talk-so-perseverance-will-listen/",
+      "use": "Radio delay between Earth and Mars: roughly 3 to 22 minutes depending on the planets' positions."
+    },
+    {
+      "id": "nasa-comm-crewed",
+      "kind": "fact",
+      "org": "NASA (NTRS)",
+      "title": "Communication Delays, Disruptions, and Blackouts for Crewed Mars Missions (ASCEND 2022)",
+      "url": "https://ntrs.nasa.gov/citations/20220013418",
+      "use": "NASA analysis of how delay forces crew independence."
+    },
+    {
+      "id": "nasa-mars-relay",
+      "kind": "fact",
+      "org": "NASA JPL",
+      "title": "The Mars Relay Network Connects Us to NASA's Martian Explorers",
+      "url": "https://www.jpl.nasa.gov/news/the-mars-relay-network-connects-us-to-nasas-martian-explorers/",
+      "use": "Surface missions send most data through orbiters."
+    },
+    {
+      "id": "nasa-3d",
+      "kind": "asset",
+      "org": "NASA",
+      "title": "NASA 3D Resources",
+      "url": "https://science.nasa.gov/3d-resources/",
+      "use": "Free 3D models (see references for the exact models used). Used under the NASA Images and Media Usage Guidelines; insignia removed; no endorsement implied."
+    },
+    {
+      "id": "three",
+      "kind": "asset",
+      "org": "three.js authors",
+      "title": "three.js (MIT licence)",
+      "url": "https://threejs.org/",
+      "use": "3D engine of the Web edition.",
+      "license": "MIT"
+    },
+    {
+      "id": "postprocessing",
+      "kind": "asset",
+      "org": "pmndrs",
+      "title": "postprocessing (Zlib licence)",
+      "url": "https://github.com/pmndrs/postprocessing",
+      "use": "Bloom, anti-aliasing, tone mapping, colour grading.",
+      "license": "Zlib"
+    },
+    {
+      "id": "vite",
+      "kind": "asset",
+      "org": "Vite contributors",
+      "title": "Vite and Vitest (MIT licence)",
+      "url": "https://vite.dev/",
+      "use": "Build tool and unit tests.",
+      "license": "MIT"
+    },
+    {
+      "id": "font-oxanium",
+      "kind": "asset",
+      "org": "Severin Meyer",
+      "title": "Oxanium typeface (SIL Open Font License)",
+      "url": "https://fonts.google.com/specimen/Oxanium",
+      "use": "Display type."
+    },
+    {
+      "id": "font-atkinson",
+      "kind": "asset",
+      "org": "Braille Institute",
+      "title": "Atkinson Hyperlegible typeface (SIL Open Font License)",
+      "url": "https://www.brailleinstitute.org/freefont/",
+      "use": "Body type chosen for legibility."
+    },
+    {
+      "id": "claude",
+      "kind": "si",
+      "org": "Anthropic",
+      "title": "Claude (SI coding assistant)",
+      "url": "https://claude.com/",
+      "use": "Assisted with code, in-game text, documentation and code-generated audio. All reviewed by Team PlutonyX. Did not originate the game concept."
+    },
+    {
+      "id": "nasa-mars-factsheet",
+      "kind": "fact",
+      "org": "NASA Goddard (NSSDCA)",
+      "title": "Mars Fact Sheet",
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html",
+      "use": "Mean surface gravity 3.73 m/s² (launch dust falls at this rate); sunlight at Mars 586.2 W/m² against 1361.0 at Earth (about 43 %)."
+    },
+    {
+      "id": "nasa-perseverance-model",
+      "kind": "asset",
+      "org": "NASA 3D Resources",
+      "title": "Mars 2020 Perseverance Rover (3D model)",
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%202020%20Perseverance%20Rover",
+      "license": "NASA Media Usage Guidelines",
+      "use": "The rover parked beside the outpost. Agency logos, the flag and the mission nameplate were painted out of its textures (web/scripts/strip-insignia.mjs)."
+    },
+    {
+      "id": "polyhaven-ground",
+      "kind": "asset",
+      "org": "Poly Haven",
+      "title": "PBR ground textures: Red Sand, Red Laterite Soil Stones, Rocky Terrain 02",
+      "url": "https://polyhaven.com/textures",
+      "license": "CC0",
+      "use": "Scanned ground detail in the hero zone around the outpost, tinted with Mars colours taken from the real orbital image. This detail is not Mars data."
+    },
+    {
+      "id": "polyhaven-rocks",
+      "kind": "asset",
+      "org": "Poly Haven",
+      "title": "Scanned rock models: Namaqualand Boulder 02, 03, 05; Moon Rock 01, 03; Namaqualand Stones 01",
+      "url": "https://polyhaven.com/models",
+      "license": "CC0",
+      "use": "Rocks and gravel scattered around the outpost (Earth rocks, tinted; not Mars data)."
+    },
+    {
+      "id": "n8ao",
+      "kind": "asset",
+      "org": "N8 Programs",
+      "title": "n8ao (screen-space ambient occlusion)",
+      "url": "https://github.com/N8python/n8ao",
+      "license": "ISC",
+      "use": "Soft contact shadows."
+    },
+    {
+      "id": "fontsource",
+      "kind": "asset",
+      "org": "Fontsource",
+      "title": "Fontsource font packages (Oxanium, Atkinson Hyperlegible)",
+      "url": "https://fontsource.org/",
+      "license": "SIL OFL fonts, MIT packaging",
+      "use": "Self-hosted fonts so the game works offline."
+    },
+    {
+      "id": "tool-geotiff",
+      "kind": "tool",
+      "org": "geotiff.js contributors",
+      "title": "geotiff.js",
+      "url": "https://geotiffjs.github.io/",
+      "license": "MIT",
+      "use": "Reading the NASA/USGS elevation and image GeoTIFF files."
+    },
+    {
+      "id": "tool-sharp",
+      "kind": "tool",
+      "org": "Lovell Fuller and contributors",
+      "title": "sharp",
+      "url": "https://sharp.pixelplumbing.com/",
+      "license": "Apache-2.0",
+      "use": "Image processing in the asset build scripts."
+    },
+    {
+      "id": "tool-gltf-transform",
+      "kind": "tool",
+      "org": "Don McCurdy",
+      "title": "glTF Transform",
+      "url": "https://gltf-transform.dev/",
+      "license": "MIT",
+      "use": "Compressing 3D models (meshopt, WebP)."
+    },
+    {
+      "id": "tool-playwright",
+      "kind": "tool",
+      "org": "Microsoft",
+      "title": "Playwright",
+      "url": "https://playwright.dev/",
+      "license": "Apache-2.0",
+      "use": "Frame-by-frame capture of the real game for the demo video."
+    },
+    {
+      "id": "tool-ffmpeg",
+      "kind": "tool",
+      "org": "FFmpeg project",
+      "title": "FFmpeg",
+      "url": "https://ffmpeg.org/",
+      "license": "LGPL/GPL",
+      "use": "Encoding the demo video."
+    },
+    {
+      "id": "tool-blender",
+      "kind": "tool",
+      "org": "Blender Foundation",
+      "title": "Blender",
+      "url": "https://www.blender.org/",
+      "license": "GPL",
+      "use": "Installed for asset preparation."
+    }
+  ]
+}

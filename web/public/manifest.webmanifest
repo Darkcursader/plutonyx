@@ -1,0 +1,12 @@
+{
+ "name": "PROJECT JEZERO - A Junior Astronaut Mission Trainer",
+ "short_name": "Jezero",
+ "description": "Keep your crew alive on Mars. Built on real NASA data by Team PlutonyX.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "fullscreen",
+ "orientation": "landscape",
+ "background_color": "#0b0d14",
+ "theme_color": "#0b0d14",
+ "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

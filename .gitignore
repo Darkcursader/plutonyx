@@ -31,3 +31,6 @@ desktop/[Ll]ogs/
 desktop/[Uu]ser[Ss]ettings/
 desktop/*.csproj
 desktop/*.sln
+
+# Local Claude Code session files
+.claude/

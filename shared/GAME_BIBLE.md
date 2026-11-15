@@ -199,6 +199,8 @@ Real space-weather numbers are **never** scaled by difficulty. Difficulty only c
 - `science ≥ 40` → Dil leaves for the river valley. `science ≥ 100` → core sealed; Dil is home next dawn → `sampleSecured`.
 - Radiation per sol: `calm part × hab factor` always; the **storm part** is cut by the shield: `protection = 0.92 × min(1, shield ÷ required[level])`. A storm also drains shield charge.
 - Dose badge limits (game flight rules): amber = grounded from outside work; red = sent home early (ending pressure, never sickness).
+- A **cold night** happens when battery + today's sunlight cannot even pay the base load. Two in a row is a blackout.
+- Every answer that arrives from Earth also carries one more piece of the broken message (3 pieces decode it).
 - Fail states → **Abort to Orbit**: air ≤ 0, two sols of blackout, or health ≤ 0.
 - Delayed effects are first-class: every one carries a "because…" line shown when it lands.
 

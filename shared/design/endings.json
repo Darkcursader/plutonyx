@@ -24,8 +24,8 @@
       ],
       "science": {
         "title": "Why real missions abort",
-        "text": "Space agencies write 'flight rules' long before launch: clear limits for air, power and crew health. When a limit is crossed, the crew goes to safety. Nobody has to decide in the scary moment whether things are bad enough. Ending a mission early to save a crew is the system working.",
-        "sources": ["nasa-flight-rules"]
+        "text": "Mission teams agree on clear limits long before launch. When the 2018 dust storm drained NASA's Opportunity rover, the rover did what it had been told to do years earlier: switch almost everything off and wait. A crewed mission works the same way. When a limit is crossed, the crew goes to safety, and nobody has to argue in the scary moment about whether things are bad enough.",
+        "sources": ["jpl-dust-2018"]
       },
       "whatIf": "Watch the meter that hit zero. What could you have turned down two sols earlier to keep it alive?",
       "lockedHint": "Let a core system fail."
@@ -53,8 +53,8 @@
       ],
       "science": {
         "title": "One Sun, two planets",
-        "text": "In May 2024 a huge group of sunspots fired flare after flare. Around 10-11 May it faced Earth, and people saw auroras far from the poles. The Sun spins about once every 27 days as seen from Earth, so that region turned away from Earth and toward Mars. On 20 May a new eruption sent particles to Mars, where three NASA spacecraft recorded it. Earth and Mars often face different sides of the Sun. To forecast space weather for a Mars crew, we will need eyes on the Sun from more than one place.",
-        "sources": ["donki", "jpl-may2024-storm", "radlab-msl"]
+        "text": "In May 2024 a huge group of sunspots fired flare after flare. Around 10-11 May it faced Earth, and people saw auroras far from the poles. The Sun spins, so that region turned away from Earth and toward Mars. The European Space Agency's Solar Orbiter kept watching it on the far side. On 20 May a new eruption sent particles to Mars, where three NASA spacecraft recorded it. Earth and Mars often face different sides of the Sun. To forecast space weather for a Mars crew, we will need eyes on the Sun from more than one place.",
+        "sources": ["donki", "jpl-may2024-storm", "radlab-msl", "esa-solo-ar3664"]
       },
       "whatIf": "You found it. Can you do it again on Commander?",
       "lockedHint": "Bring everything home, and listen to all of the message."
@@ -83,7 +83,7 @@
       ],
       "science": {
         "title": "Why the sample must come home",
-        "text": "In 2024 NASA's Perseverance rover drilled a core named Sapphire Canyon from a rock called Cheyava Falls, here in Jezero. Its 'leopard spots' hold minerals that microbes can make on Earth. They can also form without life. NASA calls it a 'potential biosignature': something that needs more data before anyone can decide. Instruments on Earth are far more powerful than anything a rover can carry.",
+        "text": "In 2024 NASA's Perseverance rover drilled a core named Sapphire Canyon from a rock called Cheyava Falls, here in Jezero. Its 'leopard spots' hold minerals that microbes can make on Earth. They can also form without life. NASA calls it a 'potential biosignature': something that needs more data before anyone can decide. A rover's instruments can only go so far. NASA says more data and more study are needed before anyone can reach a conclusion.",
         "sources": ["nasa-cheyava"]
       },
       "whatIf": "You brought everything home. There is one more ending, and the broken message is the key.",
@@ -140,7 +140,7 @@
       ],
       "science": {
         "title": "Why a garden changes everything",
-        "text": "Food is heavy, and a Mars trip is long. Astronauts already grow lettuce, kale and other plants on the International Space Station in a small garden called Veggie, under red and blue LEDs that make it glow magenta. Fresh plants give vitamins that break down in packed food, and crews say gardening is good for the mind too. The Canadian Space Agency asks students to design ways to grow food on the Moon for the same reason.",
+        "text": "Food is heavy, and a Mars trip is long. Astronauts already grow lettuce, kale and other plants on the International Space Station in a small garden called Veggie, under red and blue LEDs that make it glow magenta. Fresh plants give vitamins that break down in packed food, and crews say gardening is good for the mind too. The Canadian Space Agency has a whole toolkit for students about producing food on the Moon and in remote places on Earth.",
         "sources": ["nasa-veggie", "osdr-268", "csa-food"]
       },
       "whatIf": "The garden made it. Could the core have made it too if the rover had been charged sooner?",

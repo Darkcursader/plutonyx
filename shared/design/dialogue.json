@@ -7,7 +7,7 @@
     { "who": "narrator", "say": "You are their Commander." }
   ],
   "tutorial": [
-    { "id": "t1", "who": "pip", "say": "Good morning, Commander. Sol 1 of 10. A sol is one day on Mars. It is 40 minutes longer than a day on Earth." },
+    { "id": "t1", "who": "pip", "say": "Good morning, Commander. Sol 1 of 10. A sol is one day on Mars. It is a little longer than a day on Earth." },
     { "id": "t2", "who": "pip", "say": "The night was cold and the battery is tired. Today's sunlight gives us a few power cells. Four machines want them." },
     { "id": "t3", "who": "kofi", "say": "Air Maker, Greenhouse, Storm Shield, Rover. We can't feed them all. Tap the plus and minus buttons to share out the power." },
     { "id": "t4", "who": "pip", "say": "Watch the arrows. Each one shows what will go up and what will go down tonight." },
@@ -91,6 +91,16 @@
     "dil.trust.run": [ { "who": "dil", "say": "You said my call. I looked at the sky and I ran. The core stayed. I think I'd run again." } ],
     "dil.grounded": [ { "who": "ana", "say": "Dil, your badge is over the mission limit. You're not sick. But you're done with outside work. Doctor's orders, and the rulebook's." } ],
     "dil.sentHome": [ { "who": "ana", "say": "Dil's badge is in the red. She feels fine. She rides home in the medical bay, and Earth checks her over. No arguments." } ]
+  },
+  "fragments": {
+    "_comment": "Every answer from Earth carries one more piece of the broken Sol 1 message (max 3). Other events can add pieces too.",
+    "intro": "PIP: while the dish was listening, I caught another piece of the broken message.",
+    "pieces": [
+      "\"...the sunspot group that lit our skies has turned out of our sight and into yours...\"",
+      "\"...we cannot see what it does next...\"",
+      "\"...you are our eyes now. Do not wait for us.\""
+    ],
+    "complete": "PIP: that is all of it. The message is whole."
   },
   "reveal": {
     "title": "It really happened.",

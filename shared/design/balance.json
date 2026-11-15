@@ -31,11 +31,11 @@
       "ages": "7-9",
       "blurb": "More sunlight, bigger reserves, hints from PIP, no timers.",
       "start": { "air": 82, "power": 75, "shield": 20, "water": 90, "food": 85, "plants": 38, "science": 0, "health": 92, "morale": 74 },
-      "solar": { "clear": 100, "haze": 80, "dust": 50, "deepDust": 35 },
+      "solar": { "clear": 100, "haze": 80, "dust": 45, "deepDust": 25 },
       "baseLoad": 20,
       "hints": true,
       "timers": false,
-      "dose": { "amber": 1450, "red": 1950 },
+      "dose": { "amber": 1550, "red": 2050 },
       "defaultAlloc": { "life": 2, "garden": 2, "shield": 1, "rover": 2 }
     },
     "commander": {
@@ -43,11 +43,11 @@
       "ages": "10-12+",
       "blurb": "Tight margins and a ticking clock in the storm. Learn from failure.",
       "start": { "air": 72, "power": 60, "shield": 10, "water": 80, "food": 78, "plants": 35, "science": 0, "health": 90, "morale": 70 },
-      "solar": { "clear": 90, "haze": 70, "dust": 40, "deepDust": 25 },
+      "solar": { "clear": 90, "haze": 70, "dust": 35, "deepDust": 15 },
       "baseLoad": 20,
       "hints": false,
       "timers": true,
-      "dose": { "amber": 1300, "red": 1700 },
+      "dose": { "amber": 1400, "red": 1800 },
       "defaultAlloc": { "life": 2, "garden": 2, "shield": 0, "rover": 2 }
     },
     "classroom": {
@@ -88,7 +88,7 @@
     "naturalRecovery": 3,
     "thinAir": { "below": 30, "delta": -8 },
     "veryThinAir": { "below": 15, "delta": -15 },
-    "coldNight": { "whenPowerAtOrBelow": 0, "delta": -12, "plants": -10 },
+    "coldNight": { "_comment": "Happens when battery + today's sunlight cannot even pay the base load (heat, lights).", "delta": -12, "plants": -10 },
     "hungry": { "foodBelow": 15, "delta": -4, "morale": -5 },
     "noWater": { "waterAtOrBelow": 0, "delta": -15 },
     "lowMorale": { "below": 25, "delta": -3 }
@@ -112,7 +112,7 @@
     "waterWallProtection": 0.25,
     "waterWallCost": 25,
     "maxProtection": 0.95,
-    "cliffStormFactor": 0.4,
+    "cliffStormFactor": 0.25,
     "cliffNote": "(real idea, game number) NASA/JPL: 'Cliffsides or lava tubes would provide additional shielding' (source: jpl-may2024-storm).",
     "outsideFactor": 1.0,
     "fieldCalmFactor": 1.0,
