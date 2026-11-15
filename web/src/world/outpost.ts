@@ -326,12 +326,12 @@ void main(){ float fres = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2)
     this.shipFlame = new THREE.Mesh(new THREE.ConeGeometry(1.3, 9, 24, 1, true).rotateX(Math.PI), new THREE.MeshBasicMaterial({ color: 0xcfe6ff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
     this.shipFlame.position.y = -3.6; s.add(this.shipFlame);
     lp.add(s);
-    { // regolith kicked up by the engines: ballistic particles under Mars gravity, 3.71 m/s² (NASA Mars Fact Sheet)
+    { // regolith kicked up by the engines: ballistic particles under Mars gravity, 3.73 m/s² mean (NASA Mars Fact Sheet)
       const N = 2600, p0 = new Float32Array(N * 3), v = new Float32Array(N * 3);
       for (let i = 0; i < N; i++) { const a = Math.random() * 6.283, r = 2 + Math.random() * 7, sp = 6 + Math.random() * 20; p0[i * 3] = Math.cos(a) * r; p0[i * 3 + 1] = 0.2; p0[i * 3 + 2] = Math.sin(a) * r; v[i * 3] = Math.cos(a) * sp; v[i * 3 + 1] = 2 + Math.random() * 14; v[i * 3 + 2] = Math.sin(a) * sp; }
       const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(p0, 3)); g.setAttribute('aVel', new THREE.BufferAttribute(v, 3));
       this.launchDust = new THREE.Points(g, new THREE.ShaderMaterial({ uniforms: this.launchU, transparent: true, depthWrite: false,
-        vertexShader: 'attribute vec3 aVel; uniform float uT; varying float vA; void main(){ float life = 9.0 + fract(aVel.x * 3.7) * 9.0; float t = mod(max(uT, 0.0) + fract(aVel.z * 1.3) * life, life); vec3 p = position + aVel * t + vec3(0.0, -0.5 * 3.71 * t * t, 0.0); p.y = max(p.y, 0.15); vA = uT < 0.0 ? 0.0 : smoothstep(0.0, 0.6, t) * (1.0 - t / life) * smoothstep(0.0, 3.0, uT) * (1.0 - smoothstep(22.0, 40.0, uT)); vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_PointSize = (700.0 + 900.0 * t) / -mv.z; gl_Position = projectionMatrix * mv; }',
+        vertexShader: 'attribute vec3 aVel; uniform float uT; varying float vA; void main(){ float life = 9.0 + fract(aVel.x * 3.7) * 9.0; float t = mod(max(uT, 0.0) + fract(aVel.z * 1.3) * life, life); vec3 p = position + aVel * t + vec3(0.0, -0.5 * 3.73 * t * t, 0.0); p.y = max(p.y, 0.15); vA = uT < 0.0 ? 0.0 : smoothstep(0.0, 0.6, t) * (1.0 - t / life) * smoothstep(0.0, 3.0, uT) * (1.0 - smoothstep(22.0, 40.0, uT)); vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_PointSize = (700.0 + 900.0 * t) / -mv.z; gl_Position = projectionMatrix * mv; }',
         fragmentShader: 'varying float vA; void main(){ float d = length(gl_PointCoord - 0.5); gl_FragColor = vec4(0.62, 0.42, 0.28, smoothstep(0.5, 0.05, d) * vA * 0.11); }' }));
       this.launchDust.frustumCulled = false; this.launchDust.renderOrder = 15; lp.add(this.launchDust);
     }

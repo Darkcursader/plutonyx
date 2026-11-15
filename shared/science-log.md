@@ -78,8 +78,10 @@ If a live window is calm, Sols 8 and 9 replay the archived storm of 20–21 May 
 - **The Storm Shield is future technology.** Powered shields are a research idea, not flight hardware. The water wall and sheltering under a cliff are real, practical ideas (NASA/JPL: "Cliffsides or lava tubes would provide additional shielding").
 - **One sol = one day.** A sol is about 24.6 hours; we pair each sol with one 24-hour day of data.
 - **Flare classes are measured near Earth.** Mars often faces a different side of the Sun. The game says so.
-- **Power, air, water and food use game units** tied to real anchors: 0.84 kg of oxygen per person per day, about a gallon of water per person per day with 98 % recycling, sunlight about 43 % as strong as at Earth.
+- **Power, air, water and food use game units** tied to real anchors: 0.84 kg of oxygen per person per day, about a gallon of water per person per day with 98 % recycling, sunlight about 43 % as strong as at Earth (586 against 1,361 watts per square metre, NASA Mars Fact Sheet).
 - **Plants grow faster** than in real life so a harvest fits in 10 sols.
 - **Dust storms, breakdowns, Isidis Camp and the crew** are fiction based on real Mars facts.
-- **The ground image is greyscale;** we tint it with Mars colours. Rocks and grain smaller than 20 m are generated, not data.
+- **The ground image is greyscale;** we tint it with Mars colours. Detail smaller than 20 m is not Mars data: the sand and stones near the outpost are scanned Earth ground and rocks (Poly Haven, CC0), tinted to match.
+- **The rover by the garage** is NASA's 3D model of Perseverance with logos removed. In our story it is a monument; the real rover is not parked there.
+- **Dust kicked up at launch** falls under Mars gravity, 3.73 m/s² (NASA Mars Fact Sheet), about 38 % of Earth's.
 - **The Leopard Core** is fiction inspired by the real Cheyava Falls rock. The game never says life was found.

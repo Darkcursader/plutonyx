@@ -1,62 +1,53 @@
-# PROGRESS — every feature and deliverable from the brief
+# PROGRESS — every feature and deliverable from the briefs
 
-`[x]` done · `[~]` partly · `[ ]` not started
+`[x]` done · `[~]` partly · `[ ]` not done (updated Sun 15 Nov, ~09:15 Tashkent)
 
-## Phase 1 — foundation
-- [x] Repo cloned, folder layout, `.gitignore`, brief saved to `web/docs/BRIEF.md`
-- [x] `shared/GAME_BIBLE.md` (concept, crew, resources, trade-off matrix, beat sheet, endings)
-- [x] `shared/style-guide.md`
-- [x] `shared/design/` game, balance, crew, events, endings, dialogue, achievements, glossary, windows + SCHEMA.md
-- [x] Space-weather archive script + 5 real windows (`shared/data/spaceweather/`)
-- [ ] `shared/design/sources.json` + `facts.json`
-- [ ] `shared/references.md`, `shared/science-log.md`
-- [ ] `shared/art/PROMPTS.md`, `shared/art/SI_LOG.md`
-- [x] `web/CLAUDE.md`, HANDOFF, PROGRESS, DECISIONS
-- [ ] First push to GitHub (needs owner sign-in)
+## Foundation (/shared)
+- [x] Game Bible, style guide, design JSON (game, balance, crew, events, endings, dialogue, achievements, glossary, windows, sources) + SCHEMA.md
+- [x] Space-weather archive script + 5 real windows; terrain metadata + 16-bit heightmap for Unity
+- [x] science-log.md, references.md (generated), art/PROMPTS.md, art/SI_LOG.md, CHANGELOG.md
+- [x] web/CLAUDE.md, HANDOFF, PROGRESS, DECISIONS, BRIEF
 
-## Phase 2 — vertical slice
-- [ ] Vite + TS + Three.js scaffold, Vitest
-- [ ] Simulation module from shared JSON + unit tests
-- [ ] Real Jezero terrain (DEM heightmap, albedo, normal, detail maps)
-- [ ] Sky, sun, lighting, post-processing
-- [ ] Outpost models (habitat, greenhouse, shelter, solar field, dish, air maker, rover, pad)
-- [ ] Power board UI + event cards + night results
-- [ ] One full mission on archived data, ≥ 2 endings, debrief
-- [ ] Fullscreen immersive start, title screen
-- [ ] GitHub Pages deploy (public link)
+## Game
+- [x] Pure simulation from shared JSON, unit tests, balance bots (all 7 endings reachable)
+- [x] Real Jezero terrain (CTX elevation + image), true vertical scale
+- [x] Mission loop: dawn report, power board, events, storm crisis with timers, night report
+- [x] 7 endings + reveal ("It really happened") + debrief with science, stats, chart, timeline, badges
+- [x] Live DONKI with archived fallback, LIVE/ARCHIVED badges, "Play today's real sky"
+- [x] Replay history (Sept 2017, Oct 2021, Feb 2022, May 2024), mission codes
+- [x] Real-data chips and cards, Science Log + references + glossary screen
+- [x] Cadet / Commander / Classroom (discussion cards), Mission Planner view (real units)
+- [x] Achievements, ending gallery
+- [x] Tutorial by doing on Sol 1 (first play), PIP hints and "PIP's plan" on Cadet
+- [x] Settings: quality, sound, read-aloud, text size, reduced motion, colour-blind patterns
+- [x] Keyboard, touch, mouse; [~] gamepad (implemented, not tested on hardware)
+- [x] Pause menu, photo mode with PNG export
+- [x] Code-generated audio: wind, hum, Geiger from real dose rate, adaptive music, UI sounds
+- [x] PWA: manifest + service worker (offline after first visit)
+- [ ] Save/continue mid-mission
+- [ ] Share card image (mission code can be copied)
 
-## Phase 3 — data and story depth
-- [ ] Live DONKI + archived fallback with LIVE/ARCHIVED badges
-- [ ] "It really happened" reveal
-- [ ] Real-data chips and cards
-- [ ] Storm scene with comms-delay clock and solar-system mini map
-- [ ] All 7 endings + gallery
-- [ ] Tutorial by doing, Cadet/Commander/Classroom
-- [ ] Mission Planner view (real units, graphs)
-- [ ] Science Log + Credits & Data screens
-- [ ] Achievements, mission code, share card
-- [ ] Balance bots: every ending reachable, no dominant strategy
+## Look (ultra-realism pass)
+- [x] Hero zone: Poly Haven PBR ground blended at two scales, scanned rock clusters
+- [x] NASA Perseverance model, insignia stripped
+- [x] Sky-based image lighting, N8AO, tight soft shadows, low sun, haze
+- [x] Rover tracks + footprints, dust accumulation tied to gameplay, dust-storm wall, launch dust at Mars gravity
+- [x] Night sky: stars, Earth as an evening star, aurora in solar storms, shield dome
+- [x] Film-poster title framing; panel-aware camera framing
+- [~] Habitat/greenhouse/dish/crew rover: procedural with normal maps and dust (no Blender bakes)
+- [ ] WebGPURenderer (WebGL 2 only) · [ ] KTX2 textures (WebP used) · [ ] LODs · [ ] Phobos/Deimos
+- [ ] Pre-rendered backgrounds for Low preset (Low just reduces effects)
+- [ ] Per-ending LUTs (per-ending grade via saturation/contrast instead)
 
-## Phase 4 — polish
-- [ ] Signature moments: title orbit, solar storm, dust storm, greenhouse growth, ending shots
-- [ ] Cinematic camera paths, letterbox, skippable
-- [ ] Audio: ambience, adaptive music, UI sounds, Geiger from real curve, optional read-aloud
-- [ ] Quality presets (Ultra/High/Low), GPU auto-detect
-- [ ] Photo mode
-- [ ] Gamepad + keyboard + touch, input glyph switching
-- [ ] Settings, pause menu, save/continue
-- [ ] Accessibility: colour-blind mode, text size, reduced motion, captions
-- [ ] PWA (manifest + service worker)
-- [ ] NASA 3D models (insignia stripped), SI art slots with watermark component
-- [ ] Cross-browser/device test, zero console errors
+## Cinematics and dialogue
+- [x] Real-time cinematics: letterbox, captions, skippable; intro, reveal, endings with launch
+- [x] Frame-perfect capture pipeline (Playwright) for demo footage
+- [x] Dialogue: speaker plate, role, radio cue, choices by keyboard/gamepad/touch, timer only in the storm
+- [ ] In-game video cutscenes with WebVTT · [ ] voices · [ ] SI portraits and postcards (prompts ready)
 
-## Phase 5 — submission
-- [ ] Root `README.md` (pitch, how to play, NASA data, simplifications, SI disclosure, credits)
-- [ ] `docs/submission.md` (all fields)
-- [ ] `docs/demo-script.md` (≤ 30 s video) + 7-slide fallback
-- [ ] `docs/checklist.md`
-- [ ] `docs/lesson-guide.md` (Classroom mode)
-- [ ] Desktop download link wired in
-- [ ] Playtest notes (2 adults, 2 kids) in HANDOFF
-- [ ] FortiGuard classification request (team action)
-- [ ] Submit for Judging by Sun 20:00 Tashkent
+## Submission
+- [x] README, LICENSE, docs/submission.md, docs/demo-script.md, docs/checklist.md, docs/lesson-guide.md
+- [~] Demo video `docs/demo/plutonyx-demo-30s.mp4` (pipeline works; re-recording footage)
+- [x] Deploy workflow → `gh-pages` branch · [ ] **GitHub Pages switched on by the owner**
+- [ ] Demo uploaded publicly · [ ] team names in README · [ ] Desktop link · [ ] Submit for Judging
+- [ ] Device tests (Chromebook, tablet, phone, Firefox, Safari) · [ ] playtest with 2 adults + 2 kids

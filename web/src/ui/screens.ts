@@ -129,7 +129,7 @@ export class Screens {
   }
 
   scienceLog() {
-    const groups: [string, string][] = [['data', 'NASA data that drives the game'], ['partner', 'Space agency partner resources'], ['fact', 'Facts we checked'], ['asset', 'Models, code libraries and fonts'], ['si', 'SI tools']];
+    const groups: [string, string][] = [['data', 'NASA data that drives the game'], ['partner', 'Space agency partner resources'], ['fact', 'Facts we checked'], ['asset', 'Models, textures, code libraries and fonts'], ['tool', 'Tools used to build the game'], ['si', 'SI tools']];
     const refs = groups.map(([k, t]) => `<h3>${t}</h3><ul>` + Object.values(SOURCES).filter((s: any) => s.kind === k).map((s: any) => `<li><b>${s.org}</b> — <a href="${s.url}" target="_blank" rel="noopener">${s.title}</a><br><small style="color:var(--ui-dim)">${s.use}</small></li>`).join('') + '</ul>').join('');
     const scr = this.open(h('div', { class: 'eyebrow' }, 'Mission science log · credits and data'),
       h('div', { html: mdToHtml(scienceLog) }),

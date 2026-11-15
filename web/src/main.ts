@@ -300,6 +300,8 @@ function enterPhoto() {
 function exitPhoto() { if (!world.photo) return; world.photo = false; (photoBar as any)?._off?.(); photoBar?.remove(); photoBar = null; $('ui').style.visibility = ''; world.shot('board', 1.2); }
 
 addEventListener('visibilitychange', () => { if (document.hidden) sound.hush(); });
+// installable, and playable offline after the first visit
+if ('serviceWorker' in navigator && import.meta.env.PROD && !CAPTURE) addEventListener('load', () => { navigator.serviceWorker.register(import.meta.env.BASE_URL + 'sw.js').catch(() => {}); });
 (window as any).__game = { world, store, get mission() { return mission; } };
 void boot();
 void icon; void GAME;

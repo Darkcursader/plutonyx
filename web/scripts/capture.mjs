@@ -21,10 +21,10 @@ const want = process.argv.slice(2);
 const on = (name) => !want.length || want.includes(name);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const browser = await chromium.launch({ headless: false, args: [`--window-size=${W},${H + 90}`, '--force-device-scale-factor=1', '--ignore-gpu-blocklist', '--enable-gpu-rasterization'] });
+const browser = await chromium.launch({ headless: false, args: [`--window-size=${W},${H + 90}`, '--force-device-scale-factor=1', '--ignore-gpu-blocklist', '--enable-gpu-rasterization', '--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding', '--disable-background-timer-throttling', '--disable-features=CalculateNativeWinOcclusion'] });
 const page = await (await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 })).newPage();
 page.on('pageerror', (e) => console.error('PAGE ERROR', e.message));
-await page.goto(BASE + '?capture=1&q=ultra', { waitUntil: 'load' });
+await page.goto(BASE + '?capture=1&q=high', { waitUntil: 'load' });
 await page.waitForFunction(() => window.__cap?.ready === true, null, { timeout: 120000 });
 console.log('game ready');
 
@@ -78,7 +78,7 @@ if (on('board') || on('event') || on('storm') || on('data') || on('night')) {
 
 // ---------------------------------------------------------------- the launch
 if (on('launch')) {
-  await page.goto(BASE + '?capture=1&q=ultra', { waitUntil: 'load' });
+  await page.goto(BASE + '?capture=1&q=high', { waitUntil: 'load' });
   await page.waitForFunction(() => window.__cap?.ready === true, null, { timeout: 120000 });
   await world((w) => { w.todT = 1; w.tod = 0.722; w.setLook('gold'); w.jump('launch'); w.startLaunch(); });
   await clip('launch', 9, { ui: false });

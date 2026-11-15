@@ -19,7 +19,7 @@ const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 
 
 interface Shot { pos: [number, number, number]; look: [number, number, number]; fov: number; around?: string }
 const SHOTS: Record<string, Shot> = {
-  title: { pos: [-150, 2.2, 118], look: [-30, 30, -150], fov: 30 },
+  title: { pos: [-150, 2.2, 118], look: [-12, 30, -150], fov: 30 },
   board: { pos: [78, 40, 58], look: [4, 3, -30], fov: 36 },
   outpost: { pos: [-62, 8, 24], look: [0, 6, -38], fov: 34 },
   wide: { pos: [-170, 34, 150], look: [0, 12, -40], fov: 30 },
