@@ -20,6 +20,7 @@ import { live, initLive, liveMissionDays } from './data/live';
 import { WINDOWS, storyDays, loadArchive, sliceDays } from './data/windows';
 import { BAL, DLG, ENDINGS, newMission, startSol, setAlloc, solEvents, choose, endSol, dayOf, tokens, fill, skyFor, type Mission, type DifficultyId, type MissionConfig, type Alloc } from './sim/engine';
 import { randomSeed, parseMissionCode } from './sim/rng';
+import { FPMode } from './fp/mode';
 
 store.load();
 const $ = (id: string) => document.getElementById(id)!;
@@ -32,6 +33,10 @@ if (CAPTURE) { settings.volume = 0; settings.reducedMotion = false; }
 const world = new World($('stage') as HTMLCanvasElement, forcedQ ?? (settings.quality === 'auto' ? undefined : (settings.quality as Quality)));
 let mission: Mission | null = null;
 let runId = 0;
+/** First-person mode (beta): ?fp=1 in the address, or the title-screen switch. The classic command view stays the default. */
+let fpWanted = /[?&]fp=1/.test(location.search) || store.data.settings.firstPerson === true;
+let fpm: FPMode | null = null;
+const F = () => (fpm && fpm.on ? fpm : null);
 
 const ui = new UI($('ui'), {
   sound: (n) => sound.play(n),
@@ -75,6 +80,9 @@ async function boot() {
   }
   clearInterval(factTimer);
   applySettings();
+  fpm = new FPMode(world, ui, (n) => sound.play(n));
+  fpm.onLog = () => screens.scienceLog();
+  world.onFrame = (dt) => { if (fpm?.on) fpm.frame(dt); };
   world.start();
   showTitle();
   if (CAPTURE) { world.manual = true; document.body.classList.add('capture'); (window as any).__cap = { ready: true, world, step: (dt: number) => world.step(dt) }; }
@@ -85,7 +93,7 @@ async function boot() {
 function idleOutpost() { world.setOutpost({ power: 70, shield: 30, plants: 45, plantsDead: false, life: 2, garden: 2, shieldLevel: 1, rover: 2, roverHome: true, panelsDusty: false, frost: false }); }
 
 function showTitle() {
-  runId++; mission = null;
+  runId++; mission = null; fpm?.stop();
   ui.showHud(false); ui.setSparkle(0); world.resetLaunch(); world.setLook('default'); world.frameShift = 0;
   idleOutpost(); world.setWeather(0, 0); world.setPhase('dawn', 2); world.jump('title');
   sound.setScene({ power: 70, dust: 0, tension: 0, doseRate: 0 });
@@ -133,6 +141,7 @@ function sync(m: Mission, o: { alloc?: Alloc; storm?: number; tension?: number; 
   const tension = o.tension ?? Math.min(1, Math.max(0, (45 - worst) / 45) + dust * 0.35 + (dayOf(m).game.stormLevel >= 1 ? 0.3 : 0));
   sound.setScene({ power: s.power, dust, tension, doseRate: o.doseRate ?? dayOf(m).rad?.meanRate ?? 4 });
   ui.updateHud(m);
+  F()?.sync(m);
 }
 
 // ------------------------------------------------------------------ the mission loop
@@ -145,29 +154,38 @@ async function runMission(cfg: MissionConfig, launch: Launch) {
   if (launch.kind === 'story') {
     world.setPhase('dawn', 0.5); world.shot('wide', 9);
     await ui.cinematic((DLG.intro as any[]).map((l) => l.say), first ? 4.6 : 3.2);
+    world.frameShift = 0;
     if (!alive()) return;
   }
-  ui.showHud(true); world.frameShift = 0.17;
+  const usingFP = (fpWanted || store.data.settings.firstPerson === true) && !!fpm && matchMedia('(pointer: fine)').matches;
+  if (usingFP) { fpm!.start(m); world.setPhase('dawn', 0.5); } else { ui.showHud(true); world.frameShift = 0.17; }
   while (alive() && !m.s.ended) {
     // dawn
     const dawn = startSol(m);
     world.setPhase('dawn', 3.2); world.shot(m.s.sol % 2 ? 'outpost' : 'wide', 3.5); sync(m); sound.play('dawn');
     if (dawn.messages.length) sound.play('message');
+    if (F()) { await F()!.wake(); F()!.messages(dawn.messages); F()!.open(); }
     await ui.dawn(m, dawn); if (!alive()) return;
+    F()?.close();
     // power board
     world.setPhase('day', 2.6); world.shot('board', 2.4);
+    if (F()) await F()!.at('power', 'Go to the power board on the command deck');
+    if (!alive()) return;
     const alloc = await ui.board(m, { tutorial: first && m.s.sol === 1, onChange: (a) => sync(m, { alloc: a }) }); if (!alive()) return;
-    setAlloc(m, alloc); sync(m);
+    setAlloc(m, alloc); sync(m); F()?.close();
     // events
     for (const ev of solEvents(m)) {
       world.shot(SCENES[ev.def.scene] ?? 'board', 2.6);
-      if (ev.def.kind === 'crisis') await runStorm(m, ev, alive);
-      else await ui.event(m, ev, (id) => { const r = choose(m, ev.def, id); sync(m); return r; });
+      let picked = '';
+      if (ev.def.kind === 'crisis') { F()?.open(); await runStorm(m, ev, alive); }
+      else { if (F()) { if (ev.note) F()!.open(); else await F()!.at(ev.def.scene, ev.def.title); } if (!alive()) return; await ui.event(m, ev, (id) => { picked = id; const r = choose(m, ev.def, id); sync(m); return r; }); }
       if (!alive()) return;
       sync(m);
+      if (F()) { F()!.close(); if (ev.def.kind === 'crisis') { for (const id of stormPicks) await F()!.job(id); await F()!.toShelter(); } else await F()!.job(picked); if (!alive()) return; }
     }
     // night
     const today = dayOf(m);
+    if (F() && !(today.game.stormLevel >= 1 && !m.s.flags.stormDone)) { await F()!.at('bunk', m.s.sol >= BAL.missionSols ? 'Board the ship: end the last sol at your bunk' : 'End the sol at your bunk'); if (!alive()) return; } else F()?.open();
     world.setPhase('sunset', 2.4); world.shot('wide', 3);
     const night = endSol(m);
     if (night.storm) { sound.play('rumble'); ui.setSparkle(0.25 * night.storm.level * (1 - night.storm.protection)); }
@@ -175,6 +193,7 @@ async function runMission(cfg: MissionConfig, launch: Launch) {
     sync(m, { storm: night.storm ? night.storm.level / 3 : 0 });
     if (night.harvest) sound.play('good'); else if (Object.entries(night.changes).some(([k, v]) => (k === 'air' || k === 'health') && v < -10)) sound.play('warn');
     await ui.night(m, night, today); if (!alive()) return;
+    F()?.close(); if (F()) F()!.fp.storm = 0;
     ui.setSparkle(0);
     if (m.diff.discussion) { const q = (DLG.discussion as any[]).find((d) => d.afterSol === night.sol); if (q) await discuss(q.q); }
   }
@@ -200,7 +219,9 @@ function orbitMap(m: Mission): HTMLElement {
   return el;
 }
 
+let stormPicks: string[] = [];
 async function runStorm(m: Mission, ev: any, alive: () => boolean) {
+  stormPicks = [];
   const d = dayOf(m), peak = d.rad?.maxRate ?? 12;
   world.setPhase('night', 3.5); world.shot('shelter', 3);
   sound.play('warn'); ui.setSparkle(0.45 + 0.18 * d.game.stormLevel);
@@ -211,6 +232,7 @@ async function runStorm(m: Mission, ev: any, alive: () => boolean) {
     else if (st.id === 'earth') world.shot('dish', 2.6); else world.shot('shelter', 2.2);
     const id = await ui.crisisStep(m, ev, st, intro, st.id === 'earth' ? orbitMap(m) : null); if (!alive()) return;
     intro = null;
+    stormPicks.push(id);
     const res = choose(m, ev.def, id, st.id); sync(m, { storm: 1, tension: 1, doseRate: peak });
     await ui.crisisResult(m, st, res); if (!alive()) return;
   }
@@ -248,6 +270,7 @@ const ENDING_SHOTS: Record<string, { phase: any; shot?: string; orbit?: [number,
 async function runEnding(m: Mission, launch: Launch) {
   const my = runId, alive = () => my === runId;
   const e = ENDINGS.find((x) => x.id === m.s.ended)!;
+  fpm?.stop();
   ui.showHud(false); ui.setSparkle(0); world.frameShift = 0;
   store.data.endings[e.id] = true; store.data.missions++; store.save();
   const earned = earnAchievements(m);
@@ -302,6 +325,6 @@ function exitPhoto() { if (!world.photo) return; world.photo = false; (photoBar 
 addEventListener('visibilitychange', () => { if (document.hidden) sound.hush(); });
 // installable, and playable offline after the first visit
 if ('serviceWorker' in navigator && import.meta.env.PROD && !CAPTURE) addEventListener('load', () => { navigator.serviceWorker.register(import.meta.env.BASE_URL + 'sw.js').catch(() => {}); });
-(window as any).__game = { world, store, get mission() { return mission; } };
+(window as any).__game = { world, store, get mission() { return mission; }, get fpm() { return fpm; } };
 void boot();
 void icon; void GAME;

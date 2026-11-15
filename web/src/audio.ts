@@ -77,6 +77,13 @@ export class Sound {
     setTimeout(() => this.geiger(), Math.min(4000, Math.max(12, wait)));
   }
 
+  /** Filtered noise with a soft swell: footfalls in dust, breathing inside the helmet. */
+  private noiseBurst(freq: number, dur: number, vol: number, attack = 0.01, delay = 0) {
+    if (!this.ctx || this.volume === 0) return; const t = this.ctx.currentTime + delay;
+    const s = this.ctx.createBufferSource(); s.buffer = this.noise; const f = this.ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = 0.9;
+    const g = this.ctx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + Math.max(0.01, dur * attack)); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f).connect(g).connect(this.master); s.start(t, Math.random(), dur + 0.05);
+  }
   private tone(freq: number, to: number, dur: number, type: OscillatorType = 'triangle', vol = 0.12, delay = 0) {
     if (!this.ctx || this.volume === 0) return; const t = this.ctx.currentTime + delay;
     const o = this.ctx.createOscillator(); o.type = type; o.frequency.setValueAtTime(freq, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, to), t + dur);
@@ -95,6 +102,8 @@ export class Sound {
       case 'dawn': this.tone(294, 294, 0.5, 'sine', 0.06); this.tone(440, 440, 0.7, 'sine', 0.05, 0.25); break;
       case 'message': this.tone(1320, 1320, 0.06, 'sine', 0.07); this.tone(1320, 1320, 0.06, 'sine', 0.07, 0.12); this.tone(1760, 1760, 0.12, 'sine', 0.07, 0.24); break;
       case 'radio': this.tone(2400, 1800, 0.035, 'square', 0.025); this.tone(1200, 1200, 0.05, 'sine', 0.03, 0.04); break;
+      case 'step': this.tone(95, 48, 0.09, 'sine', 0.10); this.noiseBurst(900, 0.06, 0.035); break;
+      case 'breath': this.noiseBurst(520, 1.1, 0.03, 0.45); this.noiseBurst(380, 1.3, 0.022, 0.5, 1.5); break;
       case 'rumble': this.tone(60, 28, 2.4, 'sawtooth', 0.2); break;
     }
   }

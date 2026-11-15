@@ -54,6 +54,13 @@ export async function loadRocks(base: string): Promise<RockModel[]> {
   return out;
 }
 
+/** Hero hardware built in Blender (habitat, ascent vehicle). Returns null for a model that fails to load. */
+export async function loadHardware(base: string): Promise<{ habitat: THREE.Object3D | null; ascent: THREE.Object3D | null }> {
+  const one = (f: string) => gltf.loadAsync(base + 'models/' + f).then((g) => g.scene as THREE.Object3D).catch((e) => { console.warn('hardware model missing', f, e); return null; });
+  const [habitat, ascent] = await Promise.all([one('habitat.glb'), one('ascent.glb')]);
+  return { habitat, ascent };
+}
+
 export async function loadRover(base: string): Promise<THREE.Group | null> {
   try {
     const g = await gltf.loadAsync(`${base}models/nasa_perseverance.glb`);

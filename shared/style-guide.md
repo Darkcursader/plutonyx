@@ -152,3 +152,41 @@ Portrait format: head and shoulders, three-quarter view, warm rim light from a w
 ## 11. Quality bar
 
 Razor-sharp at native resolution, anti-aliased, 4K textures on hero assets, vector UI that survives 200 % zoom. If a mode cannot look premium, it does not ship.
+
+## 12. Art direction — "cinematic sci-fi film" (added 15 Nov; overrides anything above that conflicts)
+
+The look is a grounded science-fiction film (in the spirit of the great realistic space films), **not** a cartoon and **not** generic game realism. Both editions follow this.
+
+**Hardware — "used future"**
+- Believable engineering with a strong, consistent identity: clean functional shapes, real proportions, panel seams, rivets, hatches, handrails, pipes, cables, vents, struts, radiators, ladders, lights.
+- Palette: **off-white `#E6E1D6`, graphite `#2B2D31`, burnt orange `#C8551E`**. Matte panels; accent colours used sparingly (one orange band or hatch per module).
+- Every hard edge bevelled. No razor-sharp CG edges, no glossy plastic, no toy proportions.
+- Weathering: Mars dust gathered on lower parts and top surfaces, scorch marks around engines, scratches, worn paint at edges.
+- Our own markings only: the mission name **PLUTONYX**, module numbers (`LS-01`, `GH-02`, `SH-03`), hazard stripes. **No flag or insignia of any real agency.**
+
+**Film lighting**
+- One dominant low sun, deep shadows, strong rim light on the habitat. Practical lights glow at dusk. Silhouettes against the sky in wide shots.
+- Dust in the light beams, a hazy horizon, wind-blown sand at ground level. A sense of scale and silence.
+
+**Camera language**
+- Wide, slow, epic establishing shots: tiny base, huge landscape and sky. Close shots of hands, visors and screens.
+- Anamorphic feel in cutscenes only: 2.39:1 letterbox, a subtle horizontal flare from the Sun only, light film grain, slight vignette, gentle chromatic aberration at the frame edges.
+
+**Colour grade (LUTs or equivalent)**
+
+| Moment | Grade |
+|---|---|
+| Day | Teal-and-amber split tone over the Mars palette (teal shadows, amber highlights) |
+| Sunset, shelter at night | Cold blue |
+| Hopeful endings (Homeward, Same Sun, Green Outpost) | Warm, lifted |
+| Loss endings (Hold the Line, Abort, Safe Hands) | Cold, low saturation |
+
+**First person and the tablet**
+- The player is an astronaut on the surface: helmet visor frame at the edge of view, breath and suit sounds, footprints.
+- No flat dashboards in play. Information lives on a **hand-held tablet** (graphite body, orange corner bumpers, matte screen with a slight glare), a small wrist display, physical screens in the habitat, and the world itself (dimming lights, frost, Geiger crackle, dust on panels).
+- Tablet interface: dark graphite background, off-white text, burnt-orange highlights, the same icons as the rest of the game.
+
+**Sound and score**
+- Minimal, emotional music: slow pads and organ-like swells, original and generated in code. Silence used on purpose. Breathing and suit sounds up close.
+
+**Avoid:** saturated cartoon colours, toy proportions, glossy plastic, cluttered interface, heavy bloom.
