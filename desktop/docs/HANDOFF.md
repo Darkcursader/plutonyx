@@ -1,20 +1,24 @@
 # HANDOFF — where we left off
 
-**Last updated:** Sun 15 Nov 2026, 18:00 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
+**Last updated:** Sun 15 Nov 2026, 19:25 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
 
 ## State right now
 - **Playable, built, tested, packaged with the new realistic look.** `Build/mac/PlutonyX.app`, `Build/win/PlutonyX/PlutonyX.exe`;
-  ZIPs + `SHA256SUMS.txt` in `Build/release/` (built 17:42 by `tools/package.sh v1.0`):
-  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `7020739afd6340cb5bc1aff306c29d119a5b58531643314b9eb5655beaa63dc0`
-  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `b82b4815d6810c4629d847e56e56bb1c01785dda2334db39f87fc6f0c8e434c0`
-- macOS build passed a full autoplay mission (67 screens), the stills run and the recording run with **0 exceptions** in the player logs.
+  ZIPs + `SHA256SUMS.txt` in `Build/release/` (built 19:22 by `tools/package.sh v1.0`):
+  - `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` 193 MB · sha256 `ba01c0bb34ff34ff241de90a2fe06b6cfeb511f4d8dd4d729768b15cd81a13fb`
+  - `PlutonyX-DesktopUltra-macOS-v1.0.zip` 189 MB · sha256 `3186fda8e1d46e85bb45d1d541d43bbe21d17353f4ece4f709233c48488032e1`
+- macOS build passed a full autoplay mission (68 screens, re-run at 19:20 on the final build), the stills run and the recording run with **0 exceptions** in the player logs.
   **The Windows build has never been run on a PC.**
 - Realism pass (Sun afternoon): every outpost model rebuilt in code with `Editor/MeshKit.cs` — habitat modules with flanges, portholes,
   airlock and porch; greenhouse; air maker; solar field; storm shelter; dish; six-wheeled rover; launch pad with service tower;
   ascent ship (engines, legs, bands, portholes); jointed astronauts (`Scripts/Game/AstronautRig.cs`). Poly Haven scanned rocks.
   AO, contact shadows, grain, vignette. Launch has a flame core, pad dust, camera shake and a pitch-over. Windows/lamps/greenhouse
   glow at night and in dust; shield emitters glow in the storm. Terrain heights get a light blur (removes 1 m terraces).
-- Simulation and game flow unchanged since the morning: title menu, story mission, Today's real sky (LIVE DONKI, fallback ARCHIVED),
+- Added Sun 19:15: debrief **resource chart** (air, power, food, health, dose; storm sols marked) with computed **turning points**;
+  **mission card** (ending, code, numbers; "Save picture" writes a PNG to Pictures/PlutonyX); **Enter a mission code** under Replay
+  history (same window + seed = same mission). The chart and card are verified in autoplay screenshots; **"Save picture" and code
+  entry were never exercised** (autoplay skips them).
+- Simulation unchanged since the morning: title menu, story mission, Today's real sky (LIVE DONKI, fallback ARCHIVED),
   Replay history, Explore, Cadet/Commander, power board, events, storm scene, night report, reveal, 7 endings with launch, debrief,
   badges, gallery, pause/settings, synthesised audio, keyboard/gamepad/mouse.
 - Captures (not in git, on the builder's Mac): `Captures/stills/*.png` (14 × 3840×2160), `Captures/video/*.mp4` (14 clips, 1080p) +
@@ -50,7 +54,7 @@ into `Captures/c_*.png` (fast look-check without a player build; emissive window
 - The Web lead's `shared/models/habitat.glb` / `ascent.glb` are not used (no glTF importer in the project); the desktop models are
   similar in design but not the same meshes. Astronauts are stylised (simple jointed figures).
 - Scanned boulders are heavy (65–98 k triangles each, 26 of them) and the build grew to ~190 MB zipped; never tested on weak hardware.
-- No save/continue, photo mode, key rebinding, read-aloud, classroom mode UI, SI portraits/postcards, share card, resource graphs.
+- No save/continue, photo mode, key rebinding, read-aloud, classroom mode UI, SI portraits/postcards.
 - Live missions: flares/CMEs are live; forecasts are not fetched live; radiation is an estimate (labelled).
 - Some history replays cannot reach the `full`/`secret` endings on some difficulties (harness result).
 - Cross-edition numbers are aligned by reading the reference engine, not by shared test vectors.

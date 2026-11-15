@@ -96,19 +96,69 @@ namespace PlutonyX.Game
             var ids = new List<string>(); var labels = new List<string>(); var details = new List<string>();
             foreach (JsonValue w in _design.Windows["windows"].Items)
                 if (w["role"].Str() == "history") { ids.Add(w["id"].Str()); labels.Add(w["menuTitle"].Str()); details.Add(w["menuBlurb"].Str()); }
+            labels.Add("Enter a mission code"); details.Add("Fly the very same mission as a friend: same real sky, same events.");
             labels.Add("Back"); details.Add("");
             int pick = 0;
             yield return UI.Menu("Replay history", labels, details, i => pick = i, "REAL NASA DATA  ·  ARCHIVED", "chip-arch");
             if (pick < ids.Count) yield return PlayMission(ids[pick]);
+            else if (pick == ids.Count) yield return PlayCode();
+        }
+
+        /// <summary>A mission code is WINDOW-SEED (for example may-2024-1K2J9). It names the real sky and the event deck.</summary>
+        IEnumerator PlayCode()
+        {
+            string code = null;
+            yield return UI.Prompt("Enter a mission code", "Type the code from a friend's mission card. It looks like  may-2024-1K2J9.", c => code = c);
+            if (code == null) yield break;
+            int cut = code.LastIndexOf('-'); uint seed = 0; string found = null;
+            if (cut > 0 && Rng.TryFromBase36(code.Substring(cut + 1), out seed))
+            {
+                string wid = code.Substring(0, cut).Trim().ToLowerInvariant();
+                foreach (JsonValue w in _design.Windows["windows"].Items)
+                {
+                    string id = w["id"].Str(); bool lv; MissionWindow mw = GameData.LoadWindow(id, out lv);
+                    if (mw != null && mw.Id != null && mw.Id.ToLowerInvariant() == wid) { found = id; break; }
+                }
+            }
+            if (found == null)
+            {
+                yield return UI.Info("That code did not work", new[] { "Check the letters and numbers and try again. A code made from \"Today's real sky\" only works while the Sun's last 30 days are the same, so it stops working after a day." }, "Back");
+                yield break;
+            }
+            yield return PlayMission(found, seed, true);
+        }
+
+        /// <summary>The three sharpest drops of the mission, read from the per-sol record: where the run turned.</summary>
+        static List<string> TurningPoints(Mission m)
+        {
+            var found = new List<KeyValuePair<double, string>>();
+            string[] names = { "Air", "Power", "Food", "Crew health", "Morale" };
+            for (int i = 1; i < m.History.Count; i++)
+            {
+                SolRecord a = m.History[i - 1], b = m.History[i];
+                double[] before = { a.Air, a.Power, a.Food, a.Health, a.Morale }, after = { b.Air, b.Power, b.Food, b.Health, b.Morale };
+                int worst = -1; double drop = 9.99;
+                for (int k = 0; k < 5; k++) if (before[k] - after[k] > drop) { drop = before[k] - after[k]; worst = k; }
+                if (worst >= 0)
+                    found.Add(new KeyValuePair<double, string>(drop, "Sol " + b.Sol + " (" + b.RealDate + ", sky: " + b.Sky + "): " + names[worst] + " fell from " + N(before[worst]) + " to " + N(after[worst]) +
+                              (b.StormLevel > 0 ? ", on a storm sol." : b.Solar < a.Solar - 5 ? ", with less sunlight on the panels." : ".")));
+            }
+            found.Sort((x, y) => y.Key.CompareTo(x.Key));
+            var lines = new List<string>();
+            for (int i = 0; i < Math.Min(3, found.Count); i++) lines.Add("Turning point  ·  " + found[i].Value);
+            double jump = 0; int jumpSol = 0; double prev = 0;
+            foreach (SolRecord r in m.History) { if (r.Dose - prev > jump) { jump = r.Dose - prev; jumpSol = r.Sol; } prev = r.Dose; }
+            if (jumpSol > 0 && jump > 0) lines.Add("Biggest dose in one sol  ·  Sol " + jumpSol + ": " + N(jump) + " micrograys reached the crew.");
+            return lines;
         }
 
         // ------------------------------------------------------------------ one mission
-        IEnumerator PlayMission(string windowDefId)
+        IEnumerator PlayMission(string windowDefId, uint fixedSeed = 0, bool useFixedSeed = false)
         {
             _windowDefId = windowDefId;
             _window = GameData.LoadWindow(windowDefId, out _live);
             _badge = GameData.Badge(_window, _live);
-            uint seed = (uint)(DateTime.UtcNow.Ticks & 0x7FFFFFFF) % 2176782335u;
+            uint seed = useFixedSeed ? fixedSeed : (uint)(DateTime.UtcNow.Ticks & 0x7FFFFFFF) % 2176782335u;
             _mission = new Mission(_design, _window, _difficulty, seed);
             Mission m = _mission;
             if (_design.Window(windowDefId)["role"].Str() == "history") m.SetFlag("historyMission", true);
@@ -252,7 +302,17 @@ namespace PlutonyX.Game
             JsonValue whatIf = e["whatIf"];
             if (whatIf.IsString) { debrief.Add(_design.Dialogue["debrief"]["tipTitle"].Str("One tip for next time") + ": " + whatIf.Str()); }
             else foreach (JsonValue w in whatIf.Items) debrief.Add(_design.Dialogue["debrief"]["tipTitle"].Str("One tip") + ": " + w.Str());
-            yield return UI.Info(_design.Dialogue["debrief"]["title"].Str("Mission debrief"), debrief, "Back to the title", null, null, _design.Dialogue["debrief"]["tryAgain"].Str());
+            debrief.InsertRange(2, TurningPoints(m));
+            yield return UI.Info(_design.Dialogue["debrief"]["title"].Str("Mission debrief"), debrief, "Continue", null, null, _design.Dialogue["debrief"]["tryAgain"].Str(), UI.Graph(m));
+            // the mission card: ending, code and a few numbers over the outpost; no personal data
+            World.Shot("title");
+            var facts = new List<string>
+            {
+                _design.Balance["difficulty"][_difficulty]["name"].Str(_difficulty) + "  ·  " + m.History.Count + " of " + m.MissionSols + " sols  ·  real sky: " + (m.History.Count > 0 ? m.History[0].RealDate + " to " + m.History[m.History.Count - 1].RealDate : _window.Label),
+                "Crew dose " + N(m.Get("dose")) + " micrograys (about " + m.ChestXrays(m.Get("dose")).ToString("0.0", CultureInfo.InvariantCulture) + " chest X-rays)  ·  science " + N(m.Get("science")) + "  ·  badges " + badges.Count,
+                _design.Title + "  ·  " + _design.Game["event"].Str()
+            };
+            yield return UI.MissionCard("Mission card", e["title"].Str(end.Id), m.MissionCode, facts, _badge, _live);
             PlayerPrefs.SetInt("ending_" + end.Id, 1); PlayerPrefs.Save();
             yield return UI.Fade(true, 0.5f);
         }

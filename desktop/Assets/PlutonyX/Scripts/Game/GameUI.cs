@@ -231,9 +231,135 @@ namespace PlutonyX.Game
             return card;
         }
 
-        public IEnumerator Info(string heading, IList<string> paragraphs, string button = "Continue", string chip = null, string chipClass = null, string footer = null)
+        // ------------------------------------------------------------------ mission chart, code entry, mission card
+        static readonly string[] SeriesName = { "Air", "Power", "Food", "Crew health", "Radiation dose" };
+        static readonly Color[] SeriesColor = { new Color(0.36f, 0.78f, 0.94f), new Color(0.95f, 0.78f, 0.27f), new Color(0.24f, 0.78f, 0.60f), new Color(0.96f, 0.95f, 0.91f), new Color(0.72f, 0.61f, 1f) };
+        static readonly string[] SeriesMark = { "●", "■", "▲", "◆", "✚" };
+
+        /// <summary>How the outpost's supplies changed sol by sol. Each line has its own colour and its own marker shape.
+        /// The dose line is drawn as a share of the red limit for this difficulty. Storm sols get a violet band.</summary>
+        public VisualElement Graph(Mission m)
+        {
+            var wrap = new VisualElement(); wrap.style.marginTop = 6; wrap.style.marginBottom = 10;
+            var legend = new VisualElement(); legend.style.flexDirection = FlexDirection.Row; legend.style.flexWrap = Wrap.Wrap;
+            for (int i = 0; i < SeriesName.Length; i++) { Label l = Text(SeriesMark[i] + " " + SeriesName[i] + (i == 4 ? " (share of the red limit)" : ""), "small"); l.style.color = SeriesColor[i]; l.style.marginRight = 18; legend.Add(l); }
+            wrap.Add(legend);
+            var plot = new VisualElement(); plot.style.height = 170; plot.style.minHeight = 170; plot.style.flexShrink = 0; plot.style.marginTop = 6; wrap.style.flexShrink = 0;
+            plot.style.backgroundColor = new Color(0f, 0f, 0f, 0.28f); plot.style.borderTopLeftRadius = 6; plot.style.borderTopRightRadius = 6; plot.style.borderBottomLeftRadius = 6; plot.style.borderBottomRightRadius = 6;
+            List<SolRecord> h = m.History; double red = Math.Max(1.0, m.DoseRed);
+            plot.generateVisualContent += ctx =>
+            {
+                int n = h.Count; if (n < 1) return;
+                Rect r = plot.contentRect; float pad = 14f, w = r.width - pad * 2, ht = r.height - pad * 2;
+                var p = ctx.painter2D;
+                Func<int, float> X = i => pad + (n == 1 ? w * 0.5f : w * i / (n - 1));
+                Func<double, float> Y = v => pad + ht * (1f - Mathf.Clamp01((float)v / 100f));
+                for (int i = 0; i < n; i++)
+                    if (h[i].StormLevel > 0)
+                    {
+                        float x0 = X(i) - Mathf.Max(6f, w / Mathf.Max(1, n - 1) * 0.3f), x1 = X(i) + Mathf.Max(6f, w / Mathf.Max(1, n - 1) * 0.3f);
+                        p.fillColor = new Color(0.62f, 0.55f, 1f, 0.16f); p.BeginPath(); p.MoveTo(new Vector2(x0, pad)); p.LineTo(new Vector2(x1, pad)); p.LineTo(new Vector2(x1, pad + ht)); p.LineTo(new Vector2(x0, pad + ht)); p.ClosePath(); p.Fill();
+                    }
+                p.lineWidth = 1f; p.strokeColor = new Color(1f, 1f, 1f, 0.12f);
+                for (int g = 0; g <= 4; g++) { p.BeginPath(); p.MoveTo(new Vector2(pad, pad + ht * g / 4f)); p.LineTo(new Vector2(pad + w, pad + ht * g / 4f)); p.Stroke(); }
+                for (int sIdx = 0; sIdx < 5; sIdx++)
+                {
+                    Func<SolRecord, double> get = rec => sIdx == 0 ? rec.Air : sIdx == 1 ? rec.Power : sIdx == 2 ? rec.Food : sIdx == 3 ? rec.Health : rec.Dose / red * 100.0;
+                    p.strokeColor = SeriesColor[sIdx]; p.fillColor = SeriesColor[sIdx]; p.lineWidth = 2.5f; p.lineJoin = LineJoin.Round;
+                    p.BeginPath(); for (int i = 0; i < n; i++) { var pt = new Vector2(X(i), Y(get(h[i]))); if (i == 0) p.MoveTo(pt); else p.LineTo(pt); }
+                    p.Stroke();
+                    for (int i = 0; i < n; i++)
+                    {
+                        Vector2 c = new Vector2(X(i), Y(get(h[i]))); const float k = 4.5f;
+                        p.BeginPath();
+                        if (sIdx == 0) p.Arc(c, k, 0f, 360f);
+                        else if (sIdx == 1) { p.MoveTo(c + new Vector2(-k, -k)); p.LineTo(c + new Vector2(k, -k)); p.LineTo(c + new Vector2(k, k)); p.LineTo(c + new Vector2(-k, k)); }
+                        else if (sIdx == 2) { p.MoveTo(c + new Vector2(0, -k - 1)); p.LineTo(c + new Vector2(k + 1, k)); p.LineTo(c + new Vector2(-k - 1, k)); }
+                        else if (sIdx == 3) { p.MoveTo(c + new Vector2(0, -k - 1)); p.LineTo(c + new Vector2(k + 1, 0)); p.LineTo(c + new Vector2(0, k + 1)); p.LineTo(c + new Vector2(-k - 1, 0)); }
+                        else { p.MoveTo(c + new Vector2(-1.5f, -k - 1)); p.LineTo(c + new Vector2(1.5f, -k - 1)); p.LineTo(c + new Vector2(1.5f, k + 1)); p.LineTo(c + new Vector2(-1.5f, k + 1)); p.ClosePath(); p.Fill(); p.BeginPath(); p.MoveTo(c + new Vector2(-k - 1, -1.5f)); p.LineTo(c + new Vector2(k + 1, -1.5f)); p.LineTo(c + new Vector2(k + 1, 1.5f)); p.LineTo(c + new Vector2(-k - 1, 1.5f)); }
+                        p.ClosePath(); p.Fill();
+                    }
+                }
+            };
+            wrap.Add(plot);
+            var axis = new VisualElement(); axis.style.flexDirection = FlexDirection.Row; axis.style.justifyContent = Justify.SpaceBetween; axis.style.paddingLeft = 6; axis.style.paddingRight = 6;
+            for (int i = 0; i < h.Count; i++) axis.Add(Text("Sol " + h[i].Sol, "small"));
+            wrap.Add(axis);
+            wrap.Add(Text("Top of the chart = 100. The violet bands are the sols when a solar storm reached Mars.", "small"));
+            return wrap;
+        }
+
+        /// <summary>Asks for a short piece of text (a mission code). result gets null if the player backs out.</summary>
+        public IEnumerator Prompt(string heading, string body, Action<string> result)
+        {
+            VisualElement card = Card(heading, null, null);
+            card.Add(Text(body, "body"));
+            var field = new TextField { maxLength = 24 }; field.style.fontSize = 28; field.style.marginTop = 10; field.style.marginBottom = 10; card.Add(field);
+            int done = 0;
+            var row = new VisualElement(); row.style.flexDirection = FlexDirection.Row; row.style.justifyContent = Justify.FlexEnd;
+            var back = new Button(() => done = 2) { text = "Back" }; back.AddToClassList("btn"); back.style.marginRight = 10; row.Add(back);
+            var ok = new Button(() => done = 1) { text = "Play this mission" }; ok.AddToClassList("btn"); ok.AddToClassList("btn-primary"); row.Add(ok);
+            card.Add(row);
+            yield return null; field.Focus();
+            yield return AutoCapture("prompt");
+            while (done == 0 && !Auto) { if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame) done = 1; if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) done = 2; yield return null; }
+            string text = field.value;
+            _center.Remove(card);
+            result(done == 1 && !string.IsNullOrEmpty(text) ? text.Trim() : null);
+            yield return null;
+        }
+
+        /// <summary>The end-of-mission card: ending, mission code and a few numbers. It holds no personal data.
+        /// "Save picture" writes a PNG of the screen (card over the outpost) into the Pictures folder.</summary>
+        public IEnumerator MissionCard(string title, string ending, string code, IList<string> facts, string badge, bool live)
+        {
+            VisualElement card = Card(title, badge, live ? "chip-live" : "chip-arch");
+            card.Add(Text(ending, "h1"));
+            Label codeLabel = Text("Mission code   " + code, "h1"); codeLabel.style.color = new Color(0.95f, 0.78f, 0.27f); codeLabel.style.marginTop = 6; codeLabel.style.marginBottom = 8; card.Add(codeLabel);
+            foreach (string f in facts) card.Add(Text(f, "body"));
+            Label note = Text("A friend can type this code under Replay history to fly the very same mission. This card holds no personal data.", "small"); card.Add(note);
+            int done = 0; bool saving = false;
+            var row = new VisualElement(); row.style.flexDirection = FlexDirection.Row; row.style.justifyContent = Justify.FlexEnd; row.style.marginTop = 12;
+            var save = new Button(() => saving = true) { text = "Save picture" }; save.AddToClassList("btn"); save.style.marginRight = 10; row.Add(save);
+            var ok = new Button(() => done = 1) { text = "Continue" }; ok.AddToClassList("btn"); ok.AddToClassList("btn-primary"); row.Add(ok);
+            card.Add(row);
+            yield return null;
+            yield return AutoCapture("card");
+            while (done == 0 && !Auto)
+            {
+                if (saving)
+                {
+                    saving = false;
+                    string dir, path = null;
+                    try
+                    {
+                        dir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "PlutonyX");
+                        if (string.IsNullOrEmpty(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures))) dir = System.IO.Path.Combine(Application.persistentDataPath, "cards");
+                        System.IO.Directory.CreateDirectory(dir);
+                        path = System.IO.Path.Combine(dir, "PlutonyX-" + code + ".png");
+                    }
+                    catch (Exception) { try { dir = System.IO.Path.Combine(Application.persistentDataPath, "cards"); System.IO.Directory.CreateDirectory(dir); path = System.IO.Path.Combine(dir, "PlutonyX-" + code + ".png"); } catch (Exception) { path = null; } }
+                    if (path == null) { note.text = "The picture could not be saved on this computer."; }
+                    else
+                    {
+                        row.style.visibility = Visibility.Hidden; note.text = "Play it yourself: type this code under Replay history. This card holds no personal data.";
+                        yield return null; yield return null;
+                        ScreenCapture.CaptureScreenshot(path);
+                        yield return null; yield return null;
+                        row.style.visibility = Visibility.Visible; note.text = "Saved: " + path;
+                    }
+                }
+                if (Advance) done = 1;
+                yield return null;
+            }
+            _center.Remove(card);
+            yield return null;
+        }
+
+        public IEnumerator Info(string heading, IList<string> paragraphs, string button = "Continue", string chip = null, string chipClass = null, string footer = null, VisualElement extra = null)
         {
             VisualElement card = Card(heading, chip, chipClass);
+            if (extra != null) card.Add(extra);
             var scroll = new ScrollView(ScrollViewMode.Vertical); scroll.style.flexShrink = 1;
             foreach (string p in paragraphs) if (!string.IsNullOrEmpty(p)) scroll.Add(Text(p, "body"));
             card.Add(scroll);

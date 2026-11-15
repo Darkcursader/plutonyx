@@ -30,12 +30,14 @@ terrain and data shown as real are real NASA products, never SI-generated.
 ## Facts the Web lead may want
 
 - Download link (goes in `shared/design/game.json → links.desktopDownload`): see the GitHub release `v1.0-desktop`.
-- Tested (Sun 15 Nov 17:30): macOS build, full mission in autoplay (67 screens), no errors in the player log. **Windows build is cross-compiled and untested on real hardware.**
+- Tested (Sun 15 Nov 17:30): macOS build, full mission in autoplay (68 screens), no errors in the player log. **Windows build is cross-compiled and untested on real hardware.**
 - In the desktop edition: live DONKI fetch with LIVE/ARCHIVED badges, Explore mode (third-person walk with real Mars gravity),
   rocket launch in every ending, badges from `achievements.json`, ending gallery, pause/settings, keyboard + gamepad.
 - Models: habitat, greenhouse, air maker, solar field, shelter, dish, rover, ascent ship, launch pad with service tower and crew
   figures are original, generated in code (`MeshKit.cs`, `OutpostBuilder.cs`). Rocks are Poly Haven CC0 scans (same set as the web edition).
   The terrain heights get a light 30 m blur to remove the whole-metre steps of the source DTM.
+- Debrief shows a chart of air, power, food, health and dose per sol with the turning points; a mission card (ending + code,
+  no personal data) can be saved as a picture; a friend can type the code under Replay history.
 - Not in the desktop edition: save/continue, photo mode, SI art (portraits/postcards), NASA 3D models.
 - Captures for the demo (new look, made Sun 17:30–17:40): 14 stills in `desktop/Captures/stills/*.png` (3840×2160) and 14 clips +
   a 29 s montage in `desktop/Captures/video/*.mp4` (1080p), on the builder's Mac (not in git).

@@ -15,6 +15,8 @@ Tick items as they are finished. `[x]` done · `[~]` in progress · `[ ]` not st
 - [x] Realism pass: detailed procedural models (habitat, greenhouse, air maker, solar field, shelter, dish, rover, ascent ship,
       pad + service tower, jointed astronauts), scanned rocks, ground tracks, AO/contact shadows, launch flame/dust/shake
 
+- [x] Debrief resource chart + turning points, mission card with code, "Enter a mission code"
+
 ## Not done
 - [!] GitHub push and release (needs `gh auth login`)
 - [!] Windows build tested on a real PC

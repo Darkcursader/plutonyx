@@ -17,6 +17,8 @@ labels them ARCHIVED.
 - A full 10-sol mission at Lakeshore Outpost with 7 endings (one secret), two difficulty levels, badges and an ending gallery.
 - Real NASA data: Jezero terrain from Mars Reconnaissance Orbiter CTX elevation and imagery; space weather from NASA DONKI
   (live for "Today's real sky", archived for the story of the May 2024 storm); Curiosity RAD surface dose rates.
+- After each mission: a chart of how your supplies changed, the turning points, and a mission card with a code a friend can
+  type to fly the same mission.
 - Explore mode: walk the outpost in third person and jump under real Mars gravity.
 - A detailed outpost: habitat, greenhouse, oxygen plant, solar field, storm shelter, radio dish, pressurised rover and an
   ascent ship that launches at the end of every mission.
