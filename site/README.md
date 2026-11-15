@@ -8,6 +8,18 @@ python3 -m http.server 4173 --directory site
 
 Then visit http://127.0.0.1:4173/.
 
+## Deploy (Vercel)
+
+Live at **https://plutonyx.vercel.app** (Vercel project `plutonyx`, deployed from this `site/` folder).
+
+```bash
+cd site && npx vercel@latest deploy --prod
+```
+
+`vercel.json` sets cache headers; `.vercelignore` keeps `tools/`, this README and local env files off the
+live site. If the site moves to another domain, update the `og:image`, `og:url` and `canonical` tags in
+`index.html`.
+
 ## Change a link
 
 Edit **`config.js`** only.

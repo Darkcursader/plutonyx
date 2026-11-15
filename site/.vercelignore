@@ -1,0 +1,5 @@
+tools
+README.md
+.DS_Store
+.env*
+.vercel
