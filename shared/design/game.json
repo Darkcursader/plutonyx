@@ -17,7 +17,9 @@
   "links": {
     "repo": "https://github.com/Darkcursader/plutonyx",
     "web": "https://darkcursader.github.io/plutonyx/",
-    "desktopDownload": "",
+    "desktopDownload": "https://github.com/Darkcursader/plutonyx/releases/tag/v1.0-desktop",
+    "desktopWindows": "https://github.com/Darkcursader/plutonyx/releases/download/v1.0-desktop/PlutonyX-Setup-v1.0.exe",
+    "desktopMac": "https://github.com/Darkcursader/plutonyx/releases/download/v1.0-desktop/PlutonyX-Mac-v1.0.dmg",
     "demo": ""
   },
   "disclaimers": {

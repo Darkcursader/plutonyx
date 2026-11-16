@@ -10,24 +10,26 @@ from [`/shared`](../shared/) — rendered in Unity 6 with the High Definition Re
 
 ## Download
 
-**Download:** https://github.com/Darkcursader/plutonyx/releases/tag/v1.0-desktop
+**Download:** https://github.com/Darkcursader/plutonyx/releases/tag/v1.0-desktop (also linked from the title screen of the
+[Web edition](https://darkcursader.github.io/plutonyx/)).
 
-| File | Platform | Notes |
+| File | Platform | How to install |
 |---|---|---|
-| `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` | Windows 10/11, 64-bit | Unzip, run `PlutonyX\PlutonyX.exe` |
-| `PlutonyX-DesktopUltra-macOS-v1.0.zip` | macOS 12+ (Apple silicon and Intel) | Unzip, right-click `PlutonyX.app` → Open |
+| `PlutonyX-Setup-v1.0.exe` | Windows 10/11, 64-bit | Run it, click Next → Install. Installs for your user only (no admin), adds a Start-menu entry, uninstalls from Settings → Apps |
+| `PlutonyX-Mac-v1.0.dmg` | macOS 12+ (Apple silicon and Intel) | Open it, drag **PlutonyX** onto **Applications**, then right-click PlutonyX → Open the first time |
 | `SHA256SUMS.txt` | | Checksums of both files |
 
 **Unsigned hackathon build.** Windows: "Windows protected your PC" → *More info* → *Run anyway*.
-macOS: right-click the app → *Open* → *Open*. No installer, no admin rights, no account, no internet needed
-(the real NASA data is bundled).
+macOS: right-click the app → *Open* → *Open* (on macOS 15: if it is blocked, System Settings → Privacy & Security → *Open Anyway*).
+No account and no internet needed (the real NASA data and the recorded crew voices are bundled); nothing for a firewall to block.
 
 **System requirements.** Minimum: 4-core CPU, 8 GB RAM, a GPU with DirectX 12 / Metal support (integrated graphics from
 about 2020 on; choose *Graphics: Low* in the pause menu). Recommended: a dedicated GPU with 4 GB of memory, 16 GB RAM.
 About 500 MB of disk space.
 
-> Honest status: the Windows build is cross-compiled on a Mac. The macOS build was tested end to end; the Windows
-> build must be tested on a PC before it is relied on.
+> Honest status (16 Nov): the current builds are made on a Windows PC. The Windows build passed a full autoplay mission
+> with 0 errors; the Mac build is cross-built and packaged into a signed-ad-hoc .dmg on a GitHub macOS runner, but has not
+> been played on a Mac.
 
 ## Controls
 

@@ -4,16 +4,18 @@ The installable edition of Team PlutonyX's entry for the 2026 NASA Space Apps Ch
 Mission Trainer"). Same game as the web edition, on the real terrain of Jezero Crater.
 
 ## Download
-- **Windows 10/11 (64-bit):** `PlutonyX-DesktopUltra-Windows-x64-v1.0.zip` — unzip, run `PlutonyX/PlutonyX.exe`.
+- **Windows 10/11 (64-bit):** `PlutonyX-Setup-v1.0.exe` — run it and click through the installer (no admin rights needed).
   Unsigned hackathon build: if Windows SmartScreen appears, choose **More info → Run anyway**.
-- **macOS (Apple silicon and Intel):** `PlutonyX-DesktopUltra-macOS-v1.0.zip` — unzip, then **right-click → Open** the first time
-  (unsigned hackathon build).
-- `SHA256SUMS.txt` holds the SHA-256 checksum of each ZIP.
+- **macOS 12+ (Apple silicon and Intel):** `PlutonyX-Mac-v1.0.dmg` — open it, drag PlutonyX onto Applications, then
+  **right-click → Open** the first time (unsigned hackathon build; on macOS 15 use System Settings → Privacy & Security → Open Anyway).
+- `SHA256SUMS.txt` holds the SHA-256 checksum of each file.
 
-No installer, no account, no admin rights. Internet is optional: without it the game uses the bundled NASA records and
-labels them ARCHIVED.
+No account needed. Internet is optional: without it the game uses the bundled NASA records and labels them ARCHIVED.
+The crew's voices are recorded files inside the game (SI-generated with ElevenLabs), so nothing goes online.
 
 ## What is in it
+- **New:** drive the six-wheeled rover in Explore (R to get in; cockpit or chase camera), more realistic rocks, and
+  recorded voices for the crew and narrator.
 - A full 10-sol mission at Lakeshore Outpost with 7 endings (one secret), two difficulty levels, badges and an ending gallery.
 - Real NASA data: Jezero terrain from Mars Reconnaissance Orbiter CTX elevation and imagery; space weather from NASA DONKI
   (live for "Today's real sky", archived for the story of the May 2024 storm); Curiosity RAD surface dose rates.

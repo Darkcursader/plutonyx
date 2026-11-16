@@ -2,17 +2,27 @@
 
 **Last updated:** Sun 15 Nov 2026, 21:30 Tashkent · **Phase 5** (release). Builder's deadline for this edition: **22:00**; submission 23:59.
 
-## UPDATE — Mon 16 Nov 2026 (Windows PC, Unity 6000.6.9f1 at D:\Unity)
-- Release v1.0-desktop now ships **PlutonyX-Setup-v1.0.exe** (Inno Setup, `tools/installer.iss`, per-user install, no admin),
-  **PlutonyX-Mac-v1.0.zip** (.app, exec bits set) and a new `SHA256SUMS.txt`. The old ZIPs are gone.
+## UPDATE — Mon 16 Nov 2026 (Windows PC, Unity 6000.6.9f1 at D:/Unity)
+- Release **v1.0-desktop** ships **PlutonyX-Setup-v1.0.exe** (Inno Setup, `tools/installer.iss`, per-user install, no admin),
+  **PlutonyX-Mac-v1.0.dmg** (drag-to-Applications, ad-hoc signed) and `SHA256SUMS.txt`. No ZIPs for players.
+  The .dmg is made by `.github/workflows/mac-dmg.yml` on a GitHub macOS runner: upload the Windows-built app as
+  `PlutonyX-Mac-v1.0.zip` (exec bits set: `zipmac` logic = Python zipfile, 0o755 for Contents/MacOS, .dylib, .so), then run
+  the workflow; it builds the .dmg, uploads it, fixes the checksums and deletes the zip.
+- The Web edition's title screen (https://darkcursader.github.io/plutonyx/) links straight to both installers:
+  `shared/design/game.json → links.desktopWindows / desktopMac` (and `desktopDownload` = the release page).
 - **Drivable rover** in Explore (`Scripts/Game/RoverDriver.cs`): R / gamepad X gets in and out; W S drive, A D steer, Shift boost,
   Space brake, C cockpit or chase camera. Suspension follows the terrain, Mars gravity, battery, dust, engine sound, sample run to
-  the river delta. Self-test: `PlutonyX.exe -drivetest <dir>` (drives for 25 s, logs and takes screenshots). Passed on Windows.
-- More realistic rocks: scanned rocks get a random tilt, are buried partly in the ground, and come in two material shades.
-- **Crew voices** (`Scripts/Game/VoiceBank.cs` + `shared/scripts/make-voices.mjs`): ElevenLabs SI voices as local files in
-  `StreamingAssets/voices`. **Not recorded yet**: put `ELEVENLABS_API_KEY=...` in the repo `.env` (gitignored), run
-  `node shared/scripts/make-voices.mjs --dry`, then without `--dry`, then rebuild. Lines without a recording use Read aloud.
-- Windows autoplay: 68 screens, 0 exceptions. **The Mac build was cross-built and never run.**
+  the river delta. Self-test: `PlutonyX.exe -drivetest <dir>`. Passed on Windows.
+- More realistic rocks: scanned rocks get a random tilt, are partly buried, and come in two material shades.
+- **Crew voices recorded**: 142 of 146 fixed lines, 12 min, ElevenLabs premade voices (Ana Sarah, Dil Jessica, Kofi Brian,
+  Sam Bill, PIP River, narrator George), model eleven_v4 (last 5 on eleven_flash_v2_5: free quota ran out).
+  Files: `shared/audio/voices/*.pcm` + `index.json`; `SharedSync` copies them into `StreamingAssets/voices` at build.
+  **4 lines still to record** (224 characters) when the free credits reset: `cd shared/scripts && npm install && npm run voices`
+  (key in `.env.local`, gitignored, from `npx @elevenlabs/cli onboard init`). Lines with live numbers use the computer's voice.
+  `-autoplay <dir> -narratortest` logs every voice played (60 in one mission) at volume 0.
+- **Builds need the generated scene:** run `WorldBuilder.BuildWorld` before BuildWin/BuildMac on a checkout (Main.unity in git
+  is the un-generated one; a build without it has no terrain). Revert Main.unity before committing.
+- Windows autoplay: 68 screens, 0 exceptions. **The Mac build has never been run on a Mac.**
 
 ## RELEASED — Sun 15 Nov 21:28
 **https://github.com/Darkcursader/plutonyx/releases/tag/v1.0-desktop** (tag on `main` 31d6e7c). Both ZIPs and `SHA256SUMS.txt`

@@ -58,7 +58,13 @@ export class Screens {
         h('div', { class: 'row' }, h('input', { id: 'codein', class: 'btn', style: 'text-transform:uppercase;min-width:240px;cursor:text', placeholder: 'MAY-2024-1A2B3C', 'aria-label': 'Mission code', maxlength: '32' }), this.b('Fly this code', '', () => { const v = (scr.querySelector('#codein') as HTMLInputElement).value.trim(); if (v) { scr.remove(); pickDiff((d) => actions.code(v, d)); } })),
         h('div', { class: 'actions' }, this.b('Back', 'ghost', () => scr.remove())));
     };
-    const desktop = GAME.links.desktopDownload ? h('a', { class: 'btn ghost small', href: GAME.links.desktopDownload, target: '_blank', rel: 'noopener' }, 'Get the Desktop Ultra Edition (Windows)') : h('span', { class: 'btn ghost small', style: 'opacity:.55;cursor:default', title: 'The download link appears here when the build is released' }, 'Desktop Ultra Edition · coming soon');
+    const L = GAME.links as Record<string, string>;
+    const dl = (href: string, label: string, title: string) => h('a', { class: 'btn ghost small', style: 'text-decoration:none', href, rel: 'noopener', title }, label);
+    const desktop = L.desktopWindows || L.desktopMac
+      ? h('div', { style: 'display:contents' },
+          L.desktopWindows ? dl(L.desktopWindows, 'Desktop Ultra · Windows installer', 'PlutonyX-Setup-v1.0.exe · Windows 10/11 64-bit · no admin needed. If Windows says it protected your PC: More info → Run anyway.') : null,
+          L.desktopMac ? dl(L.desktopMac, 'Desktop Ultra · Mac installer', 'PlutonyX-Mac-v1.0.dmg · macOS 12+, Apple silicon and Intel. Open it, drag PlutonyX to Applications, then right-click PlutonyX → Open the first time.') : null)
+      : GAME.links.desktopDownload ? h('a', { class: 'btn ghost small', href: GAME.links.desktopDownload, target: '_blank', rel: 'noopener' }, 'Get the Desktop Ultra Edition') : h('span', { class: 'btn ghost small', style: 'opacity:.55;cursor:default', title: 'The download link appears here when the build is released' }, 'Desktop Ultra Edition · coming soon');
     const el = h('div', { class: 'title fade-in' },
       h('div', { class: 'top' }, h('div', { class: 'sub' }, `${GAME.teamCredit} · ${GAME.event}`), badgeEl),
       h('div', { class: 'sub' }, GAME.subtitle),
