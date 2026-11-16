@@ -1,0 +1,863 @@
+{
+ "credit": "Voices: SI-generated with ElevenLabs (synthetic voices, not real people).",
+ "model": "eleven_v4",
+ "lines": {
+  "111280b8b7223766": {
+   "who": "narrator",
+   "voice": "George - Warm, Captivating Storyteller",
+   "file": "111280b8b7223766.pcm",
+   "text": "Mars. Jezero Crater. Three and a half billion years ago, this was a lake."
+  },
+  "d6e9e9ccb3a4b534": {
+   "who": "narrator",
+   "voice": "George - Warm, Captivating Storyteller",
+   "file": "d6e9e9ccb3a4b534.pcm",
+   "text": "Four people live on its shore now. In ten sols, their ship goes home."
+  },
+  "9a09c1d37669a2b1": {
+   "who": "narrator",
+   "voice": "George - Warm, Captivating Storyteller",
+   "file": "9a09c1d37669a2b1.pcm",
+   "text": "You are their Commander."
+  },
+  "6f41de3bd2f6093d": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "6f41de3bd2f6093d.pcm",
+   "text": "Good morning, Commander. Sol 1 of 10. A sol is one day on Mars. It is a little longer than a day on Earth."
+  },
+  "88026e9ba89f667c": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "88026e9ba89f667c.pcm",
+   "text": "The night was cold and the battery is tired. Today's sunlight gives us a few power cells. Four machines want them."
+  },
+  "d13a0310cdb39b1c": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "d13a0310cdb39b1c.pcm",
+   "text": "Air Maker, Greenhouse, Storm Shield, Rover. We can't feed them all. Tap the plus and minus buttons to share out the power."
+  },
+  "d0a5230915b100e4": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "d0a5230915b100e4.pcm",
+   "text": "Watch the arrows. Each one shows what will go up and what will go down tonight."
+  },
+  "32bd23c071804e41": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "32bd23c071804e41.pcm",
+   "text": "There is no perfect answer. There is only what you choose to protect."
+  },
+  "9bd3bb7e7d822d40": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "9bd3bb7e7d822d40.pcm",
+   "text": "When you are ready, press Confirm. I will show you what happened in the morning."
+  },
+  "102d87107169d053": {
+   "who": "sam",
+   "voice": "Bill - Wise, Mature, Balanced",
+   "file": "102d87107169d053.pcm",
+   "text": "Lakeshore, Mission Control. About that forecast. A solar cloud reaching Mars often changes very little on the ground. The thing to fear is a very fast eruption: its particles can arrive in under an hour."
+  },
+  "ad6b93e369687b00": {
+   "who": "sam",
+   "voice": "Bill - Wise, Mature, Balanced",
+   "file": "ad6b93e369687b00.pcm",
+   "text": "If you see one start, do not wait for us. We are with you."
+  },
+  "a607aaee29aa0eca": {
+   "who": "sam",
+   "voice": "Bill - Wise, Mature, Balanced",
+   "file": "a607aaee29aa0eca.pcm",
+   "text": "Lakeshore, we have your photos. Nobody here is sitting down. If you can bring that core home safely, bring it. If you can't, bring yourselves."
+  },
+  "92ebe5f4ef87c648": {
+   "who": "sam",
+   "voice": "Bill - Wise, Mature, Balanced",
+   "file": "92ebe5f4ef87c648.pcm",
+   "text": "Lakeshore, we just got your storm call. By now it is over for you, one way or another. We could not see that side of the Sun from here. You could."
+  },
+  "f311ae738c4490ab": {
+   "who": "sam",
+   "voice": "Bill - Wise, Mature, Balanced",
+   "file": "f311ae738c4490ab.pcm",
+   "text": "Whatever you chose, you chose it with better eyes than ours. We are with you."
+  },
+  "24d03e9a31fc9fc3": {
+   "who": "sam",
+   "voice": "Bill - Wise, Mature, Balanced",
+   "file": "24d03e9a31fc9fc3.pcm",
+   "text": "Lakeshore, Mission Control. We got your question. By the time you hear this, you have already decided. Tell us how it went. We are with you."
+  },
+  "5cca27f922e3eda6": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "5cca27f922e3eda6.pcm",
+   "text": "Shield held. Every badge is green. I'd like to never do that again."
+  },
+  "c57c202adaaef8d4": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "c57c202adaaef8d4.pcm",
+   "text": "Some of it got through. Nobody is hurt. But the badges are fuller than I like, and I am watching all of you."
+  },
+  "f5c875628a6f443e": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "f5c875628a6f443e.pcm",
+   "text": "The shield ran dry halfway. Nobody is sick. But the rules are clear about what these badges mean."
+  },
+  "455531cbe35402bb": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "455531cbe35402bb.pcm",
+   "text": "I'm in. I'm fine. The core is still in the rock, and I can't go back for it. Don't talk to me yet."
+  },
+  "cd197cbd49b9fed2": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "cd197cbd49b9fed2.pcm",
+   "text": "I'm in. And look what was already sealed in the cold box. I drilled faster than I thought."
+  },
+  "5bf841491b352797": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "5bf841491b352797.pcm",
+   "text": "Sat under forty metres of rock with a core in my lap. Best seat on Mars. Coming home at first light."
+  },
+  "55cd72a8ce8ac9ac": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "55cd72a8ce8ac9ac.pcm",
+   "text": "Good news: I have the core. Bad news: the rover won't start. I'm going to need a tow."
+  },
+  "08bc0df64d9cea8c": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "08bc0df64d9cea8c.pcm",
+   "text": "You said my call. I stayed. I had rock above me and the core in my hands. Thank you for trusting me."
+  },
+  "66ecfce413354614": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "66ecfce413354614.pcm",
+   "text": "You said my call. I looked at the sky and I ran. The core stayed. I think I'd run again."
+  },
+  "ee36173e2440d39d": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "ee36173e2440d39d.pcm",
+   "text": "Dil, your badge is over the mission limit. You're not sick. But you're done with outside work. Doctor's orders, and the rulebook's."
+  },
+  "e46a4db34e037c30": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "e46a4db34e037c30.pcm",
+   "text": "Dil's badge is in the red. She feels fine. She rides home in the medical bay, and Earth checks her over. No arguments."
+  },
+  "56edcec41c62fcef": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "56edcec41c62fcef.pcm",
+   "text": "Message from Earth coming in. And it's a mess. The Sun is loud today, and the static ate most of it."
+  },
+  "af38917e96b15a57": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "af38917e96b15a57.pcm",
+   "text": "I caught this much: \"LAKESHORE. The sun... has turned... into yours. We cannot... You are... Do not wait...\""
+  },
+  "94b380a4a3298372": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "94b380a4a3298372.pcm",
+   "text": "Do not wait for what?"
+  },
+  "49dda4ad4de86775": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "49dda4ad4de86775.pcm",
+   "text": "Question sent. It's crossing space right now. Don't hold your breath."
+  },
+  "b191082a41a07402": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "b191082a41a07402.pcm",
+   "text": "I'll sit with it. Save me some coffee."
+  },
+  "dc8471a4a9a9651b": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "dc8471a4a9a9651b.pcm",
+   "text": "It'll bug me all day. But fine. Rocks first."
+  },
+  "7263f953b07df03d": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "7263f953b07df03d.pcm",
+   "text": "The old river valley is a few hours' drive. That's where the leopard-spot rocks are. I need the rover charged."
+  },
+  "63c8bd24a41fd0fe": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "63c8bd24a41fd0fe.pcm",
+   "text": "And I need light for the seedlings. Amu and Syr just grew their first real leaves."
+  },
+  "04bef19196f392ba": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "04bef19196f392ba.pcm",
+   "text": "Yes! Sorry, Ana. I'll bring your tomatoes a nice rock."
+  },
+  "168b64524c06011d": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "168b64524c06011d.pcm",
+   "text": "Thank you. Dil, they will remember this when you want a salad."
+  },
+  "82a6ffa5bb2fa628": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "82a6ffa5bb2fa628.pcm",
+   "text": "Half a charge each. The fairest way to annoy everybody."
+  },
+  "bd5baefa39757f1e": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "bd5baefa39757f1e.pcm",
+   "text": "Models have been wrong before. Charging the shield for nothing costs real power."
+  },
+  "6d47a224a0e82e41": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "6d47a224a0e82e41.pcm",
+   "text": "Charging. If nothing comes, we wasted a cell. If something comes, you're a genius."
+  },
+  "72de6e8e9b13afa8": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "72de6e8e9b13afa8.pcm",
+   "text": "Watching. I will tell you the moment my radiation counter moves."
+  },
+  "8701d28e119f8f18": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "8701d28e119f8f18.pcm",
+   "text": "Sent. By the time they answer, the Sun may have changed its mind."
+  },
+  "6cbb910e7cc81e58": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "6cbb910e7cc81e58.pcm",
+   "text": "Look east. That brown wall is dust, and it's coming here. When it arrives, the solar panels go hungry."
+  },
+  "f075e9dad9d7953e": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "f075e9dad9d7953e.pcm",
+   "text": "How long?"
+  },
+  "07df32ff88977b4e": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "07df32ff88977b4e.pcm",
+   "text": "Two sols. Maybe three. Mars doesn't tell."
+  },
+  "8566ea58be952aff": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "8566ea58be952aff.pcm",
+   "text": "Panels tilted. I have sand in places sand should not be."
+  },
+  "37e9aafada2d0570": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "37e9aafada2d0570.pcm",
+   "text": "The seedlings will sulk. But a full battery is a full battery."
+  },
+  "e095e689ba2f13ca": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "e095e689ba2f13ca.pcm",
+   "text": "Bold. I like bold. Ask me again in two sols."
+  },
+  "8363466d7ebbee67": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "8363466d7ebbee67.pcm",
+   "text": "It's Kofi's birthday. His family sent a video. It's a big file, and the dish needs a lot of power to pull it down."
+  },
+  "b58ed64a5a18f1bf": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "b58ed64a5a18f1bf.pcm",
+   "text": "It can wait. It's only a birthday."
+  },
+  "ddc96918fe1c9325": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "ddc96918fe1c9325.pcm",
+   "text": "He has been saying that since breakfast. He does not mean it."
+  },
+  "a4552ef76bc54547": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "a4552ef76bc54547.pcm",
+   "text": "They baked a cake shaped like the rover. It's terrible. It's perfect."
+  },
+  "aa5ff6617730380e": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "aa5ff6617730380e.pcm",
+   "text": "\"Happy birthday. We look up every night.\" That's enough. That's plenty."
+  },
+  "83ad5d356d043a88": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "83ad5d356d043a88.pcm",
+   "text": "Told you. Only a birthday."
+  },
+  "f36dbc8300b91b0b": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "f36dbc8300b91b0b.pcm",
+   "text": "Rover's packed. I'm heading up the old river valley. Keep the kettle warm."
+  },
+  "ad707038bcb1e079": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "ad707038bcb1e079.pcm",
+   "text": "Commander. It has spots. Tiny dark rings, like a leopard's coat. Just like the rock the old rover found."
+  },
+  "1b0187c28d07db8e": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "1b0187c28d07db8e.pcm",
+   "text": "On Earth, spots like these often form where tiny living things once were. Often. Not always. I need this core."
+  },
+  "df6ebabba3683836": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "df6ebabba3683836.pcm",
+   "text": "Slow and careful. If the answer is in there, I'm not cracking it."
+  },
+  "2bee7cede662ebf1": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "2bee7cede662ebf1.pcm",
+   "text": "Quick and dirty. Got it. Don't tell my old professor."
+  },
+  "afb6540a1d850cb2": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "afb6540a1d850cb2.pcm",
+   "text": "Sending. In a quarter of an hour, a room full of people on Earth will stop breathing."
+  },
+  "4926e6171ddb4fb6": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "4926e6171ddb4fb6.pcm",
+   "text": "They're ready. Lettuce, mizuna, and four small red tomatoes. Grown on Mars. I might cry on the kale."
+  },
+  "91b3ef256850bee3": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "91b3ef256850bee3.pcm",
+   "text": "I have eaten in forty countries. This is the best salad of my life."
+  },
+  "56ec6653f5de35f0": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "56ec6653f5de35f0.pcm",
+   "text": "A gardener always saves seeds. Always."
+  },
+  "ca61c07f7a2ebfbf": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "ca61c07f7a2ebfbf.pcm",
+   "text": "Let them see. Tomatoes on Mars."
+  },
+  "815f3dcbd1336c49": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "815f3dcbd1336c49.pcm",
+   "text": "Commander. My radiation counter is climbing fast. This is not in any forecast."
+  },
+  "86521050e34a9c01": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "86521050e34a9c01.pcm",
+   "text": "I can pull the greenhouse power into the shield. Right now. The plants go dark."
+  },
+  "607758c5b0e1a1e1": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "607758c5b0e1a1e1.pcm",
+   "text": "If the lights go out tonight, Amu and Syr may not make it. Ten years, Commander. But it is your call."
+  },
+  "b75e95a1377146bc": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "b75e95a1377146bc.pcm",
+   "text": "Do it. I'll sit with them in the dark."
+  },
+  "310ae82dfacccb54": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "310ae82dfacccb54.pcm",
+   "text": "Pumps on. We'll be thirsty next week, but the walls are full."
+  },
+  "16275e7ff107e6cb": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "16275e7ff107e6cb.pcm",
+   "text": "Everything we have. Walls full, shield climbing."
+  },
+  "40d816b506c37ff3": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "40d816b506c37ff3.pcm",
+   "text": "Thank you. Everyone into the shelter. Now."
+  },
+  "f3cdb8ef11c72b85": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "f3cdb8ef11c72b85.pcm",
+   "text": "I see it too. My camera is full of white sparks. The core is half out of the rock."
+  },
+  "269734e8e0c18548": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "269734e8e0c18548.pcm",
+   "text": "Twenty more minutes and it's sealed. Or I drop the drill and run. Tell me which."
+  },
+  "bb5e6464b7439d1b": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "bb5e6464b7439d1b.pcm",
+   "text": "Copy. Leaving it. ...Leaving it. Driving."
+  },
+  "0b805fba1d59ddcc": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "0b805fba1d59ddcc.pcm",
+   "text": "There's an overhang twenty metres away. I'll hug the rock. Tell Ana to save me a tomato."
+  },
+  "f3937ce4d45059e6": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "f3937ce4d45059e6.pcm",
+   "text": "...Thank you. Give me a second to think like a grown-up."
+  },
+  "0823a18d9c2bb5fb": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "0823a18d9c2bb5fb.pcm",
+   "text": "Mission Control does not know yet. From Earth, this part of the Sun is hidden. Shall I tell them?"
+  },
+  "e2e9aecdc0787e84": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "e2e9aecdc0787e84.pcm",
+   "text": "Right. Our sky, our call."
+  },
+  "fb1ee13bdec02f98": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "fb1ee13bdec02f98.pcm",
+   "text": "Radio call from Isidis Camp. Three geologists, forty kilometres east. The storm fried their power. They're asking for two of our battery packs."
+  },
+  "3679049955e5f824": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "3679049955e5f824.pcm",
+   "text": "We're not exactly rich ourselves."
+  },
+  "3d578e32b023fe34": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "3d578e32b023fe34.pcm",
+   "text": "Packs are on the drone. Somewhere out there, three people just started breathing easier."
+  },
+  "26dcd07005077fa1": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "26dcd07005077fa1.pcm",
+   "text": "Put me on with whoever has the steadiest hands."
+  },
+  "9415d6484e8c2c3a": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "9415d6484e8c2c3a.pcm",
+   "text": "They'd have done the same. ...Would they?"
+  },
+  "92df3a48eaa62a22": {
+   "who": "sam",
+   "voice": "Bill - Wise, Mature, Balanced",
+   "file": "92df3a48eaa62a22.pcm",
+   "text": "Lakeshore, this is Mission Control. Your window opens at sunset. Bring home everyone, and whatever else you can. We are with you."
+  },
+  "fd270ab7dd8dd821": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "fd270ab7dd8dd821.pcm",
+   "text": "Hatch sealed. Everybody count your fingers."
+  },
+  "232c9e3c85399879": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "232c9e3c85399879.pcm",
+   "text": "Go go go go go."
+  },
+  "a7e172ea8159fd6b": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "a7e172ea8159fd6b.pcm",
+   "text": "Grow well, Amu. Grow well, Syr. Someone is coming."
+  },
+  "e2e5aa55a9647573": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "e2e5aa55a9647573.pcm",
+   "text": "Commander, someone moved power last night without asking. One cell went from the battery to the greenhouse lamps."
+  },
+  "676723ecf2a2db87": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "676723ecf2a2db87.pcm",
+   "text": "It was me. You stopped listening, so I stopped asking. I'm sorry. And I'm not."
+  },
+  "9bbaeb01681d7f81": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "9bbaeb01681d7f81.pcm",
+   "text": "The air scrubber is choking. Dust got into the filter. It still works, just badly."
+  },
+  "8778370e51c035ae": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "8778370e51c035ae.pcm",
+   "text": "New filter in. Breathe deep. That's the good stuff."
+  },
+  "673f04643dadf226": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "673f04643dadf226.pcm",
+   "text": "It'll hold. Probably. If you get a headache, that's the filter talking."
+  },
+  "ae147c1e37ba3968": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "ae147c1e37ba3968.pcm",
+   "text": "Nile and Volta will do their best. Plants have been cleaning air for a long time."
+  },
+  "a3aee09e86d76c10": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "a3aee09e86d76c10.pcm",
+   "text": "The water recycler is leaking into its own drain. We are losing water with every cup."
+  },
+  "68316cb3a7514717": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "68316cb3a7514717.pcm",
+   "text": "One new seal. The most valuable rubber ring on this planet."
+  },
+  "ee0ff02eeaf63898": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "ee0ff02eeaf63898.pcm",
+   "text": "No tea? On Mars? This is how missions fail."
+  },
+  "4e40969071c185f0": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "4e40969071c185f0.pcm",
+   "text": "They can take one dry day. One."
+  },
+  "9c46adbe57bdbc28": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "9c46adbe57bdbc28.pcm",
+   "text": "Tonight will be much colder than usual. The heaters will want more power."
+  },
+  "23e491d1bad74114": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "23e491d1bad74114.pcm",
+   "text": "Toasty. I'll take first watch on the fuse box."
+  },
+  "50eae8211c0c68d8": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "50eae8211c0c68d8.pcm",
+   "text": "Kofi snores like a rover stuck in sand."
+  },
+  "630512bebe4c211e": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "630512bebe4c211e.pcm",
+   "text": "You are kind. Cold, but kind."
+  },
+  "43dd7238f8e3a763": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "43dd7238f8e3a763.pcm",
+   "text": "The storm left a blanket of dust on the solar panels. We're losing a cell of power every sol."
+  },
+  "86c71bbcacf47064": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "86c71bbcacf47064.pcm",
+   "text": "Twenty panels, one brush. Call me the cleanest man on Mars."
+  },
+  "0cd6834bafccb5ca": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "0cd6834bafccb5ca.pcm",
+   "text": "Waiting for Mars to do my job. It has happened before."
+  },
+  "faf21f202924a612": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "faf21f202924a612.pcm",
+   "text": "I want to try a new light recipe. More red, longer days. The tomatoes could grow much faster. It uses more power."
+  },
+  "c05c79477af6fe78": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "c05c79477af6fe78.pcm",
+   "text": "Watch them go. Syr is already showing off."
+  },
+  "4bddb7a570a06569": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "4bddb7a570a06569.pcm",
+   "text": "Fine. Science can wait. It usually has to."
+  },
+  "455f127dbc309654": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "455f127dbc309654.pcm",
+   "text": "I can trick the battery into holding more charge. The safety limit is very careful. Too careful, maybe. It could go wrong."
+  },
+  "47b57d8f641576b1": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "47b57d8f641576b1.pcm",
+   "text": "Stand back. Further. A bit further."
+  },
+  "bb5bd206ff87776f": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "bb5bd206ff87776f.pcm",
+   "text": "Sensible. Boring. Sensible."
+  },
+  "c10fcfddc151aa50": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "c10fcfddc151aa50.pcm",
+   "text": "There's a second outcrop across the valley. Layers like the pages of a book. It's a long way round, but two samples beat one."
+  },
+  "0ad7b940ed6ef5c2": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "0ad7b940ed6ef5c2.pcm",
+   "text": "Worth it. Oh, this is so worth it."
+  },
+  "fe412f560c29f1e2": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "fe412f560c29f1e2.pcm",
+   "text": "One rock at a time. Understood. Sigh. Did you hear the sigh?"
+  },
+  "9e3132da9672851f": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "9e3132da9672851f.pcm",
+   "text": "A relay orbiter is passing overhead. We get ten minutes of fast radio. What do we send?"
+  },
+  "8651ece7cabad780": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "8651ece7cabad780.pcm",
+   "text": "Sent. Somewhere on Earth a geologist just spilled their coffee."
+  },
+  "68b9dc94a04cfe9b": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "68b9dc94a04cfe9b.pcm",
+   "text": "I told my mother the tomatoes say hello."
+  },
+  "2db9d9c80ff405af": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "2db9d9c80ff405af.pcm",
+   "text": "Listening."
+  },
+  "53a4ca3045e55cb3": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "53a4ca3045e55cb3.pcm",
+   "text": "I hear a hiss at the airlock. The door seal is leaking a little air every hour."
+  },
+  "742fb723168d348a": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "742fb723168d348a.pcm",
+   "text": "Sealed. I used the fancy tape."
+  },
+  "101a7182a3eb2ac5": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "101a7182a3eb2ac5.pcm",
+   "text": "I will count every breath that gets away."
+  },
+  "4d7cdc701f09d970": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "4d7cdc701f09d970.pcm",
+   "text": "Doctor's orders: this crew is tired. Tired people make mistakes. I want a rest day."
+  },
+  "f19561aafe898e74": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "f19561aafe898e74.pcm",
+   "text": "A nap. On Mars. Write that in the history books."
+  },
+  "84481b173c3a8648": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "84481b173c3a8648.pcm",
+   "text": "Then I'm writing it in the log. In capital letters."
+  },
+  "932fdc7b5bfe35cc": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "932fdc7b5bfe35cc.pcm",
+   "text": "In four minutes, the moon Phobos will cross the Sun. It lasts less than a minute. Solar power will dip a little."
+  },
+  "3b1343e5b70f8b56": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "3b1343e5b70f8b56.pcm",
+   "text": "A lumpy little moon in front of the Sun. You do not see that on Earth."
+  },
+  "ff8ccc0c8dea67e5": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "ff8ccc0c8dea67e5.pcm",
+   "text": "Oh. Oh, that's lovely."
+  },
+  "0b6b4e7689e1ea82": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "0b6b4e7689e1ea82.pcm",
+   "text": "I'll watch the recording. It's not the same. It's fine."
+  },
+  "21a334e23df1f101": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "21a334e23df1f101.pcm",
+   "text": "Sunset in ten minutes. Clear sky. You know what colour it goes."
+  },
+  "8facba579e99b3dd": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "8facba579e99b3dd.pcm",
+   "text": "Blue. On the red planet, the sunset is blue. I will never get used to it."
+  },
+  "99ac581d2e8217cd": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "file": "99ac581d2e8217cd.pcm",
+   "text": "Four people, one window, one blue Sun."
+  },
+  "abf575da686f9f8b": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "abf575da686f9f8b.pcm",
+   "text": "Squeezed a little more out of the day. The sunset will be there tomorrow."
+  },
+  "d51d5f2b8828df1e": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "d51d5f2b8828df1e.pcm",
+   "text": "Radiation alarm on sensor two. Sensor one says everything is normal. One of them is wrong."
+  },
+  "b091612e5f8dfabc": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "b091612e5f8dfabc.pcm",
+   "text": "False alarm. A grain of dust in the sensor. Better a lost afternoon than a bad guess."
+  },
+  "d91e0d07e834de9f": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "d91e0d07e834de9f.pcm",
+   "text": "Sensor two had dust in it. Sensor one is right. I will remember which of us was calm."
+  },
+  "a5a50c7a8f98c8f3": {
+   "who": "ana",
+   "voice": "Sarah - Mature, Reassuring, Confident",
+   "file": "a5a50c7a8f98c8f3.pcm",
+   "text": "It was nothing. This time. Please don't make that a habit."
+  },
+  "e0a9f8dcef35f25d": {
+   "who": "sam",
+   "voice": "Bill - Wise, Mature, Balanced",
+   "file": "e0a9f8dcef35f25d.pcm",
+   "text": "Lakeshore, about yesterday. We would have chosen differently. But we were not there, and you were. Tell us what you saw."
+  },
+  "1d0e0b43bc0f1857": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "file": "1d0e0b43bc0f1857.pcm",
+   "text": "Report sent. I think they will like that you did not hide anything."
+  },
+  "de405c8410e6745c": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "file": "de405c8410e6745c.pcm",
+   "text": "True. They'll still wonder."
+  },
+  "a6ccafd3beb930e0": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "model": "eleven_flash_v2_5",
+   "file": "a6ccafd3beb930e0.pcm",
+   "text": "Got a few more words out of the noise. \"...turned out of our sight...\" My eyes hurt."
+  },
+  "70ca80a4d8caea84": {
+   "who": "pip",
+   "voice": "River - Relaxed, Neutral, Informative",
+   "model": "eleven_flash_v2_5",
+   "file": "70ca80a4d8caea84.pcm",
+   "text": "While the dish was up, I caught another piece of the broken message: \"...we cannot see what it does next...\""
+  },
+  "aa7bd0e59a49f702": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "model": "eleven_flash_v2_5",
+   "file": "aa7bd0e59a49f702.pcm",
+   "text": "Their lights are back on. I talked a geologist through rewiring a power bus. I need to lie down."
+  },
+  "6f547ccafbbb5a71": {
+   "who": "kofi",
+   "voice": "Brian - Deep, Resonant and Comforting",
+   "model": "eleven_flash_v2_5",
+   "file": "6f547ccafbbb5a71.pcm",
+   "text": "No good. They're leaving for their ship tonight. They're safe. They're just done."
+  },
+  "57f2e8cf7b2c503b": {
+   "who": "dil",
+   "voice": "Jessica - Playful, Bright, Warm",
+   "model": "eleven_flash_v2_5",
+   "file": "57f2e8cf7b2c503b.pcm",
+   "text": "GOT IT. Sealed. Driving like I stole it."
+  }
+ }
+}

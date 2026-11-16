@@ -11,6 +11,7 @@
 | File | How it was made | Date | Used for |
 |---|---|---|---|
 | `shared/models/habitat.glb`, `shared/models/ascent.glb` | Built in Blender by a Python script written with SI assistance (`web/scripts/blender/build_hardware.py`); design reviewed by the team | 2026-11-15 | Habitat and ascent vehicle in both editions |
+| `shared/audio/voices/*.pcm` (137 lines, 11.9 min) | Synthetic speech from ElevenLabs (model eleven_v4, premade voices: Sarah, Jessica, Brian, Bill, River, George) by `shared/scripts/make-voices.mjs`; line texts written by the team | 2026-11-16 | Crew and narrator voices in the desktop edition |
 
 ## Not SI-generated (for clarity)
 

@@ -50,7 +50,7 @@ namespace PlutonyX.Game
         /// <summary>Plays the recording of this line if there is one. Returns false when the line has no recording.</summary>
         public static bool Play(string say)
         {
-            if (string.IsNullOrEmpty(say) || !Enabled || Narrator.Muted) return false;
+            if (string.IsNullOrEmpty(say) || !Enabled || (Narrator.Muted && !Narrator.Test)) return false;
             string p = PathFor(say);
             if (!File.Exists(p)) return false;
             var me = I; if (me._job != null) me.StopCoroutine(me._job); me._src.Stop();
@@ -67,7 +67,8 @@ namespace PlutonyX.Game
             for (int i = 0; i < n; i++) data[i] = (short)(b[2 * i] | (b[2 * i + 1] << 8)) / 32768f;
             var clip = AudioClip.Create("voice", Mathf.Max(1, n), 1, 24000, false); clip.SetData(data, 0);
             if (_src.clip != null) Destroy(_src.clip);
-            _src.clip = clip; _src.volume = 1f; _src.Play();
+            _src.clip = clip; _src.volume = Narrator.Test ? 0f : 1f; _src.Play();
+            Debug.Log("[PlutonyX] voice " + Path.GetFileNameWithoutExtension(file) + " " + (n / 24000f).ToString("0.0") + " s");
         }
     }
 }

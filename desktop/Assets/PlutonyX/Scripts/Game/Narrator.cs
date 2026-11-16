@@ -18,7 +18,7 @@ namespace PlutonyX.Game
         static string _last = "";
 
         // test switch: -narratortest turns read-aloud on for this run at zero volume and logs every line (works during autoplay)
-        static readonly bool Test = Array.IndexOf(Environment.GetCommandLineArgs(), "-narratortest") >= 0;
+        public static readonly bool Test = Array.IndexOf(Environment.GetCommandLineArgs(), "-narratortest") >= 0;
         public static int Spoken { get; private set; }
 
         public static void Load() { Enabled = Test || PlayerPrefs.GetInt("narrator", 0) == 1; }
