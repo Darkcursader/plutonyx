@@ -158,7 +158,7 @@ export class FirstPerson {
       // greenhouse shell (a box you walk around; enter by its door)
       if (nx > -30.6 && nx < -13.4 && nz > -49 && nz < -39) { const dx = Math.min(nx + 30.6, -13.4 - nx), dzz = Math.min(nz + 49, -39 - nz); if (dx < dzz) nx = nx + 30.6 < -13.4 - nx ? -30.6 : -13.4; else nz = nz + 49 < -39 - nz ? -49 : -39; }
       // solar panel rows and their posts
-      const lim = 480; if (Math.hypot(nx, nz + 20) > lim) { const d = Math.hypot(nx, nz + 20); nx = (nx / d) * lim; nz = ((nz + 20) / d) * lim - 20; }
+      const lim = 1750; // the rover can take you up to 1.7 km out if (Math.hypot(nx, nz + 20) > lim) { const d = Math.hypot(nx, nz + 20); nx = (nx / d) * lim; nz = ((nz + 20) / d) * lim - 20; }
     }
     moved = Math.hypot(nx - this.pos.x, nz - this.pos.z);
     this.pos.x = nx; this.pos.z = nz;

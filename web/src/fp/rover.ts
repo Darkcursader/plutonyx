@@ -48,6 +48,7 @@ export class RoverDrive {
 
   constructor(private world: World, private fp: FirstPerson, host: HTMLElement, private play: (s: string) => void) {
     this.rover = world.outpost.rover;
+    detailRover(this.rover);
     this.rover.traverse((o) => { if ((o as THREE.Mesh).isMesh && Math.abs(o.position.y - 0.62) < 0.02) this.wheels.push(o); });
     const mk = (cls: string) => { const d = document.createElement('div'); d.className = cls; d.style.display = 'none'; host.append(d); return d; };
     this.hud = mk('rv-hud'); this.hint = mk('rv-hint'); this.say = mk('rv-say');
@@ -180,7 +181,9 @@ export class RoverDrive {
   private groundY() {
     const s = Math.sin(this.yaw), c = Math.cos(this.yaw), h = (lx: number, lz: number) => this.world.terrain.heightAt(this.px + c * lx + s * lz, this.pz - s * lx + c * lz);
     const fl = h(1.7, -1.35), fr = h(1.7, 1.35), rl = h(-1.7, -1.35), rr = h(-1.7, 1.35);
-    return { gy: (fl + fr + rl + rr) / 4 + 0.1, pitch: Math.atan2((fl + fr) / 2 - (rl + rr) / 2, WB), roll: -Math.atan2((fr + rr) / 2 - (fl + rl) / 2, 2.7) };
+    const c0 = this.world.terrain.heightAt(this.px, this.pz), hi = Math.max(fl, fr, rl, rr, c0);
+    // sit on the highest contact so no wheel sinks below the ground mesh (which is coarser far from base)
+    return { gy: Math.max((fl + fr + rl + rr) / 4, hi - 0.12) + 0.22, pitch: Math.atan2((fl + fr) / 2 - (rl + rr) / 2, WB), roll: -Math.atan2((fr + rr) / 2 - (fl + rl) / 2, 2.7) };
   }
 
   /** Called every frame by the first-person controller while you are in the driver's seat. */
@@ -358,3 +361,51 @@ export class RoverDrive {
 }
 
 const fmt = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+
+/** Extra detail on the crew rover: tyre treads (spin with the wheels), rocker suspension, fenders, light bar,
+ *  roof rack, hatches, hazard lights, mast camera and PLUTONYX markings (style guide section 12). */
+function detailRover(g: THREE.Group) {
+  if (g.userData.detailed) return; g.userData.detailed = true;
+  const graphite = mat(0x2b2d31, 0.65, 0.35), steel = mat(0x9a9ea4, 0.35, 0.85), off = mat(0xe6e1d6, 0.5, 0.1), orange = mat(0xc8551e, 0.5, 0.2), rubber = mat(0x141414, 0.9, 0);
+  const add = (geo: THREE.BufferGeometry, m: THREE.Material, x: number, y: number, z: number, p: THREE.Object3D = g) => { const me = new THREE.Mesh(geo, m); me.position.set(x, y, z); me.castShadow = true; p.add(me); return me; };
+  // treads: chunky grousers around each tyre, children of the tyre so they turn with it
+  const grouser = new THREE.BoxGeometry(0.16, 0.09, 0.52);
+  const tyres: THREE.Mesh[] = []; g.traverse((o) => { const m = o as THREE.Mesh; if (m.isMesh && Math.abs(o.position.y - 0.62) < 0.02 && (m.geometry as any).parameters?.radiusTop > 0.5) tyres.push(m); });
+  for (const t of tyres) {
+    for (let i = 0; i < 18; i++) { const a = (i / 18) * Math.PI * 2, b = add(grouser, rubber, Math.cos(a) * 0.64, Math.sin(a) * 0.64, 0, t); b.rotation.z = a; }
+    add(new THREE.CylinderGeometry(0.18, 0.18, 0.58, 6).rotateX(Math.PI / 2), orange, 0, 0, 0, t);
+    // fender arch over each wheel
+    const fz = t.position.z, side = Math.sign(fz);
+    const arch = add(new THREE.TorusGeometry(0.78, 0.07, 6, 20, Math.PI), graphite, t.position.x, 0.62, fz + side * 0.05); arch.scale.set(1, 1, 3.4);
+    // rocker arm from hull to hub
+    const arm = add(new THREE.BoxGeometry(0.12, 0.6, 0.12), steel, t.position.x, 0.95, fz - side * 0.05); arm.rotation.x = side * 0.25;
+  }
+  for (const z of [-1.0, 1.0]) add(new THREE.BoxGeometry(4.0, 0.12, 0.14), steel, 0, 0.96, z);         // rocker beams
+  // hull: orange belly band, hatch with handle and window, PLUTONYX decal on both sides
+  add(new THREE.CylinderGeometry(1.025, 1.025, 0.22, 32, 1, true).rotateZ(Math.PI / 2), orange, -1.0, 1.72, 0);
+  for (const s of [-1, 1]) {
+    add(new THREE.BoxGeometry(1.0, 0.95, 0.04), off, 0.55, 1.78, s * 1.0);
+    add(new THREE.BoxGeometry(0.34, 0.26, 0.05), mat(0x10171c, 0.1, 0.9), 0.55, 1.98, s * 1.02);
+    add(new THREE.BoxGeometry(0.5, 0.05, 0.08), steel, 0.55, 1.55, s * 1.04);
+    const cv = document.createElement('canvas'); cv.width = 512; cv.height = 96; const c = cv.getContext('2d')!;
+    c.fillStyle = '#2b2d31'; c.font = '700 64px system-ui, sans-serif'; c.fillText('PLUTONYX', 18, 70); c.fillStyle = '#c8551e'; c.fillRect(380, 30, 110, 26);
+    const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace;
+    const dec = add(new THREE.PlaneGeometry(1.5, 0.28), new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: 0.6 }), -1.05, 2.12, s * 0.985);
+    if (s < 0) dec.rotation.y = Math.PI; dec.position.z = s * 0.99; dec.lookAt(dec.position.x, dec.position.y, s * 5);
+  }
+  // roof rack with cargo rails, light bar, hazard beacons
+  for (const z of [-0.7, 0.7]) add(new THREE.BoxGeometry(3.0, 0.06, 0.06), steel, -0.7, 2.86, z);
+  for (const x of [-2.0, -0.7, 0.6]) add(new THREE.BoxGeometry(0.06, 0.18, 1.46), steel, x, 2.78, 0);
+  add(new THREE.BoxGeometry(0.22, 0.14, 1.5), graphite, 1.25, 2.72, 0);
+  for (let i = 0; i < 5; i++) add(new THREE.BoxGeometry(0.05, 0.08, 0.2), new THREE.MeshStandardMaterial({ color: 0x111111, emissive: 0xfff2d0, emissiveIntensity: 2.5 }), 1.37, 2.72, -0.56 + i * 0.28);
+  for (const z of [-0.8, 0.8]) add(new THREE.SphereGeometry(0.09, 10, 8), new THREE.MeshStandardMaterial({ color: 0x331100, emissive: 0xff7a20, emissiveIntensity: 2 }), -2.35, 2.62, z);
+  // front bumper, headlight housings, tow hook, rear hatch frame
+  add(new THREE.BoxGeometry(0.16, 0.22, 2.3), graphite, 2.95, 0.95, 0);
+  for (const z of [-0.6, 0.6]) add(new THREE.CylinderGeometry(0.16, 0.16, 0.12, 16).rotateZ(Math.PI / 2), graphite, 2.92, 1.25, z);
+  add(new THREE.BoxGeometry(0.06, 1.0, 1.7), graphite, -2.62, 1.75, 0);
+  add(new THREE.BoxGeometry(0.05, 0.7, 1.1), off, -2.65, 1.75, 0);
+  // mast camera head and a small dish
+  add(new THREE.BoxGeometry(0.22, 0.16, 0.42), off, -1.4, 4.42, 0.4);
+  for (const z of [0.28, 0.52]) add(new THREE.CylinderGeometry(0.05, 0.05, 0.06, 12).rotateZ(Math.PI / 2), mat(0x0a0a0a, 0.1, 0.9), -1.27, 4.44, z);
+  const dish = add(new THREE.SphereGeometry(0.32, 20, 8, 0, Math.PI * 2, 0, 0.9), off, -2.1, 3.25, -0.6); dish.rotation.z = 0.9; (dish.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
+}
