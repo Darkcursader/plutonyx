@@ -74,6 +74,7 @@ namespace PlutonyX.Game
             var options = new List<string> { "Play  ·  " + _design.Window("may-2024")["menuTitle"].Str("Mission One"), "Today's real sky", "Replay history", "Explore the outpost",
                                              "Difficulty:  " + _design.Balance["difficulty"][_difficulty]["name"].Str(_difficulty), "Ending gallery", "Mission Science Log", "Credits and data", "Quit" };
             int pick = 0;
+            if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-drivetest") >= 0) { yield return ExploreMode(); yield break; }
             yield return UI.Title(_design.Title, _design.Game["subtitle"].Str(), _design.Game["tagline"].Str(), options, i => pick = i, sunNow, live,
                                   _design.Game["teamCredit"].Str("A PlutonyX game") + "  ·  Desktop Ultra edition v" + Version + "  ·  " + _design.Game["event"].Str() + "\nEsc: settings  ·  read aloud, text size, graphics");
             UI.Caption("");
@@ -335,7 +336,9 @@ namespace PlutonyX.Game
                     ? "Your last jump: " + Explore.LastJumpHeight.ToString("0.0", CultureInfo.InvariantCulture) + " m. The same push on Earth: " +
                       (Explore.LastJumpHeight * ExploreController.MarsGravity / ExploreController.EarthGravity).ToString("0.0", CultureInfo.InvariantCulture) + " m. Mars gravity is 3.73 m/s², 38% of Earth's."
                     : "Try a jump. Mars pulls on you with only 38% of Earth's gravity.";
-                UI.ExploreInfo(near != null ? near.Title : "Lakeshore Outpost  ·  " + World.CurrentHour, near != null ? near.Text : jump,
+                if (Explore.Driving) { var dr = Explore.Drive; UI.ExploreInfo("Rover  ·  " + (dr.Cockpit ? "cockpit" : "chase camera"), (dr.Message.Length > 0 ? dr.Message + "   ·   " : "") + dr.Dashboard(), "Drive: W S / triggers   ·   Steer: A D / left stick   ·   Boost: Shift / RB   ·   Brake: Space / A   ·   Camera: C / View   ·   Look: right mouse   ·   Get out: R / X (when stopped)"); yield return null; continue; }
+                if (Explore.Drive != null && Explore.Drive.Near(Explore.Player.position)) jump = "Press R (or X) to drive the rover. Drive to the river delta, collect a rock sample and bring it home.";
+                UI.ExploreInfo(near != null && !(Explore.Drive != null && Explore.Drive.Near(Explore.Player.position)) ? near.Title : "Lakeshore Outpost  ·  " + World.CurrentHour, near != null && !(Explore.Drive != null && Explore.Drive.Near(Explore.Player.position)) ? near.Text : jump,
                                "Move: WASD / left stick   ·   Run: Shift / RT   ·   Jump: Space / A   ·   Look: Q E, right mouse or right stick   ·   Time of day: T / Y   ·   Back: Tab / B");
                 yield return null;
             }

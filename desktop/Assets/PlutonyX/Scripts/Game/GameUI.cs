@@ -227,7 +227,7 @@ namespace PlutonyX.Game
                 speaker.text = CrewName(l.Who); speaker.style.color = CrewColor(l.Who);
                 speaker.style.display = string.IsNullOrEmpty(speaker.text) ? DisplayStyle.None : DisplayStyle.Flex;
                 text.text = l.Say; clicked = false;
-                string who = SpeakerName(l.Who); Narrator.Speak(who.Length > 0 ? who + ": " + l.Say : l.Say);
+                string who = SpeakerName(l.Who); if (VoiceBank.Play(l.Say)) Narrator.Stop(); else { VoiceBank.Stop(); Narrator.Speak(who.Length > 0 ? who + ": " + l.Say : l.Say); }
                 if (Audio != null) { if (l.Who == "sam") Audio.Message(); else Audio.Advance(); }
                 yield return null;
                 float waited = 0;

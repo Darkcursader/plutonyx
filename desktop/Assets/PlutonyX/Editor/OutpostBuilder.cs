@@ -751,6 +751,7 @@ namespace PlutonyX.EditorTools
             Transform player = Object.Instantiate(crewRoots[2].gameObject, root).transform; player.name = "Commander";
             player.position = On(14f, -25f); player.rotation = Quaternion.Euler(0, 326f, 0); player.gameObject.SetActive(true);
             var explore = game.AddComponent<ExploreController>(); explore.Player = player; explore.Cam = cam; director.Explore = explore;
+            var drive = game.AddComponent<RoverDriver>(); drive.Rover = rover; drive.Dust = roverDust; drive.Cam = cam; drive.Destination = On(forks.x, forks.z); drive.Solid = explore.Spots; explore.Drive = drive;
             System.Action<string, string, Vector3, float> spot = (title, text, c, r) => explore.Spots.Add(new ExploreController.Spot { Title = title, Text = text, Center = c, Radius = r });
             spot("Habitat", "Home for four people. A sol, one day on Mars, is about 24.6 hours long, and nights can fall to about -153 degrees Celsius. (NASA Mars facts)", On(0.5f, 0f), 5.4f);
             spot("", "", On(-5f, 0f), 3.9f); spot("", "", On(-9.5f, 0.3f), 4.0f); spot("", "", On(-13.5f, 0.3f), 4.0f);
@@ -787,7 +788,7 @@ namespace PlutonyX.EditorTools
         {
             // photo-scanned rocks (Poly Haven, CC0: Earth rocks, tinted) for the big ones; procedural meshes for pebbles
             string[] ids = { "namaqualand_boulder_02", "namaqualand_boulder_03", "namaqualand_boulder_05", "moon_rock_01", "moon_rock_03", "namaqualand_stones_01" };
-            var scanned = new List<GameObject>(); var scanMats = new List<Material>(); var scanTris = new List<int>(); int heroes = 0;
+            var scanned = new List<GameObject>(); var scanMats = new List<Material>(); var scanMatsAlt = new List<Material>(); var scanTris = new List<int>(); int heroes = 0;
             foreach (string id in ids)
             {
                 string dir = "Assets/PlutonyX/Models/PolyHaven/" + id, fbx = dir + "/" + id + ".fbx";
@@ -803,7 +804,11 @@ namespace PlutonyX.EditorTools
                 if (diff != null) m.SetTexture("_BaseColorMap", diff); if (nor != null) m.SetTexture("_NormalMap", nor);
                 m.SetFloat("_Smoothness", 0.16f); m.SetFloat("_Metallic", 0f); m.enableInstancing = true; HDMaterial.ValidateMaterial(m);
                 AssetDatabase.CreateAsset(m, TerrainImporter.GeneratedDir + "/Rock_" + id + ".mat");
-                scanned.Add(model); scanMats.Add(m);
+                // a darker, redder variant so neighbouring rocks are not identical (dust and oxidation vary)
+                var m2 = new Material(m) { name = "Rock_" + id + "_dark" };
+                m2.SetColor("_BaseColor", id.StartsWith("moon") ? new Color(0.78f, 0.45f, 0.30f) : new Color(0.84f, 0.55f, 0.40f)); m2.SetFloat("_Smoothness", 0.1f); HDMaterial.ValidateMaterial(m2);
+                AssetDatabase.CreateAsset(m2, TerrainImporter.GeneratedDir + "/Rock_" + id + "_dark.mat");
+                scanned.Add(model); scanMats.Add(m); scanMatsAlt.Add(m2);
                 int tris = 0; foreach (MeshFilter mf in model.GetComponentsInChildren<MeshFilter>()) tris += mf.sharedMesh.triangles.Length / 3;
                 scanTris.Add(tris);
             }
@@ -834,7 +839,7 @@ namespace PlutonyX.EditorTools
                     if (cIdx == 0 && Mathf.Abs((x + 9) * 0.386f + (z + 19) * 0.922f) < 3.2f && x < -5) continue;  // the rover's road
                     if (cIdx == 2 && rad < 19f) continue;
                     float yaw = (float)rr.NextDouble() * 360f;
-                    if (size > 0.5f && scanned.Count > 0 && big < 150)
+                    if (size > 0.28f && scanned.Count > 0 && big < 520)
                     {
                         // the heavy scans (65-98 thousand triangles) are kept for a few hero boulders; the light ones do the rest
                         bool hero = size > 1.05f && heroes < 26;
@@ -842,12 +847,13 @@ namespace PlutonyX.EditorTools
                         if (k < 0) k = 0;
                         if (hero) heroes++;
                         var g = Object.Instantiate(scanned[k], rocks); g.name = "Boulder";
-                        g.transform.position = Vector3.zero; g.transform.rotation = Quaternion.Euler(0, yaw, 0); g.transform.localScale = scanned[k].transform.localScale;
+                        g.transform.position = Vector3.zero; g.transform.rotation = Quaternion.Euler(((float)rr.NextDouble() - 0.5f) * 22f, yaw, ((float)rr.NextDouble() - 0.5f) * 22f);   // real rocks sit tilted g.transform.localScale = scanned[k].transform.localScale;
                         Bounds b = new Bounds(); bool first = true;
-                        foreach (Renderer rn in g.GetComponentsInChildren<Renderer>()) { rn.sharedMaterial = scanMats[k]; if (first) { b = rn.bounds; first = false; } else b.Encapsulate(rn.bounds); }
+                        Material useMat = (big % 3 == 1 && scanMatsAlt.Count > k) ? scanMatsAlt[k] : scanMats[k];
+                        foreach (Renderer rn in g.GetComponentsInChildren<Renderer>()) { rn.sharedMaterial = useMat; rn.shadowCastingMode = size > 0.45f ? ShadowCastingMode.On : ShadowCastingMode.Off; if (first) { b = rn.bounds; first = false; } else b.Encapsulate(rn.bounds); }
                         float sc = size * 1.25f / Mathf.Max(0.01f, Mathf.Max(b.size.x, b.size.z));
                         g.transform.localScale *= sc;
-                        g.transform.position = new Vector3(x, Ground(x, z) - b.min.y * sc - size * 0.07f, z) - new Vector3(b.center.x, 0, b.center.z) * sc;
+                        g.transform.position = new Vector3(x, Ground(x, z) - b.min.y * sc - size * (0.12f + (float)rr.NextDouble() * 0.14f), z)   /* partly buried in the regolith */ - new Vector3(b.center.x, 0, b.center.z) * sc;
                         big++; continue;
                     }
                     var go = new GameObject("Rock"); go.transform.SetParent(rocks, false);

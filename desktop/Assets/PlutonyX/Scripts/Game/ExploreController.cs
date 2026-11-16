@@ -14,6 +14,8 @@ namespace PlutonyX.Game
 
         public Transform Player;                    // the Commander figure (no face: visor only)
         public Camera Cam;
+        public RoverDriver Drive;                    // press R by the rover to drive it
+        public bool Driving => Drive != null && Drive.Active;
         public List<Spot> Spots = new List<Spot>();
         public const float MarsGravity = 3.73f, EarthGravity = 9.81f, JumpSpeed = 4.3f;
 
@@ -44,14 +46,22 @@ namespace PlutonyX.Game
         {
             Active = true; Player.gameObject.SetActive(true);
             Vector3 p = _home; p.y = Ground(p); Player.position = p; _vy = 0; _grounded = true; LastJumpHeight = 0;
+            if (Drive != null && System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-drivetest") >= 0) { Drive.Begin(); Player.gameObject.SetActive(false); }
         }
-        public void End() { Active = false; if (Player != null) Player.gameObject.SetActive(false); Near = null; }
+        public void End() { if (Driving) Drive.End(); if (Drive != null) Drive.ResetHome(); Active = false; if (Player != null) Player.gameObject.SetActive(false); Near = null; }
 
         void Update()
         {
             if (!Active || Player == null) return;
             Keyboard k = Keyboard.current; Gamepad g = Gamepad.current; Mouse m = Mouse.current;
             float dt = Mathf.Min(Time.deltaTime, 0.05f);
+            bool rKey = Keys.Down(Key.R) || (g != null && g.buttonWest.wasPressedThisFrame);
+            if (Driving)
+            {
+                if (rKey && Mathf.Abs(Drive.Speed) < 2f) { Drive.End(); Player.gameObject.SetActive(true); Vector3 e = Drive.ExitPoint(); e.y = Ground(e); Player.position = e; Near = null; }
+                return;
+            }
+            if (Drive != null && rKey && Drive.Near(Player.position)) { Drive.Begin(); Player.gameObject.SetActive(false); Near = null; return; }
 
             // ---- camera orbit: Q/E or right mouse drag or right stick ----
             float turn = 0f, tilt = 0f;
