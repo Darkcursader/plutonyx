@@ -8,6 +8,7 @@ on:
     inputs:
       tag: { description: 'Release tag', default: 'v1.0-desktop' }
       version: { description: 'Version in file names', default: 'v1.0' }
+      legacy_zip: { description: 'Also publish the signed app as PlutonyX-DesktopUltra-macOS-<version>.zip (old download name)', type: boolean, default: false }
 permissions:
   contents: write
 jobs:
@@ -27,6 +28,9 @@ jobs:
           chmod +x app/PlutonyX.app/Contents/MacOS/*
           codesign --force --deep --sign - app/PlutonyX.app
           codesign --verify --deep --strict --verbose=2 app/PlutonyX.app
+      - name: Old-name zip of the signed app (keeps older download links working)
+        if: ${{ inputs.legacy_zip }}
+        run: ditto -c -k --keepParent app/PlutonyX.app "PlutonyX-DesktopUltra-macOS-$V.zip"
       - name: Build the .dmg (drag PlutonyX to Applications)
         run: |
           mkdir stage && mv app/PlutonyX.app stage/ && ln -s /Applications stage/Applications
@@ -37,8 +41,9 @@ jobs:
       - name: Upload the .dmg, refresh checksums, remove the zip
         run: |
           gh release upload "$TAG" -R "$GITHUB_REPOSITORY" "PlutonyX-Mac-$V.dmg" --clobber
+          if [ -f "PlutonyX-DesktopUltra-macOS-$V.zip" ]; then gh release upload "$TAG" -R "$GITHUB_REPOSITORY" "PlutonyX-DesktopUltra-macOS-$V.zip" --clobber; shasum -a 256 "PlutonyX-DesktopUltra-macOS-$V.zip" >> dmg.sha256; fi
           gh release download "$TAG" -R "$GITHUB_REPOSITORY" -p SHA256SUMS.txt -D sums || true
-          (grep -v "PlutonyX-Mac" sums/SHA256SUMS.txt 2>/dev/null || true) > SHA256SUMS.txt
+          (grep -v "PlutonyX-Mac\|DesktopUltra-macOS" sums/SHA256SUMS.txt 2>/dev/null || true) > SHA256SUMS.txt
           cat dmg.sha256 >> SHA256SUMS.txt && cat SHA256SUMS.txt
           gh release upload "$TAG" -R "$GITHUB_REPOSITORY" SHA256SUMS.txt --clobber
           gh release delete-asset "$TAG" "PlutonyX-Mac-$V.zip" -R "$GITHUB_REPOSITORY" -y
