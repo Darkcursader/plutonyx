@@ -46,6 +46,7 @@ export class Sound {
       const rs = ctx.createBufferSource(); rs.buffer = this.noise; rs.loop = true; const rf = ctx.createBiquadFilter(); rf.type = 'lowpass'; rf.frequency.value = 260; const rg = ctx.createGain(); rg.gain.value = 0; rs.connect(rf).connect(rg).connect(this.master); rs.start();
       this.eng = { g, o, f, rg };
     }
+    if (!Number.isFinite(speed)) speed = 0; if (!Number.isFinite(rough)) rough = 0;
     const e = this.eng, s = Math.min(1, Math.abs(speed));
     e.g.gain.setTargetAtTime(on ? 0.035 + s * 0.06 : 0, t, 0.15);
     e.o.forEach((o, i) => o.frequency.setTargetAtTime([70, 140.5, 211][i] * (0.8 + s * 1.9), t, 0.12));

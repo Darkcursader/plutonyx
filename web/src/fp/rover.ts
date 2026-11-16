@@ -225,7 +225,8 @@ export class RoverDrive {
     const fx = Math.cos(this.yaw), fz = -Math.sin(this.yaw);
     let nx = this.px + fx * v * dt, nz = this.pz + fz * v * dt;
     // buildings
-    for (const [cx, cz, r] of SOLID) { const d = Math.hypot(nx - cx, nz - cz), rr = r + 2.5; if (d < rr) { nx = cx + ((nx - cx) / d) * rr; nz = cz + ((nz - cz) / d) * rr; if (Math.abs(this.v) > 2.5) { this.shake = Math.min(1, Math.abs(this.v) * 0.08); this.play('step'); } this.v *= -0.25; } }
+    for (const [cx, cz, r] of SOLID) { if (Math.hypot(cx - PAD[0], cz - PAD[1]) < 3) continue; // the rover's own parking spot
+      const d = Math.hypot(nx - cx, nz - cz), rr = r + 2.5; if (d < rr && d > 0.01) { nx = cx + ((nx - cx) / d) * rr; nz = cz + ((nz - cz) / d) * rr; if (Math.abs(this.v) > 2.5) { this.shake = Math.min(1, Math.abs(this.v) * 0.08); this.play('step'); } this.v *= -0.25; } }
     const R = 1700, dc = Math.hypot(nx, nz); if (dc > R) { nx *= R / dc; nz *= R / dc; this.v *= 0.6; this.tell('That is as far as the rover\'s radio reaches. Turn back.'); }
     const moved = Math.hypot(nx - this.px, nz - this.pz); this.px = nx; this.pz = nz;
     // suspension and air time under Mars gravity
