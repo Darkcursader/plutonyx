@@ -1,0 +1,44 @@
+# Turns the cross-built Mac app (release asset PlutonyX-Mac-v1.0.zip, built on Windows) into a drag-to-Applications
+# .dmg installer on a macOS runner, signs it ad hoc so Apple-silicon Macs will start it, uploads the .dmg to the
+# release and removes the zip. Run by hand (Actions → Mac installer → Run workflow) after uploading a new zip.
+# Portions generated with the assistance of an SI tool (Claude) and reviewed by Team PlutonyX.
+name: Mac installer
+on:
+  workflow_dispatch:
+    inputs:
+      tag: { description: 'Release tag', default: 'v1.0-desktop' }
+      version: { description: 'Version in file names', default: 'v1.0' }
+permissions:
+  contents: write
+jobs:
+  dmg:
+    runs-on: macos-14
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ inputs.tag }}
+      V: ${{ inputs.version }}
+    steps:
+      - name: Download the app
+        run: gh release download "$TAG" -R "$GITHUB_REPOSITORY" -p "PlutonyX-Mac-$V.zip" -D in
+      - name: Unpack and sign ad hoc
+        run: |
+          ditto -x -k "in/PlutonyX-Mac-$V.zip" app
+          xattr -cr app/PlutonyX.app
+          chmod +x app/PlutonyX.app/Contents/MacOS/*
+          codesign --force --deep --sign - app/PlutonyX.app
+          codesign --verify --deep --strict --verbose=2 app/PlutonyX.app
+      - name: Build the .dmg (drag PlutonyX to Applications)
+        run: |
+          mkdir stage && mv app/PlutonyX.app stage/ && ln -s /Applications stage/Applications
+          hdiutil create -volname "PlutonyX" -srcfolder stage -fs HFS+ -format UDZO -imagekey zlib-level=9 "PlutonyX-Mac-$V.dmg"
+          codesign --force --sign - "PlutonyX-Mac-$V.dmg"
+          hdiutil verify "PlutonyX-Mac-$V.dmg"
+          shasum -a 256 "PlutonyX-Mac-$V.dmg" | tee dmg.sha256
+      - name: Upload the .dmg, refresh checksums, remove the zip
+        run: |
+          gh release upload "$TAG" -R "$GITHUB_REPOSITORY" "PlutonyX-Mac-$V.dmg" --clobber
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" -p SHA256SUMS.txt -D sums || true
+          (grep -v "PlutonyX-Mac" sums/SHA256SUMS.txt 2>/dev/null || true) > SHA256SUMS.txt
+          cat dmg.sha256 >> SHA256SUMS.txt && cat SHA256SUMS.txt
+          gh release upload "$TAG" -R "$GITHUB_REPOSITORY" SHA256SUMS.txt --clobber
+          gh release delete-asset "$TAG" "PlutonyX-Mac-$V.zip" -R "$GITHUB_REPOSITORY" -y
