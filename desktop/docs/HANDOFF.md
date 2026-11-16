@@ -4,7 +4,9 @@
 
 ## UPDATE — Mon 16 Nov 2026 (Windows PC, Unity 6000.6.9f1 at D:/Unity)
 - Release **v1.0-desktop** ships **PlutonyX-Setup-v1.0.exe** (Inno Setup, `tools/installer.iss`, per-user install, no admin),
-  **PlutonyX-Mac-v1.0.dmg** (drag-to-Applications, ad-hoc signed) and `SHA256SUMS.txt`. No ZIPs for players.
+  **PlutonyX-Mac-v1.0.dmg** (drag-to-Applications, ad-hoc signed) and `SHA256SUMS.txt`. The old-name ZIPs (`PlutonyX-DesktopUltra-Windows-x64-v1.0.zip`, `...-macOS-v1.0.zip`) are back
+  only because the promo site https://plutonyx.vercel.app (not in our Vercel accounts) still links to them; remove them once
+  that site links to the .exe/.dmg. Mac zip: run the Mac workflow with `legacy_zip: true`.
   The .dmg is made by `.github/workflows/mac-dmg.yml` on a GitHub macOS runner: upload the Windows-built app as
   `PlutonyX-Mac-v1.0.zip` (exec bits set: `zipmac` logic = Python zipfile, 0o755 for Contents/MacOS, .dylib, .so), then run
   the workflow; it builds the .dmg, uploads it, fixes the checksums and deletes the zip.
